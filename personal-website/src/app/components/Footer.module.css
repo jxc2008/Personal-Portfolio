@@ -1,0 +1,14 @@
+/* src/app/components/Footer.module.css */
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: #000000; /* Neutral dark color for footer */
+  position: relative; /* Ensures it's part of the normal flow */
+  z-index: 1000;
+  color: white;
+  font-size: 0.875rem;
+  text-align: center;
+}

@@ -1,0 +1,290 @@
+/* src/app/page.module.css */
+
+.container {
+  min-height: 200vh; /* Ensures space for both landing and split sections */
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
+  /* Removed overflow: hidden to prevent clipping content and extra scrollbar */
+  /* overflow: hidden; */
+}
+
+/* Dark Mode Styles */
+.container.dark {
+  background: linear-gradient(135deg, #1a202c, #2d3748); /* Dark Blue Gradient */
+  color: white;
+}
+
+/* Toggle Button */
+.darkModeToggle {
+  position: fixed;
+  bottom: 1rem; /* Moved to bottom-right corner */
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: inherit;
+  z-index: 1000;
+}
+
+/* Sun */
+.sun {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #ffdd33, #ffaa00);
+  border-radius: 50%;
+  box-shadow: 0 0 50px 20px rgba(255, 221, 51, 0.5);
+}
+
+/* Crescent Moon */
+.moon {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, #f0e68c, #c9a602);
+  border-radius: 50%;
+  box-shadow: 0 0 20px 5px rgba(255, 255, 204, 0.8);
+  clip-path: circle(50% at 50% 50%) inset(20% 10% 0% 10%);
+}
+
+/* Stars */
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.star1 {
+  width: 5px;
+  height: 5px;
+  top: 15%;
+  left: 25%;
+}
+
+.star2 {
+  width: 7px;
+  height: 7px;
+  top: 40%;
+  left: 70%;
+}
+
+.star3 {
+  width: 4px;
+  height: 4px;
+  top: 65%;
+  left: 45%;
+}
+
+/* Shooting Star */
+.shootingStar {
+  position: absolute;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(to bottom, white, transparent);
+  top: 20%;
+  left: 80%;
+  transform: rotate(-45deg);
+  animation: shooting 5s infinite ease-in-out;
+  opacity: 0;
+}
+
+@keyframes shooting {
+  0% {
+    transform: translate(-100px, -100px) rotate(-45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100px, 100px) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+/* Landing Section */
+.landing {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* Consider removing overflow: hidden if it causes clipping */
+  /* overflow: hidden; */
+  position: relative;
+}
+
+.textContainer {
+  margin-bottom: 3rem;
+}
+
+.im {
+  display: block;
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.name {
+  display: block;
+  font-size: 6rem;
+  font-family: "Allura", cursive;
+}
+
+.scrollArrow {
+  font-size: 3rem;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Clouds */
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  animation: float 8s infinite ease-in-out;
+}
+
+.cloud::after,
+.cloud::before {
+  content: "";
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+
+.cloud1 {
+  width: 150px;
+  height: 80px;
+  top: 20%;
+  left: 10%;
+}
+
+.cloud1::after {
+  width: 100px;
+  height: 60px;
+  top: -30px;
+  left: 20px;
+}
+
+.cloud1::before {
+  width: 120px;
+  height: 70px;
+  top: 10px;
+  left: 80px;
+}
+
+.cloud2 {
+  width: 200px;
+  height: 100px;
+  top: 40%;
+  left: 70%;
+  animation-delay: 3s;
+}
+
+.cloud2::after {
+  width: 130px;
+  height: 90px;
+  top: -20px;
+  left: 40px;
+}
+
+.cloud2::before {
+  width: 100px;
+  height: 70px;
+  top: 30px;
+  left: 100px;
+}
+
+.cloud3 {
+  width: 120px;
+  height: 60px;
+  top: 70%;
+  left: 30%;
+  animation-delay: 5s;
+}
+
+.cloud3::after {
+  width: 90px;
+  height: 50px;
+  top: -10px;
+  left: 30px;
+}
+
+.cloud3::before {
+  width: 80px;
+  height: 40px;
+  top: 20px;
+  left: 50px;
+}
+
+@keyframes float {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Split Section */
+.split {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.professional,
+.nonprofessional {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.professional {
+  background: linear-gradient(135deg, #8e9eab, #eef2f3);
+  color: white;
+}
+
+.nonprofessional {
+  background: linear-gradient(135deg, #b2454e, #ffba93);
+  color: white;
+}
+
+.professional:hover,
+.nonprofessional:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.professional h2,
+.nonprofessional h2 {
+  font-size: 3rem;
+  color: white;
+  text-align: center;
+}

@@ -1,0 +1,438 @@
+/* src/app/professional/Professional.module.css */
+
+/* Existing Styles ... */
+
+/* Landing Page Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center vertically */
+  background: linear-gradient(135deg, #e0e0e0, #c0c0c0); /* Enhanced Silver Gradient */
+  color: #000000; /* Black text for visibility on silver */
+  text-align: center;
+  position: relative; /* For positioning child elements */
+  padding: 2rem;
+  min-height: 100vh; /* Ensure it occupies full viewport height */
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* Header Styling */
+.header {
+  font-size: 4rem;
+  font-weight: 700;
+  font-family: 'Josefin Sans', sans-serif;
+  color: #000000; /* Black color */
+}
+
+/* Content Paragraph */
+.content {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  font-family: 'Merriweather', serif;
+  line-height: 1.8;
+  color: #000000; /* Black color */
+}
+
+/* New CSS Classes for Colored Text */
+.blueText {
+  color: #1e90ff; /* Dodger Blue */
+  font-weight: bold; /* Optional: Make text bold */
+}
+
+.redText {
+  color: #ff4500; /* Orange Red */
+  font-weight: bold; /* Optional: Make text bold */
+}
+
+.purpleText {
+  color: #800080; /* Purple */
+  font-weight: bold; /* Optional: Make text bold */
+}
+
+/* Contact Button */
+.contactButton {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #6a7fdb, #889ee7);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.contactButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Back to Home Link Styled as Button */
+.backToHome {
+  position: fixed; /* Fixed to top right */
+  top: 20px;
+  right: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #5a6473;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 1001; /* Above Navigation */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Ensure block behavior for padding */
+}
+
+.backToHome:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Scroll Down Arrow */
+.scrollDown {
+  position: absolute;
+  bottom: 2rem;
+  text-align: center;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #000000; /* Black color */
+}
+
+.scrollDown i {
+  font-size: 2rem;
+  margin-top: 0.5rem;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Projects Section Styling */
+.professionalProjectsSection {
+  position: relative;
+  background: rgba(0, 0, 0, 0.8); /* Dark semi-transparent background for Projects */
+  color: #ffffff; /* White text for contrast */
+  text-align: center;
+  padding: 4rem 2rem; /* Increased padding */
+  z-index: 1;
+  min-height: 100vh; /* Full viewport height */
+  overflow: visible; /* Allow content to flow */
+  border-radius: 10px; /* Optional: Rounded corners */
+}
+
+/* Project Content Wrapper */
+.projectContent {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Allow natural flow */
+  width: 100%;
+  height: auto; /* Allow content to expand */
+}
+
+/* Projects Title */
+.projectsTitle {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Projects Subtitle */
+.projectsSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+  font-family: 'Merriweather', serif;
+  color: #cccccc; /* Slightly darker for subtitle */
+}
+
+/* Project Cards Container */
+.projectCardsContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; /* Increased gap between project cards */
+}
+
+/* Individual Project Card */
+.projectCard {
+  background: #000000; /* Black background for project cards */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Subtle white shadow */
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 90%; /* Increased width */
+  max-width: 900px; /* Increased max-width */
+  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px; /* Added padding for better spacing */
+}
+
+.projectCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2); /* Enhanced white shadow on hover */
+}
+
+/* Project Image Container */
+.projectImageContainer {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Project Image Styling */
+.projectImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 5px;
+  /* Optional: Add a subtle border or shadow */
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Project Text Container */
+.projectTextContainer {
+  width: 50%;
+  padding: 30px; /* Increased padding */
+  text-align: left;
+}
+
+/* Project Title */
+.projectTitle {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff; /* White color */
+}
+
+/* Project Description */
+.projectDescription {
+  font-family: 'Merriweather', serif;
+  font-size: 1.25rem;
+  color: #cccccc; /* Light gray for better readability */
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* External Links Styling (Optional) */
+.externalLink {
+  /* Add styles specific to external links if needed */
+}
+
+/* Internal Links Styling (Optional) */
+.internalLink {
+  /* Add styles specific to internal links if needed */
+}
+
+/* Canvas Background */
+.canvasBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Ensure it's behind all other content */
+  pointer-events: none; /* Allows clicks to pass through */
+}
+
+/* Experience Section Styling */
+.experienceSection {
+  position: relative;
+  background: #f9f9f9;
+  color: #000000; /* Black text */
+  padding: 50px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.experienceTitle {
+  font-size: 3rem;
+  margin-bottom: 3rem;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.experienceCardsContainer {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* Increased gap between experience cards */
+  align-items: center; /* Center the cards */
+}
+
+.experienceCard {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 800px; /* Adjust as needed */
+  display: flex;
+  flex-direction: column; /* Stack image and text vertically */
+  align-items: center; /* Center content horizontally */
+  text-align: left;
+}
+
+.experienceCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.experienceImageContainer {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.experienceImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 10px 10px 0 0; /* Rounded top corners */
+}
+
+.experienceTextContainer {
+  width: 100%;
+  padding: 20px;
+}
+
+/* Experience Description as List */
+.experienceDescription {
+  font-family: 'Merriweather', serif;
+  font-size: 1rem;
+  color: #333333;
+  line-height: 1.5;
+  padding-left: 1.5rem; /* Indent for bullet points */
+}
+
+.experienceDescription li {
+  margin-bottom: 0.75rem;
+  list-style-type: disc; /* Standard bullet points */
+}
+
+/* Optional: Style for links within list items */
+.experienceDescription a {
+  color: #6a7fdb; /* Primary color for links */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.experienceDescription a:hover {
+  text-decoration: underline;
+}
+
+.experienceTitleText {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1f2937; /* Dark color for titles */
+}
+
+.experienceCompany {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555555;
+  margin-bottom: 0.5rem;
+}
+
+.experienceDetails {
+  font-size: 0.95rem;
+  color: #777777;
+  margin-bottom: 1rem;
+}
+
+/* Assist Link Styling */
+.assistLink {
+  color: #6a7fdb; /* Primary color for links */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.assistLink:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design for Experience Section */
+@media (max-width: 768px) {
+  .experienceCardsContainer {
+    width: 95%;
+  }
+
+  .experienceCard {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .experienceImage {
+    border-radius: 10px 10px 0 0;
+  }
+
+  .experienceTextContainer {
+    padding: 15px;
+  }
+
+  .projectCard {
+    flex-direction: column;
+  }
+
+  .projectImageContainer,
+  .projectTextContainer {
+    width: 100%;
+    padding: 0;
+  }
+
+  .projectTextContainer {
+    padding: 20px 0;
+  }
+
+  /* Adjust colored text sizes for smaller screens */
+  .blueText,
+  .redText,
+  .purpleText {
+    font-size: 1.2rem;
+  }
+
+  /* Adjust Social Media Icons */
+  .socialMediaContainer {
+    gap: 1rem;
+  }
+
+  .socialLink {
+    font-size: 1.5rem;
+  }
+}

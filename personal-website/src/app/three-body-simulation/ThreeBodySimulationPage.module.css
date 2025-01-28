@@ -1,0 +1,278 @@
+/* src/app/three-body-simulation/ThreeBodySimulationPage.module.css */
+
+.backButton {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #5a6473;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 1001; /* Above Navigation */
+}
+
+.backButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.simulationContainer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full viewport height */
+  color: #ffffff; /* White text for visibility */
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Pop-Up Modal */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1002; /* Above all other elements */
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+.popup.fadeOut {
+  animation: fadeOut 0.5s forwards;
+}
+
+.popupContent {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideIn 0.5s forwards;
+}
+
+.popup.fadeOut .popupContent {
+  animation: slideOut 0.5s forwards;
+}
+
+.popupTitle {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #333333;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.popupDescription {
+  font-size: 1.25rem;
+  color: #555555;
+  font-family: 'Merriweather', serif;
+  margin-bottom: 1.5rem;
+}
+
+.popupCloseButton {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #333333;
+  cursor: pointer;
+}
+
+.popupCloseButton:hover {
+  color: #ff6f61;
+}
+
+/* Simulation Controls */
+.controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(50, 50, 50, 0.85); /* Dark gray background */
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1001; /* Above the canvas */
+  max-width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.controls.hidden {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.controls.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.controls h2 {
+  margin-bottom: 15px;
+  font-family: 'Josefin Sans', sans-serif;
+  color: #ffffff; /* White text */
+}
+
+.controlGroup {
+  margin-bottom: 20px;
+}
+
+.controlGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: 'Merriweather', serif;
+  font-weight: 600;
+  color: #ffffff; /* White text */
+}
+
+.controlGroup input[type="range"] {
+  width: 100%;
+}
+
+.resetButton {
+  padding: 10px 15px;
+  background: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.resetButton:hover {
+  background: #e55b50;
+}
+
+/* Toggle Controls Button */
+.toggleControlsButton {
+  position: fixed;
+  bottom: 20px;
+  right: 340px; /* Adjust based on controls width */
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #5a6473;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1001; /* Above the canvas */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.toggleControlsButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Simulation Text */
+.title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.description {
+  font-size: 1.5rem;
+  font-family: 'Merriweather', serif;
+  color: #cccccc;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .simulationContainer {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .description {
+    font-size: 1.25rem;
+  }
+
+  .backButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .controls {
+    max-width: 250px;
+  }
+
+  .toggleControlsButton {
+    right: 270px; /* Adjust based on new controls width */
+  }
+
+  /* Adjust Pop-Up Modal for smaller screens */
+  .popupContent {
+    padding: 1.5rem;
+  }
+
+  .popupTitle {
+    font-size: 2rem;
+  }
+
+  .popupDescription {
+    font-size: 1rem;
+  }
+}

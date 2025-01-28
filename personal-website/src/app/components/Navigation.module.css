@@ -1,0 +1,50 @@
+/* src/app/components/Navigation.module.css */
+
+.navbar {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.5s ease-in-out; /* Smooth transition */
+}
+
+.navbar.visible {
+  opacity: 1; /* Visible when showNav is true */
+}
+
+.navbar.hidden {
+  opacity: 0; /* Hidden when showNav is false */
+}
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.navLink {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  display: block;
+  margin-top: 5px;
+  left: 0;
+  background: var(--color-primary, #6a7fdb); /* Fallback color */
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
