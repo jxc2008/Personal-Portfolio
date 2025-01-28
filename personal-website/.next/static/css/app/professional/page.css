@@ -1,0 +1,534 @@
+/*!************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/Navigation.module.css ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************/
+/* src/app/components/Navigation.module.css */
+
+.Navigation_navbar__4_Rwr {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.5s ease-in-out; /* Smooth transition */
+}
+
+.Navigation_navbar__4_Rwr.Navigation_visible__pp5Pg {
+  opacity: 1; /* Visible when showNav is true */
+}
+
+.Navigation_navbar__4_Rwr.Navigation_hidden__Oxtip {
+  opacity: 0; /* Hidden when showNav is false */
+}
+
+.Navigation_navLinks__T8Ifl {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.Navigation_navLink__5YM_n {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.Navigation_navLink__5YM_n::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  display: block;
+  margin-top: 5px;
+  left: 0;
+  background: var(--color-primary, #6a7fdb); /* Fallback color */
+  transition: width 0.3s ease;
+}
+
+.Navigation_navLink__5YM_n:hover::after {
+  width: 100%;
+}
+
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/ThreeBodySimulation.module.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************/
+/* src/components/ThreeBodySimulation.module.css */
+
+.ThreeBodySimulation_canvas__qVq2v {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Ensure it's behind all other content */
+  pointer-events: none; /* Allows clicks to pass through */
+}
+
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/SocialMediaLinks.module.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+/* src/app/components/SocialMediaLinks.module.css */
+
+.SocialMediaLinks_socialMediaContainer__m5D78 {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .SocialMediaLinks_socialLink___bumI {
+    color: #6a7fdb; /* Primary color */
+    font-size: 2rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .SocialMediaLinks_socialLink___bumI:hover {
+    color: #889ee7; /* Hover color */
+    transform: scale(1.1);
+  }
+  
+/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/professional/Professional.module.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************/
+/* src/app/professional/Professional.module.css */
+
+/* Existing Styles ... */
+
+/* Landing Page Container */
+.Professional_container__IpWOV {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center vertically */
+  background: linear-gradient(135deg, #e0e0e0, #c0c0c0); /* Enhanced Silver Gradient */
+  color: #000000; /* Black text for visibility on silver */
+  text-align: center;
+  position: relative; /* For positioning child elements */
+  padding: 2rem;
+  min-height: 100vh; /* Ensure it occupies full viewport height */
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* Header Styling */
+.Professional_header__rmebR {
+  font-size: 4rem;
+  font-weight: 700;
+  font-family: 'Josefin Sans', sans-serif;
+  color: #000000; /* Black color */
+}
+
+/* Content Paragraph */
+.Professional_content__Tm5Au {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  font-family: 'Merriweather', serif;
+  line-height: 1.8;
+  color: #000000; /* Black color */
+}
+
+/* New CSS Classes for Colored Text */
+.Professional_blueText__wxV34 {
+  color: #1e90ff; /* Dodger Blue */
+  font-weight: bold; /* Optional: Make text bold */
+}
+
+.Professional_redText__1Or93 {
+  color: #ff4500; /* Orange Red */
+  font-weight: bold; /* Optional: Make text bold */
+}
+
+.Professional_purpleText__4F0Gi {
+  color: #800080; /* Purple */
+  font-weight: bold; /* Optional: Make text bold */
+}
+
+/* Contact Button */
+.Professional_contactButton__2MKdo {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #6a7fdb, #889ee7);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.Professional_contactButton__2MKdo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Back to Home Link Styled as Button */
+.Professional_backToHome___UNd4 {
+  position: fixed; /* Fixed to top right */
+  top: 20px;
+  right: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #5a6473;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 1001; /* Above Navigation */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Ensure block behavior for padding */
+}
+
+.Professional_backToHome___UNd4:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Scroll Down Arrow */
+.Professional_scrollDown__fAKCa {
+  position: absolute;
+  bottom: 2rem;
+  text-align: center;
+  animation: Professional_bounce__6jAWU 2s infinite;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #000000; /* Black color */
+}
+
+.Professional_scrollDown__fAKCa i {
+  font-size: 2rem;
+  margin-top: 0.5rem;
+}
+
+@keyframes Professional_bounce__6jAWU {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Projects Section Styling */
+.Professional_professionalProjectsSection__HwhN7 {
+  position: relative;
+  background: rgba(0, 0, 0, 0.8); /* Dark semi-transparent background for Projects */
+  color: #ffffff; /* White text for contrast */
+  text-align: center;
+  padding: 4rem 2rem; /* Increased padding */
+  z-index: 1;
+  min-height: 100vh; /* Full viewport height */
+  overflow: visible; /* Allow content to flow */
+  border-radius: 10px; /* Optional: Rounded corners */
+}
+
+/* Project Content Wrapper */
+.Professional_projectContent__N4ZoX {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Allow natural flow */
+  width: 100%;
+  height: auto; /* Allow content to expand */
+}
+
+/* Projects Title */
+.Professional_projectsTitle__RsLui {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Projects Subtitle */
+.Professional_projectsSubtitle__l44p6 {
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+  font-family: 'Merriweather', serif;
+  color: #cccccc; /* Slightly darker for subtitle */
+}
+
+/* Project Cards Container */
+.Professional_projectCardsContainer__YurYM {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; /* Increased gap between project cards */
+}
+
+/* Individual Project Card */
+.Professional_projectCard__4nxE_ {
+  background: #000000; /* Black background for project cards */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Subtle white shadow */
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 90%; /* Increased width */
+  max-width: 900px; /* Increased max-width */
+  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px; /* Added padding for better spacing */
+}
+
+.Professional_projectCard__4nxE_:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2); /* Enhanced white shadow on hover */
+}
+
+/* Project Image Container */
+.Professional_projectImageContainer__fHe5I {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Project Image Styling */
+.Professional_projectImage__hGH8h {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 5px;
+  /* Optional: Add a subtle border or shadow */
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Project Text Container */
+.Professional_projectTextContainer__0A6kS {
+  width: 50%;
+  padding: 30px; /* Increased padding */
+  text-align: left;
+}
+
+/* Project Title */
+.Professional_projectTitle__RfdEx {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff; /* White color */
+}
+
+/* Project Description */
+.Professional_projectDescription__mbaNb {
+  font-family: 'Merriweather', serif;
+  font-size: 1.25rem;
+  color: #cccccc; /* Light gray for better readability */
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* External Links Styling (Optional) */
+.Professional_externalLink__nWcQw {
+  /* Add styles specific to external links if needed */
+}
+
+/* Internal Links Styling (Optional) */
+.Professional_internalLink__qWsL4 {
+  /* Add styles specific to internal links if needed */
+}
+
+/* Canvas Background */
+.Professional_canvasBackground__Sqa_f {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Ensure it's behind all other content */
+  pointer-events: none; /* Allows clicks to pass through */
+}
+
+/* Experience Section Styling */
+.Professional_experienceSection__Q87zx {
+  position: relative;
+  background: #f9f9f9;
+  color: #000000; /* Black text */
+  padding: 50px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.Professional_experienceTitle__C1NO5 {
+  font-size: 3rem;
+  margin-bottom: 3rem;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.Professional_experienceCardsContainer__yj2yX {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* Increased gap between experience cards */
+  align-items: center; /* Center the cards */
+}
+
+.Professional_experienceCard__QQlnf {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 800px; /* Adjust as needed */
+  display: flex;
+  flex-direction: column; /* Stack image and text vertically */
+  align-items: center; /* Center content horizontally */
+  text-align: left;
+}
+
+.Professional_experienceCard__QQlnf:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.Professional_experienceImageContainer__xFa2e {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Professional_experienceImage__kegWN {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 10px 10px 0 0; /* Rounded top corners */
+}
+
+.Professional_experienceTextContainer__fZ8wn {
+  width: 100%;
+  padding: 20px;
+}
+
+/* Experience Description as List */
+.Professional_experienceDescription__AVc0i {
+  font-family: 'Merriweather', serif;
+  font-size: 1rem;
+  color: #333333;
+  line-height: 1.5;
+  padding-left: 1.5rem; /* Indent for bullet points */
+}
+
+.Professional_experienceDescription__AVc0i li {
+  margin-bottom: 0.75rem;
+  list-style-type: disc; /* Standard bullet points */
+}
+
+/* Optional: Style for links within list items */
+.Professional_experienceDescription__AVc0i a {
+  color: #6a7fdb; /* Primary color for links */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.Professional_experienceDescription__AVc0i a:hover {
+  text-decoration: underline;
+}
+
+.Professional_experienceTitleText__s8J0S {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1f2937; /* Dark color for titles */
+}
+
+.Professional_experienceCompany__6Vqwv {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555555;
+  margin-bottom: 0.5rem;
+}
+
+.Professional_experienceDetails__dPNE9 {
+  font-size: 0.95rem;
+  color: #777777;
+  margin-bottom: 1rem;
+}
+
+/* Assist Link Styling */
+.Professional_assistLink__S1UtZ {
+  color: #6a7fdb; /* Primary color for links */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.Professional_assistLink__S1UtZ:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design for Experience Section */
+@media (max-width: 768px) {
+  .Professional_experienceCardsContainer__yj2yX {
+    width: 95%;
+  }
+
+  .Professional_experienceCard__QQlnf {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .Professional_experienceImage__kegWN {
+    border-radius: 10px 10px 0 0;
+  }
+
+  .Professional_experienceTextContainer__fZ8wn {
+    padding: 15px;
+  }
+
+  .Professional_projectCard__4nxE_ {
+    flex-direction: column;
+  }
+
+  .Professional_projectImageContainer__fHe5I,
+  .Professional_projectTextContainer__0A6kS {
+    width: 100%;
+    padding: 0;
+  }
+
+  .Professional_projectTextContainer__0A6kS {
+    padding: 20px 0;
+  }
+
+  /* Adjust colored text sizes for smaller screens */
+  .Professional_blueText__wxV34,
+  .Professional_redText__1Or93,
+  .Professional_purpleText__4F0Gi {
+    font-size: 1.2rem;
+  }
+
+  /* Adjust Social Media Icons */
+  .Professional_socialMediaContainer__8KIoW {
+    gap: 1rem;
+  }
+
+  .Professional_socialLink__ls3T0 {
+    font-size: 1.5rem;
+  }
+}
+

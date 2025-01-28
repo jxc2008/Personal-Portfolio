@@ -1,5 +1,3 @@
-// src/app/page.tsx
-
 "use client";
 
 import { useState } from "react";
@@ -13,23 +11,33 @@ export default function Home() {
 
   return (
     <div className={`${styles.container} ${darkMode ? styles.dark : ""}`}>
-      {/* Dark Mode Toggle */}
-      <button
-        className={styles.darkModeToggle}
-        onClick={toggleDarkMode}
-        aria-label="Toggle Dark Mode"
-      >
-        {darkMode ? "☀️" : "🌙"}
-      </button>
+      {/* Dark Mode Toggle via Sun/Moon */}
+      {!darkMode ? (
+        <div
+          className={styles.sun}
+          onClick={toggleDarkMode}
+          aria-label="Switch to Dark Mode"
+          role="button"
+          tabIndex={0}
+          onKeyPress={(e) => {
+            if (e.key === "Enter" || e.key === " ") toggleDarkMode();
+          }}
+        ></div>
+      ) : (
+        <div
+          className={styles.moon}
+          onClick={toggleDarkMode}
+          aria-label="Switch to Light Mode"
+          role="button"
+          tabIndex={0}
+          onKeyPress={(e) => {
+            if (e.key === "Enter" || e.key === " ") toggleDarkMode();
+          }}
+        ></div>
+      )}
 
       {/* Landing Section */}
       <section className={styles.landing}>
-        {/* Sun (Light Mode) */}
-        {!darkMode && <div className={styles.sun}></div>}
-
-        {/* Crescent Moon (Dark Mode) */}
-        {darkMode && <div className={styles.moon}></div>}
-
         {/* Stars (only in dark mode) */}
         {darkMode && (
           <>
@@ -60,6 +68,13 @@ export default function Home() {
             window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
           }
           aria-label="Scroll Down"
+          role="button"
+          tabIndex={0}
+          onKeyPress={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+            }
+          }}
         >
           ↓
         </div>
@@ -67,16 +82,23 @@ export default function Home() {
 
       {/* Split Section: Projects and Passions */}
       <section className={styles.split}>
-        <div className={styles.professional}>
-          <Link href="/professional">
-            <h2 className="projects">Projects</h2>
-          </Link>
-        </div>
-        <div className={styles.nonprofessional}>
-          <Link href="/nonprofessional">
-            <h2 className="passions">Passions</h2>
-          </Link>
-        </div>
+        {/* Projects Panel */}
+        <Link
+          href="/professional"
+          className={`${styles.professional} ${styles.panelLink}`}
+          aria-label="Go to Projects"
+        >
+          <h2 className="projects">Projects</h2>
+        </Link>
+
+        {/* Passions Panel */}
+        <Link
+          href="/nonprofessional"
+          className={`${styles.nonprofessional} ${styles.panelLink}`}
+          aria-label="Go to Passions"
+        >
+          <h2 className="passions">Passions</h2>
+        </Link>
       </section>
     </div>
   );

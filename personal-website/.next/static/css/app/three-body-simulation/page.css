@@ -1,0 +1,351 @@
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/ThreeBodySimulation.module.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************/
+/* src/components/ThreeBodySimulation.module.css */
+
+.ThreeBodySimulation_canvas__qVq2v {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Ensure it's behind all other content */
+  pointer-events: none; /* Allows clicks to pass through */
+}
+
+/*!************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/Navigation.module.css ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************/
+/* src/app/components/Navigation.module.css */
+
+.Navigation_navbar__4_Rwr {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.5s ease-in-out; /* Smooth transition */
+}
+
+.Navigation_navbar__4_Rwr.Navigation_visible__pp5Pg {
+  opacity: 1; /* Visible when showNav is true */
+}
+
+.Navigation_navbar__4_Rwr.Navigation_hidden__Oxtip {
+  opacity: 0; /* Hidden when showNav is false */
+}
+
+.Navigation_navLinks__T8Ifl {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.Navigation_navLink__5YM_n {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.Navigation_navLink__5YM_n::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  display: block;
+  margin-top: 5px;
+  left: 0;
+  background: var(--color-primary, #6a7fdb); /* Fallback color */
+  transition: width 0.3s ease;
+}
+
+.Navigation_navLink__5YM_n:hover::after {
+  width: 100%;
+}
+
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/three-body-simulation/ThreeBodySimulationPage.module.css ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* src/app/three-body-simulation/ThreeBodySimulationPage.module.css */
+
+.ThreeBodySimulationPage_backButton__p6WpS {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #5a6473;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 1001; /* Above Navigation */
+}
+
+.ThreeBodySimulationPage_backButton__p6WpS:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ThreeBodySimulationPage_simulationContainer__Pih51 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full viewport height */
+  color: #ffffff; /* White text for visibility */
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Pop-Up Modal */
+.ThreeBodySimulationPage_popup__XMMpY {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1002; /* Above all other elements */
+  opacity: 0;
+  animation: ThreeBodySimulationPage_fadeIn__SiEj8 0.5s forwards;
+}
+
+.ThreeBodySimulationPage_popup__XMMpY.ThreeBodySimulationPage_fadeOut__mxIu_ {
+  animation: ThreeBodySimulationPage_fadeOut__mxIu_ 0.5s forwards;
+}
+
+.ThreeBodySimulationPage_popupContent__cgoJi {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: ThreeBodySimulationPage_slideIn__xx7gq 0.5s forwards;
+}
+
+.ThreeBodySimulationPage_popup__XMMpY.ThreeBodySimulationPage_fadeOut__mxIu_ .ThreeBodySimulationPage_popupContent__cgoJi {
+  animation: ThreeBodySimulationPage_slideOut__6o2WU 0.5s forwards;
+}
+
+.ThreeBodySimulationPage_popupTitle__yyBBt {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #333333;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.ThreeBodySimulationPage_popupDescription__p9pX5 {
+  font-size: 1.25rem;
+  color: #555555;
+  font-family: 'Merriweather', serif;
+  margin-bottom: 1.5rem;
+}
+
+.ThreeBodySimulationPage_popupCloseButton__yvHM4 {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #333333;
+  cursor: pointer;
+}
+
+.ThreeBodySimulationPage_popupCloseButton__yvHM4:hover {
+  color: #ff6f61;
+}
+
+/* Simulation Controls */
+.ThreeBodySimulationPage_controls__ra5Mf {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(50, 50, 50, 0.85); /* Dark gray background */
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1001; /* Above the canvas */
+  max-width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.ThreeBodySimulationPage_controls__ra5Mf.ThreeBodySimulationPage_hidden__7F4U_ {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.ThreeBodySimulationPage_controls__ra5Mf.ThreeBodySimulationPage_visible__N3rh3 {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.ThreeBodySimulationPage_controls__ra5Mf h2 {
+  margin-bottom: 15px;
+  font-family: 'Josefin Sans', sans-serif;
+  color: #ffffff; /* White text */
+}
+
+.ThreeBodySimulationPage_controlGroup__bciz_ {
+  margin-bottom: 20px;
+}
+
+.ThreeBodySimulationPage_controlGroup__bciz_ label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: 'Merriweather', serif;
+  font-weight: 600;
+  color: #ffffff; /* White text */
+}
+
+.ThreeBodySimulationPage_controlGroup__bciz_ input[type="range"] {
+  width: 100%;
+}
+
+.ThreeBodySimulationPage_resetButton__yjB09 {
+  padding: 10px 15px;
+  background: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.ThreeBodySimulationPage_resetButton__yjB09:hover {
+  background: #e55b50;
+}
+
+/* Toggle Controls Button */
+.ThreeBodySimulationPage_toggleControlsButton__OI1J4 {
+  position: fixed;
+  bottom: 20px;
+  right: 340px; /* Adjust based on controls width */
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #5a6473;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1001; /* Above the canvas */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ThreeBodySimulationPage_toggleControlsButton__OI1J4:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Simulation Text */
+.ThreeBodySimulationPage_title__YcPnF {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.ThreeBodySimulationPage_description__ue8p7 {
+  font-size: 1.5rem;
+  font-family: 'Merriweather', serif;
+  color: #cccccc;
+}
+
+/* Animations */
+@keyframes ThreeBodySimulationPage_fadeIn__SiEj8 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ThreeBodySimulationPage_fadeOut__mxIu_ {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes ThreeBodySimulationPage_slideIn__xx7gq {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ThreeBodySimulationPage_slideOut__6o2WU {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ThreeBodySimulationPage_simulationContainer__Pih51 {
+    padding: 1rem;
+  }
+
+  .ThreeBodySimulationPage_title__YcPnF {
+    font-size: 2.5rem;
+  }
+
+  .ThreeBodySimulationPage_description__ue8p7 {
+    font-size: 1.25rem;
+  }
+
+  .ThreeBodySimulationPage_backButton__p6WpS {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .ThreeBodySimulationPage_controls__ra5Mf {
+    max-width: 250px;
+  }
+
+  .ThreeBodySimulationPage_toggleControlsButton__OI1J4 {
+    right: 270px; /* Adjust based on new controls width */
+  }
+
+  /* Adjust Pop-Up Modal for smaller screens */
+  .ThreeBodySimulationPage_popupContent__cgoJi {
+    padding: 1.5rem;
+  }
+
+  .ThreeBodySimulationPage_popupTitle__yyBBt {
+    font-size: 2rem;
+  }
+
+  .ThreeBodySimulationPage_popupDescription__p9pX5 {
+    font-size: 1rem;
+  }
+}
+

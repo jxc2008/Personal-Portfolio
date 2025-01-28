@@ -1,0 +1,329 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/page.module.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************/
+.page_container__aoG4z {
+  min-height: 200vh; /* Ensures space for both landing and split sections */
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
+  /* Removed overflow: hidden to prevent clipping content and extra scrollbar */
+  /* overflow: hidden; */
+}
+
+/* Dark Mode Styles */
+.page_container__aoG4z.page_dark__Y3IA9 {
+  background: linear-gradient(135deg, #1a202c, #2d3748); /* Dark Blue Gradient */
+  color: white;
+}
+
+/* Sun Styles */
+.page_sun__GoW9I {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #ffdd33, #ffaa00);
+  border-radius: 50%;
+  box-shadow: 0 0 50px 20px rgba(255, 221, 51, 0.5);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1000;
+}
+
+/* Moon Styles */
+.page_moon__S7hJ4 {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, #f0e68c, #c9a602);
+  border-radius: 50%;
+  box-shadow: 0 0 20px 5px rgba(255, 255, 204, 0.8);
+  -webkit-clip-path: circle(50% at 50% 50%) inset(20% 10% 0% 10%);
+          clip-path: circle(50% at 50% 50%) inset(20% 10% 0% 10%);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1000;
+}
+
+/* Interactive Effect for Sun */
+.page_sun__GoW9I:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 60px 25px rgba(255, 221, 51, 0.6);
+}
+
+/* Interactive Effect for Moon */
+.page_moon__S7hJ4:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px 10px rgba(255, 255, 204, 0.9);
+}
+
+/* Stars */
+.page_star__v4NEN {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.page_star1__5nOKF {
+  width: 5px;
+  height: 5px;
+  top: 15%;
+  left: 25%;
+}
+
+.page_star2__k_h3m {
+  width: 7px;
+  height: 7px;
+  top: 40%;
+  left: 70%;
+}
+
+.page_star3__uZjxA {
+  width: 4px;
+  height: 4px;
+  top: 65%;
+  left: 45%;
+}
+
+/* Shooting Star */
+.page_shootingStar__k2cg2 {
+  position: absolute;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(to bottom, white, transparent);
+  top: 20%;
+  left: 80%;
+  transform: rotate(-45deg);
+  animation: page_shooting__gVo_3 5s infinite ease-in-out;
+  opacity: 0;
+}
+
+@keyframes page_shooting__gVo_3 {
+  0% {
+    transform: translate(100px, 100px) rotate(-45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-100px, -100px) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+/* Landing Section */
+.page_landing__vDqfd {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* Consider removing overflow: hidden if it causes clipping */
+  /* overflow: hidden; */
+  position: relative;
+}
+
+.page_textContainer__g1_WS {
+  margin-bottom: 3rem;
+}
+
+.page_im__hoNzw {
+  display: block;
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.page_name__eOmhd {
+  display: block;
+  font-size: 8rem; /* Increased from 6rem to 8rem */
+  font-family: "Allura", cursive;
+  transition: transform 0.3s ease;
+}
+
+.page_name__eOmhd:hover {
+  transform: scale(1.05);
+}
+
+.page_scrollArrow__7WaKn {
+  font-size: 3rem;
+  animation: page_bounce__Y_Fqi 2s infinite;
+  cursor: pointer;
+}
+
+@keyframes page_bounce__Y_Fqi {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Clouds */
+.page_cloud__qsQq7 {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  animation: page_float__P1Jpw 20s infinite ease-in-out;
+}
+
+.page_cloud__qsQq7::after,
+.page_cloud__qsQq7::before {
+  content: "";
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+
+.page_cloud1__1ax1r {
+  width: 150px;
+  height: 80px;
+  top: 20%;
+  left: 10%;
+}
+
+.page_cloud1__1ax1r::after {
+  width: 100px;
+  height: 60px;
+  top: -30px;
+  left: 20px;
+}
+
+.page_cloud1__1ax1r::before {
+  width: 120px;
+  height: 70px;
+  top: 10px;
+  left: 80px;
+}
+
+.page_cloud2__0ihZ5 {
+  width: 200px;
+  height: 100px;
+  top: 40%;
+  left: 70%;
+  animation-delay: 5s;
+}
+
+.page_cloud2__0ihZ5::after {
+  width: 130px;
+  height: 90px;
+  top: -20px;
+  left: 40px;
+}
+
+.page_cloud2__0ihZ5::before {
+  width: 100px;
+  height: 70px;
+  top: 30px;
+  left: 100px;
+}
+
+.page_cloud3___RCEn {
+  width: 120px;
+  height: 60px;
+  top: 70%;
+  left: 30%;
+  animation-delay: 10s;
+}
+
+.page_cloud3___RCEn::after {
+  width: 90px;
+  height: 50px;
+  top: -10px;
+  left: 30px;
+}
+
+.page_cloud3___RCEn::before {
+  width: 80px;
+  height: 40px;
+  top: 20px;
+  left: 50px;
+}
+
+@keyframes page_float__P1Jpw {
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    transform: translateX(20px) scale(1.05);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Split Section */
+.page_split__GZfzM {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Projects Panel */
+.page_professional___sS3g {
+  background: linear-gradient(135deg, #8e9eab, #eef2f3);
+  color: white;
+}
+
+/* Passions Panel */
+.page_nonprofessional__UIDXI {
+  background: linear-gradient(135deg, #b2454e, #ffba93);
+  color: white;
+}
+
+/* Hover Effects for Panels */
+.page_professional___sS3g:hover,
+.page_nonprofessional__UIDXI:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out; /* Increased duration and eased transition */
+}
+
+/* Make Entire Panel Clickable */
+.page_panelLink__eJ0Od {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none; /* Remove underline from links */
+  color: inherit; /* Inherit text color */
+  cursor: pointer; /* Indicate that the panel is clickable */
+  /* Removed background overlay on hover */
+}
+
+/* Ensure h2 is centered */
+.page_panelLink__eJ0Od h2 {
+  font-size: 3rem;
+  color: inherit;
+  text-align: center;
+}
+
+/* Remove Orange Focus Outline */
+.page_panelLink__eJ0Od:focus,
+.page_sun__GoW9I:focus,
+.page_moon__S7hJ4:focus,
+.page_scrollArrow__7WaKn:focus {
+  outline: none;
+}
+
+/* Optional: Add custom focus styles for better accessibility */
+/* 
+.panelLink:focus,
+.sun:focus,
+.moon:focus,
+.scrollArrow:focus {
+  box-shadow: 0 0 0 3px #ffaa00;
+}
+*/
+
