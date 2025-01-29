@@ -1,6 +1,4 @@
 {
   "/professional/page": "app/professional/page.js",
-  "/three-body-simulation/page": "app/three-body-simulation/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }
