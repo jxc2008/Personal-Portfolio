@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import styles from "./NonProfessional.module.css";
 
@@ -16,12 +14,7 @@ export default function NonProfessional() {
           Welcome to the non-professional side! Here, you’ll find my hobbies,
           music, creative writing, and other personal interests.
         </p>
-        <button
-          className={styles.contactButton}
-          onClick={() => alert("Contact form coming soon!")}
-        >
-          Contact Me
-        </button>
+        <a href="mailto:joseph.x.cheng@gmail.com" className={styles.contactButton}>Contact Me</a>
       </div>
     </div>
   );

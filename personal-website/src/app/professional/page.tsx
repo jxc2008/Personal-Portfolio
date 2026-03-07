@@ -125,7 +125,7 @@ export default function Professional() {
             I study{" "}
             <span className={styles.blueText}>Computer Science</span> and{" "}
             <span className={styles.redText}>Mathematics</span> at{" "}
-            <span className={styles.purpleText}>New York University</span>. Here you'll find my projects, experience, and other professional achievements.
+            <span className={styles.purpleText}>New York University</span>. Here you&apos;ll find my projects, experience, and other professional achievements.
           </p>
           <button
             className={styles.contactButton}
@@ -324,7 +324,7 @@ export default function Professional() {
                   Networked with venues in the New York City area to set up meetings and build partnerships.
                 </li>
                 <li>
-                  Produced short films and skits for Intoit's social media, amassing 175K views and 18.7K likes.
+                  Produced short films and skits for Intoit&apos;s social media, amassing 175K views and 18.7K likes.
                 </li>
               </ul>
             </div>
