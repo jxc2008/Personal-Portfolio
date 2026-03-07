@@ -5,13 +5,12 @@
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import NavbarContext from "./components/NavbarContext";
+import { NavbarProvider } from "./components/NavbarContext";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [isDark, setIsDark] = useState(true); // Initialize with dark theme
 
   useEffect(() => {
     if (pathname === "/") {
@@ -59,11 +58,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <NavbarContext.Provider value={{ isDark, setIsDark }}>
+        <NavbarProvider>
           <Navbar />
           <main>{children}</main>
           <Footer />
-        </NavbarContext.Provider>
+        </NavbarProvider>
       </body>
     </html>
   );
