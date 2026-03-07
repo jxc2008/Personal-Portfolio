@@ -12,6 +12,19 @@
   --color-text: #000000; /* Set to black for clarity */
   --color-background: #ffffff;
   --color-card-background: #f3f4f6;
+  --bg: #f0f4ff;
+  --text: #1a1a2e;
+  --card-bg: #ffffff;
+  --border: rgba(0,0,0,0.1);
+  --accent: #6a7fdb;
+}
+
+[data-theme="dark"] {
+  --bg: #0d0d1a;
+  --text: #e8eaf6;
+  --card-bg: #1a1a2e;
+  --border: rgba(255,255,255,0.1);
+  --accent: #818cf8;
 }
 
 /* Reset and Base Styles */
