@@ -100,6 +100,13 @@ export default function Professional() {
     // Add more projects as needed
   ];
 
+  const skills: Record<string, string[]> = {
+    Languages: ["Python", "TypeScript", "JavaScript", "C++", "Java"],
+    Frameworks: ["React", "Next.js", "Node.js"],
+    "ML & Data": ["PyTorch", "NumPy", "Pandas", "SQL"],
+    Tools: ["Git", "LaTeX", "Figma", "Linux"],
+  };
+
   return (
     <NavbarContext.Provider value={{ isDark, setIsDark }}>
       {/* Canvas Background */}
@@ -149,6 +156,23 @@ export default function Professional() {
           <p>Scroll Down</p>
           <i>↓</i>
         </div>
+      </section>
+
+      {/* Skills Section */}
+      <section className={styles.skillsSection}>
+        <h2 className={styles.projectsTitle}>Skills</h2>
+        {Object.entries(skills).map(([category, items]) => (
+          <div key={category} className={styles.skillGroup}>
+            <span className={styles.skillCategory}>{category}</span>
+            <div className={styles.skillTags}>
+              {items.map((skill) => (
+                <span key={skill} className={styles.skillTag}>
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
       </section>
 
       {/* Projects Section */}

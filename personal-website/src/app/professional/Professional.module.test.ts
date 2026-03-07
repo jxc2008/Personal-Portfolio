@@ -39,3 +39,26 @@ describe("Professional.module.css uses CSS custom properties for theming", () =>
     expect(css).toMatch(/var\(--border\)/);
   });
 });
+
+describe("Professional.module.css - skills section styles", () => {
+  it("defines .skillsSection with correct padding and max-width", () => {
+    expect(css).toMatch(/\.skillsSection\s*\{[^}]*padding:\s*4rem\s+2rem/);
+    expect(css).toMatch(/\.skillsSection\s*\{[^}]*max-width:\s*1200px/);
+  });
+
+  it("defines .skillGroup with flex layout", () => {
+    expect(css).toMatch(/\.skillGroup\s*\{[^}]*display:\s*flex/);
+  });
+
+  it("defines .skillTag with pill shape (border-radius: 999px)", () => {
+    expect(css).toMatch(/\.skillTag\s*\{[^}]*border-radius:\s*999px/);
+  });
+
+  it("defines .skillTag hover using var(--accent)", () => {
+    expect(css).toMatch(/\.skillTag:hover\s*\{[^}]*background:\s*var\(--accent\)/);
+  });
+
+  it("uses var(--text) for skillCategory color", () => {
+    expect(css).toMatch(/\.skillCategory\s*\{[^}]*color:\s*var\(--text\)/);
+  });
+});

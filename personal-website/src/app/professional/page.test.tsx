@@ -17,6 +17,45 @@ jest.mock("next/link", () => ({
   ),
 }));
 
+describe("Professional page - skills section", () => {
+  it("renders the Skills heading", () => {
+    render(<Professional />);
+    expect(screen.getByText("Skills")).toBeInTheDocument();
+  });
+
+  it("renders all skill categories", () => {
+    render(<Professional />);
+    expect(screen.getByText("Languages")).toBeInTheDocument();
+    expect(screen.getByText("Frameworks")).toBeInTheDocument();
+    expect(screen.getByText("ML & Data")).toBeInTheDocument();
+    expect(screen.getByText("Tools")).toBeInTheDocument();
+  });
+
+  it("renders all skill tags", () => {
+    render(<Professional />);
+    const expectedSkills = [
+      "Python", "TypeScript", "JavaScript", "C++", "Java",
+      "React", "Next.js", "Node.js",
+      "PyTorch", "NumPy", "Pandas", "SQL",
+      "Git", "LaTeX", "Figma", "Linux",
+    ];
+    for (const skill of expectedSkills) {
+      expect(screen.getByText(skill)).toBeInTheDocument();
+    }
+  });
+
+  it("renders skills section before projects section", () => {
+    const { container } = render(<Professional />);
+    const sections = container.querySelectorAll("section");
+    const sectionIds = Array.from(sections).map((s) => s.id || s.className);
+    const skillsIndex = sectionIds.findIndex((id) => id.includes("skillsSection"));
+    const projectsIndex = sectionIds.findIndex((id) => id === "projectsSection");
+    expect(skillsIndex).toBeGreaterThan(-1);
+    expect(projectsIndex).toBeGreaterThan(-1);
+    expect(skillsIndex).toBeLessThan(projectsIndex);
+  });
+});
+
 describe("Professional page - resume download button", () => {
   it("renders the Download Resume link", () => {
     render(<Professional />);
