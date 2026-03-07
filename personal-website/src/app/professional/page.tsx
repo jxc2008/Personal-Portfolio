@@ -5,10 +5,12 @@
 import { useEffect, useState, useRef, createContext, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import styles from "./Professional.module.css";
 import Navigation from "../components/Navigation";
 import ThreeBodySimulation from "../components/ThreeBodySimulation";
 import SocialMediaLinks from "../components/SocialMediaLinks";
+import { staggerContainer, cardReveal } from "../utils/animations";
 
 // Create a Context for Navbar theme
 interface NavbarContextType {
@@ -161,18 +163,20 @@ export default function Professional() {
       {/* Skills Section */}
       <section className={styles.skillsSection}>
         <h2 className={styles.projectsTitle}>Skills</h2>
-        {Object.entries(skills).map(([category, items]) => (
-          <div key={category} className={styles.skillGroup}>
-            <span className={styles.skillCategory}>{category}</span>
-            <div className={styles.skillTags}>
-              {items.map((skill) => (
-                <span key={skill} className={styles.skillTag}>
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
+        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          {Object.entries(skills).map(([category, items]) => (
+            <motion.div key={category} className={styles.skillGroup} variants={cardReveal}>
+              <span className={styles.skillCategory}>{category}</span>
+              <div className={styles.skillTags}>
+                {items.map((skill) => (
+                  <span key={skill} className={styles.skillTag}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </section>
 
       {/* Projects Section */}
@@ -189,9 +193,9 @@ export default function Professional() {
           </p>
 
           {/* Project Cards */}
-          <div className={styles.projectCardsContainer}>
+          <motion.div className={styles.projectCardsContainer} variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             {projects.map((project, index) => (
-              <div key={index} className={styles.projectCard}>
+              <motion.div key={index} className={styles.projectCard} variants={cardReveal}>
                 <div className={styles.projectImageContainer}>
                   {project.link.startsWith("http") ? (
                     <a
@@ -251,18 +255,18 @@ export default function Professional() {
                     {project.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Experience Section */}
       <section id="experienceSection" className={styles.experienceSection} ref={experienceSectionRef}>
         <h1 className={styles.experienceTitle}>Experience</h1>
-        <div className={styles.experienceCardsContainer}>
+        <motion.div className={styles.experienceCardsContainer} variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
           {/* Undergraduate Research */}
-          <div className={styles.experienceCard}>
+          <motion.div className={styles.experienceCard} variants={cardReveal}>
             <div className={styles.experienceImageContainer}>
               <a
                 href="https://github.com/ExtraMediumDev/SPY-Prediction-using-LSTM-Neural-Network"
@@ -311,10 +315,10 @@ export default function Professional() {
                 </li>
               </ul>
             </div>
-          </div>
+          </motion.div>
 
           {/* Marketing Internship */}
-          <div className={styles.experienceCard}>
+          <motion.div className={styles.experienceCard} variants={cardReveal}>
             <div className={styles.experienceImageContainer}>
               <a
                 href="https://www.intoitapp.com/"
@@ -355,8 +359,8 @@ export default function Professional() {
                 </li>
               </ul>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Footer has been removed */}

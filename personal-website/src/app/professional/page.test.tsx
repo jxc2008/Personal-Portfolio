@@ -2,6 +2,25 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Professional from "./page";
 
+jest.mock("framer-motion", () => ({
+  motion: {
+    div: ({
+      children,
+      whileInView,
+      initial,
+      variants,
+      viewport,
+      ...rest
+    }: {
+      children?: React.ReactNode;
+      whileInView?: unknown;
+      initial?: unknown;
+      variants?: unknown;
+      viewport?: unknown;
+      [key: string]: unknown;
+    }) => <div data-testid="motion-div" data-variants={variants ? "true" : undefined} {...rest}>{children}</div>,
+  },
+}));
 jest.mock("../components/ThreeBodySimulation", () => () => null);
 jest.mock("../components/Navigation", () => () => null);
 jest.mock("../components/SocialMediaLinks", () => () => null);
@@ -79,5 +98,39 @@ describe("Professional page - resume download button", () => {
     render(<Professional />);
     expect(screen.getByRole("button", { name: /contact me/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /download resume/i })).toBeInTheDocument();
+  });
+});
+
+describe("Professional page - scroll animations", () => {
+  it("wraps project cards in motion.div containers", () => {
+    const { container } = render(<Professional />);
+    const projectsSection = container.querySelector("#projectsSection");
+    const motionDivs = projectsSection?.querySelectorAll("[data-testid='motion-div']");
+    // 1 stagger container + 3 project cards = 4
+    expect(motionDivs?.length).toBe(4);
+  });
+
+  it("wraps experience cards in motion.div containers", () => {
+    const { container } = render(<Professional />);
+    const experienceSection = container.querySelector("#experienceSection");
+    const motionDivs = experienceSection?.querySelectorAll("[data-testid='motion-div']");
+    // 1 stagger container + 2 experience cards = 3
+    expect(motionDivs?.length).toBe(3);
+  });
+
+  it("wraps skill groups in motion.div containers", () => {
+    render(<Professional />);
+    const skillCategories = ["Languages", "Frameworks", "ML & Data", "Tools"];
+    for (const category of skillCategories) {
+      const categoryEl = screen.getByText(category);
+      expect(categoryEl.closest("[data-testid='motion-div']")).toBeInTheDocument();
+    }
+  });
+
+  it("applies variants to motion.div containers", () => {
+    const { container } = render(<Professional />);
+    const motionDivs = container.querySelectorAll("[data-variants='true']");
+    // All motion.divs should have variants
+    expect(motionDivs.length).toBeGreaterThan(0);
   });
 });
