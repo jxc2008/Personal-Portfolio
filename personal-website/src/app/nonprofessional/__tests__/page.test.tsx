@@ -2,6 +2,25 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import NonProfessional from "../page";
 
+jest.mock("framer-motion", () => ({
+  motion: {
+    div: ({
+      children,
+      whileInView,
+      initial,
+      variants,
+      viewport,
+      ...rest
+    }: {
+      children?: React.ReactNode;
+      whileInView?: unknown;
+      initial?: unknown;
+      variants?: unknown;
+      viewport?: unknown;
+      [key: string]: unknown;
+    }) => <div data-testid="motion-div" data-variants={variants ? "true" : undefined} {...rest}>{children}</div>,
+  },
+}));
 jest.mock("next/link", () => ({
   __esModule: true,
   default: ({
@@ -127,5 +146,30 @@ describe("NonProfessional page", () => {
     expect(sections[0].id).toBe("home");
     expect(sections[1].id).toBe("writingSection");
     expect(sections[2].id).toBe("musicSection");
+  });
+
+  // Framer Motion animations
+  it("wraps the writing grid in a motion.div with variants", () => {
+    const motionDivs = screen.getAllByTestId("motion-div");
+    const withVariants = motionDivs.filter(
+      (el) => el.getAttribute("data-variants") === "true"
+    );
+    // At least 2 containers (writing grid + music grid) plus individual cards
+    expect(withVariants.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("wraps each writing card in a motion.div with variants", () => {
+    const motionDivs = screen.getAllByTestId("motion-div");
+    const variantDivs = motionDivs.filter(
+      (el) => el.getAttribute("data-variants") === "true"
+    );
+    // 3 writing cards + 3 music cards + 2 containers = 8
+    expect(variantDivs).toHaveLength(8);
+  });
+
+  it("wraps the music grid in a motion.div with variants", () => {
+    const musicSection = screen.getByText("Classical Pieces").closest("[data-testid='motion-div']");
+    expect(musicSection).toBeInTheDocument();
+    expect(musicSection).toHaveAttribute("data-variants", "true");
   });
 });

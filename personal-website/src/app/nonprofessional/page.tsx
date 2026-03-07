@@ -2,11 +2,13 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { FaMusic, FaCompactDisc } from "react-icons/fa";
 import styles from "./NonProfessional.module.css";
 import Navigation from "../components/Navigation";
 import SocialMediaLinks from "../components/SocialMediaLinks";
 import Footer from "../components/Footer";
+import { staggerContainer, cardReveal } from "../utils/animations";
 
 const navLinks = [
   { label: "Top", sectionId: "home" },
@@ -117,9 +119,9 @@ export default function NonProfessional() {
         <p className={styles.sectionSubtitle}>
           Essays, reflections, and ideas.
         </p>
-        <div className={styles.writingGrid}>
+        <motion.div className={styles.writingGrid} variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
           {writingCards.map((card, index) => (
-            <div key={index} className={styles.writingCard}>
+            <motion.div key={index} className={styles.writingCard} variants={cardReveal}>
               <span className={styles.categoryChip}>{card.category}</span>
               <h3 className={styles.cardTitle}>
                 {/* TODO: Replace with real title */}
@@ -130,9 +132,9 @@ export default function NonProfessional() {
                 {card.excerpt}
               </p>
               <span className={styles.readLink}>Read &rarr;</span>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Section 3: Music */}
@@ -141,18 +143,18 @@ export default function NonProfessional() {
         <p className={styles.sectionSubtitle}>
           Things I play when I&apos;m not writing code.
         </p>
-        <div className={styles.musicGrid}>
+        <motion.div className={styles.musicGrid} variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
           {musicCards.map((card, index) => {
             const Icon = card.icon;
             return (
-              <div key={index} className={styles.musicCard}>
+              <motion.div key={index} className={styles.musicCard} variants={cardReveal}>
                 <Icon className={styles.musicIcon} />
                 <h3 className={styles.cardTitle}>{card.title}</h3>
                 <p className={styles.cardDescription}>{card.description}</p>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </section>
 
       {/* Section 4: Footer */}
