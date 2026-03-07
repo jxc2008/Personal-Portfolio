@@ -7,6 +7,32 @@ jest.mock("next/navigation", () => ({
   usePathname: () => mockPathname,
 }));
 
+// Mock framer-motion
+jest.mock("framer-motion", () => ({
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  motion: {
+    main: ({
+      children,
+      initial,
+      animate,
+      exit,
+      transition,
+      ...props
+    }: any) => (
+      <main
+        data-testid="motion-main"
+        data-initial={JSON.stringify(initial)}
+        data-animate={JSON.stringify(animate)}
+        data-exit={JSON.stringify(exit)}
+        data-transition={JSON.stringify(transition)}
+        {...props}
+      >
+        {children}
+      </main>
+    ),
+  },
+}));
+
 // Mock child components to isolate LayoutClient behavior
 jest.mock("../Navbar", () => {
   return function MockNavbar() {
@@ -59,7 +85,7 @@ describe("LayoutClient", () => {
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
   });
 
-  it("wraps children in a main element", () => {
+  it("wraps children in a motion.main element", () => {
     render(
       <LayoutClient>
         <div data-testid="child">content</div>
@@ -67,6 +93,7 @@ describe("LayoutClient", () => {
     );
     const child = screen.getByTestId("child");
     expect(child.closest("main")).not.toBeNull();
+    expect(screen.getByTestId("motion-main")).toBeInTheDocument();
   });
 
   it("sets cursor to auto on non-homepage routes", () => {
@@ -77,5 +104,29 @@ describe("LayoutClient", () => {
       </LayoutClient>
     );
     expect(document.body.style.cursor).toBe("auto");
+  });
+
+  it("passes correct animation props to motion.main", () => {
+    render(
+      <LayoutClient>
+        <div>child</div>
+      </LayoutClient>
+    );
+    const motionMain = screen.getByTestId("motion-main");
+    expect(JSON.parse(motionMain.getAttribute("data-initial")!)).toEqual({ opacity: 0, y: 8 });
+    expect(JSON.parse(motionMain.getAttribute("data-animate")!)).toEqual({ opacity: 1, y: 0 });
+    expect(JSON.parse(motionMain.getAttribute("data-exit")!)).toEqual({ opacity: 0, y: -8 });
+    expect(JSON.parse(motionMain.getAttribute("data-transition")!)).toEqual({ duration: 0.3 });
+  });
+
+  it("uses pathname as the motion.main key", () => {
+    mockPathname = "/contact";
+    render(
+      <LayoutClient>
+        <div>child</div>
+      </LayoutClient>
+    );
+    const motionMain = screen.getByTestId("motion-main");
+    expect(motionMain).toBeInTheDocument();
   });
 });
