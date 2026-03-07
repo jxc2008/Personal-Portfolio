@@ -503,6 +503,22 @@
     font-size: 1.2rem;
   }
 
+  .header {
+    font-size: 2.5rem;
+  }
+
+  .projectTitle {
+    font-size: 1.5rem;
+  }
+
+  .projectsTitle {
+    font-size: 2rem;
+  }
+
+  .skillsSection {
+    padding: 2rem 1rem;
+  }
+
   /* Adjust Social Media Icons */
   .socialMediaContainer {
     gap: 1rem;

@@ -62,3 +62,28 @@ describe("Professional.module.css - skills section styles", () => {
     expect(css).toMatch(/\.skillCategory\s*\{[^}]*color:\s*var\(--text\)/);
   });
 });
+
+describe("Professional.module.css - mobile responsive styles (max-width: 768px)", () => {
+  const mediaBlockMatch = css.match(/@media\s*\(\s*max-width:\s*768px\s*\)\s*\{([\s\S]*)\}\s*$/);
+  const mediaContent = mediaBlockMatch ? mediaBlockMatch[1] : "";
+
+  it("has a @media (max-width: 768px) block", () => {
+    expect(mediaBlockMatch).not.toBeNull();
+  });
+
+  it("sets .header font-size to 2.5rem", () => {
+    expect(mediaContent).toMatch(/\.header\s*\{[^}]*font-size:\s*2\.5rem/);
+  });
+
+  it("sets .projectTitle font-size to 1.5rem", () => {
+    expect(mediaContent).toMatch(/\.projectTitle\s*\{[^}]*font-size:\s*1\.5rem/);
+  });
+
+  it("sets .projectsTitle font-size to 2rem", () => {
+    expect(mediaContent).toMatch(/\.projectsTitle\s*\{[^}]*font-size:\s*2rem/);
+  });
+
+  it("sets .skillsSection padding to 2rem 1rem", () => {
+    expect(mediaContent).toMatch(/\.skillsSection\s*\{[^}]*padding:\s*2rem\s+1rem/);
+  });
+});
