@@ -30,5 +30,27 @@
   .navLinks a:hover {
     color: var(--color-primary);
   }
-  
+
+  .themeToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .themeToggle:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--color-primary);
+  }
+
   

@@ -1,41 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
+import { useTheme } from "./components/NavbarContext";
 
 export default function Home() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  const { darkMode } = useTheme();
 
   return (
     <div className={`${styles.container} ${darkMode ? styles.dark : ""}`}>
-      {/* Dark Mode Toggle via Sun/Moon */}
-      {!darkMode ? (
-        <div
-          className={styles.sun}
-          onClick={toggleDarkMode}
-          aria-label="Switch to Dark Mode"
-          role="button"
-          tabIndex={0}
-          onKeyPress={(e) => {
-            if (e.key === "Enter" || e.key === " ") toggleDarkMode();
-          }}
-        ></div>
-      ) : (
-        <div
-          className={styles.moon}
-          onClick={toggleDarkMode}
-          aria-label="Switch to Light Mode"
-          role="button"
-          tabIndex={0}
-          onKeyPress={(e) => {
-            if (e.key === "Enter" || e.key === " ") toggleDarkMode();
-          }}
-        ></div>
-      )}
-
       {/* Landing Section */}
       <section className={styles.landing}>
         {/* Stars (only in dark mode) */}
@@ -56,7 +29,7 @@ export default function Home() {
         {/* Text Content */}
         <div className={styles.textContainer}>
           <h1>
-            <span className={styles.im}>I&apos;m</span> {/* Escaped */}
+            <span className={styles.im}>I&apos;m</span>
             <span className={`${styles.name} fade-in-name`}>Joseph Cheng</span>
           </h1>
         </div>

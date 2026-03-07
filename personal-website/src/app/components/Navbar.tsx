@@ -2,10 +2,13 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import { FaSun, FaMoon } from "react-icons/fa"
+import { useTheme } from "./NavbarContext"
 import styles from "./Navbar.module.css"
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const { darkMode, toggleDarkMode } = useTheme()
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -25,6 +28,13 @@ const Navbar = () => {
         <Link href="/">Home</Link>
         <Link href="/professional">Professional</Link>
         <Link href="/nonprofessional">Non-Professional</Link>
+        <button
+          className={styles.themeToggle}
+          onClick={toggleDarkMode}
+          aria-label={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        >
+          {darkMode ? <FaSun /> : <FaMoon />}
+        </button>
       </div>
     </nav>
   )
