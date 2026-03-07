@@ -278,6 +278,17 @@
   text-align: center;
 }
 
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .name {
+    font-size: 3.5rem;
+  }
+
+  .im {
+    font-size: 2rem;
+  }
+}
+
 /* Remove Orange Focus Outline */
 .panelLink:focus,
 .sun:focus,
