@@ -127,13 +127,16 @@ export default function Professional() {
             <span className={styles.redText}>Mathematics</span> at{" "}
             <span className={styles.purpleText}>New York University</span>. Here you&apos;ll find my projects, experience, and other professional achievements.
           </p>
-          <button
-            className={styles.contactButton}
-            onClick={() => window.location.href = "mailto:joseph.x.cheng@gmail.com"}
-            aria-label="Contact Me"
-          >
-            Contact Me
-          </button>
+          <div className={styles.buttonRow}>
+            <button
+              className={styles.contactButton}
+              onClick={() => window.location.href = "mailto:joseph.x.cheng@gmail.com"}
+              aria-label="Contact Me"
+            >
+              Contact Me
+            </button>
+            <a href="/resume.pdf" download className={styles.resumeButton}>Download Resume</a>
+          </div>
           <SocialMediaLinks /> {/* Social Media Links */}
         </div>
 

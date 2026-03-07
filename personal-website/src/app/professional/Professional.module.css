@@ -50,9 +50,34 @@
   font-weight: bold; /* Optional: Make text bold */
 }
 
+/* Button Row */
+.buttonRow {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+/* Resume Button */
+.resumeButton {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 999px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+
+.resumeButton:hover {
+  opacity: 0.85;
+}
+
 /* Contact Button */
 .contactButton {
-  margin-top: 2rem;
   padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, #6a7fdb, #889ee7);
   color: white;
