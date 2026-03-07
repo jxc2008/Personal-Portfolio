@@ -2,7 +2,9 @@
 
 import styles from "./page.module.css";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useTheme } from "./components/NavbarContext";
+import { fadeInUp } from "./utils/animations";
 
 export default function Home() {
   const { darkMode } = useTheme();
@@ -27,16 +29,23 @@ export default function Home() {
         <div className={`${styles.cloud} ${styles.cloud3}`}></div>
 
         {/* Text Content */}
-        <div className={styles.textContainer}>
+        <motion.div
+          className={styles.textContainer}
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+        >
           <h1>
             <span className={styles.im}>I&apos;m</span>
-            <span className={`${styles.name} fade-in-name`}>Joseph Cheng</span>
+            <span className={styles.name}>Joseph Cheng</span>
           </h1>
-        </div>
+        </motion.div>
 
         {/* Scroll Arrow */}
-        <div
+        <motion.div
           className={styles.scrollArrow}
+          animate={{ y: [0, -10, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
           onClick={() =>
             window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
           }
@@ -50,28 +59,32 @@ export default function Home() {
           }}
         >
           ↓
-        </div>
+        </motion.div>
       </section>
 
       {/* Split Section: Projects and Passions */}
       <section className={styles.split}>
         {/* Projects Panel */}
-        <Link
-          href="/professional"
-          className={`${styles.professional} ${styles.panelLink}`}
-          aria-label="Go to Projects"
-        >
-          <h2 className="projects">Projects</h2>
-        </Link>
+        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
+          <Link
+            href="/professional"
+            className={`${styles.professional} ${styles.panelLink}`}
+            aria-label="Go to Projects"
+          >
+            <h2 className="projects">Projects</h2>
+          </Link>
+        </motion.div>
 
         {/* Passions Panel */}
-        <Link
-          href="/nonprofessional"
-          className={`${styles.nonprofessional} ${styles.panelLink}`}
-          aria-label="Go to Passions"
-        >
-          <h2 className="passions">Passions</h2>
-        </Link>
+        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>
+          <Link
+            href="/nonprofessional"
+            className={`${styles.nonprofessional} ${styles.panelLink}`}
+            aria-label="Go to Passions"
+          >
+            <h2 className="passions">Passions</h2>
+          </Link>
+        </motion.div>
       </section>
     </div>
   );
