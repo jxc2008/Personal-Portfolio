@@ -7,6 +7,8 @@ import { NavbarProvider } from "../NavbarContext";
 jest.mock("react-icons/fa", () => ({
   FaSun: () => <span data-testid="icon-sun">sun</span>,
   FaMoon: () => <span data-testid="icon-moon">moon</span>,
+  FaBars: () => <span data-testid="icon-bars">bars</span>,
+  FaTimes: () => <span data-testid="icon-times">times</span>,
 }));
 
 function renderNavbar() {
@@ -70,5 +72,49 @@ describe("Navbar dark mode toggle", () => {
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("Professional")).toBeInTheDocument();
     expect(screen.getByText("Non-Professional")).toBeInTheDocument();
+  });
+});
+
+describe("Navbar hamburger menu", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("renders a hamburger button with toggle navigation label", () => {
+    renderNavbar();
+    expect(
+      screen.getByRole("button", { name: /toggle navigation/i })
+    ).toBeInTheDocument();
+  });
+
+  it("shows FaBars icon when nav is hidden", () => {
+    renderNavbar();
+    expect(screen.getByTestId("icon-bars")).toBeInTheDocument();
+  });
+
+  it("shows FaTimes icon when nav is visible after click", () => {
+    renderNavbar();
+    const hamburger = screen.getByRole("button", { name: /toggle navigation/i });
+    act(() => {
+      hamburger.click();
+    });
+    expect(screen.getByTestId("icon-times")).toBeInTheDocument();
+  });
+
+  it("toggles nav visibility on click", () => {
+    renderNavbar();
+    const hamburger = screen.getByRole("button", { name: /toggle navigation/i });
+
+    // Click to open
+    act(() => {
+      hamburger.click();
+    });
+    expect(screen.getByTestId("icon-times")).toBeInTheDocument();
+
+    // Click to close
+    act(() => {
+      hamburger.click();
+    });
+    expect(screen.getByTestId("icon-bars")).toBeInTheDocument();
   });
 });

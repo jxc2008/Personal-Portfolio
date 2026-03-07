@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { FaSun, FaMoon } from "react-icons/fa"
+import { FaSun, FaMoon, FaBars, FaTimes } from "react-icons/fa"
 import { useTheme } from "./NavbarContext"
 import styles from "./Navbar.module.css"
 
@@ -23,8 +23,16 @@ const Navbar = () => {
   }, [])
 
   return (
-    <nav className={`${styles.navbar} ${isVisible ? styles.visible : ""}`}>
-      <div className={styles.navLinks}>
+    <>
+      <button
+        className={styles.hamburger}
+        onClick={() => setIsVisible(v => !v)}
+        aria-label="Toggle navigation"
+      >
+        {isVisible ? <FaTimes /> : <FaBars />}
+      </button>
+      <nav className={`${styles.navbar} ${isVisible ? styles.visible : ""}`}>
+        <div className={styles.navLinks}>
         <Link href="/">Home</Link>
         <Link href="/professional">Professional</Link>
         <Link href="/nonprofessional">Non-Professional</Link>
@@ -36,7 +44,8 @@ const Navbar = () => {
           {darkMode ? <FaSun /> : <FaMoon />}
         </button>
       </div>
-    </nav>
+      </nav>
+    </>
   )
 }
 
