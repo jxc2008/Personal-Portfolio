@@ -5,14 +5,27 @@
 import React from "react";
 import styles from "./Navigation.module.css";
 
+interface NavLink {
+  label: string;
+  sectionId: string;
+}
+
+const defaultLinks: NavLink[] = [
+  { label: "Top", sectionId: "home" },
+  { label: "Projects", sectionId: "projectsSection" },
+  { label: "Experience", sectionId: "experienceSection" },
+];
+
 interface NavigationProps {
   navColor: string;
-  showNav?: boolean; // Marked as optional to handle cases where it's not explicitly passed
+  showNav?: boolean;
+  links?: NavLink[];
 }
 
 export default function Navigation({
   navColor,
-  showNav = true, // Default to true if not provided
+  showNav = true,
+  links = defaultLinks,
 }: NavigationProps) {
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -31,36 +44,18 @@ export default function Navigation({
       aria-label="Main Navigation"
     >
       <ul className={styles.navLinks}>
-        <li>
-          <a
-            href="#home"
-            className={styles.navLink}
-            style={{ color: navColor }}
-            onClick={(e) => handleClick(e, "home")}
-          >
-            Top
-          </a>
-        </li>
-        <li>
-          <a
-            href="#projectsSection"
-            className={styles.navLink}
-            style={{ color: navColor }}
-            onClick={(e) => handleClick(e, "projectsSection")}
-          >
-            Projects
-          </a>
-        </li>
-        <li>
-          <a
-            href="#experienceSection"
-            className={styles.navLink}
-            style={{ color: navColor }}
-            onClick={(e) => handleClick(e, "experienceSection")}
-          >
-            Experience
-          </a>
-        </li>
+        {links.map((link) => (
+          <li key={link.sectionId}>
+            <a
+              href={`#${link.sectionId}`}
+              className={styles.navLink}
+              style={{ color: navColor }}
+              onClick={(e) => handleClick(e, link.sectionId)}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   );
