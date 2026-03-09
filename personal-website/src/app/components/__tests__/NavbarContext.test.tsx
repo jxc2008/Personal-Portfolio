@@ -13,11 +13,10 @@ function DarkModeDisplay() {
 }
 
 function NavbarContextDisplay() {
-  const { isDark, setIsDark } = useNavbarContext();
+  const { darkMode } = useNavbarContext();
   return (
     <div>
-      <span data-testid="is-dark">{isDark ? "dark" : "light"}</span>
-      <button onClick={() => setIsDark(!isDark)}>toggle isDark</button>
+      <span data-testid="ctx-dark">{darkMode ? "dark" : "light"}</span>
     </div>
   );
 }
@@ -104,6 +103,6 @@ describe("NavbarProvider / useTheme", () => {
       </NavbarProvider>
     );
     expect(screen.getByTestId("dark-mode")).toBeInTheDocument();
-    expect(screen.getByTestId("is-dark")).toBeInTheDocument();
+    expect(screen.getByTestId("ctx-dark")).toBeInTheDocument();
   });
 });

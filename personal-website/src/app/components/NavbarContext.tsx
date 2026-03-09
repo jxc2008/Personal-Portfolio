@@ -1,25 +1,18 @@
-// src/app/components/NavbarContext.tsx
-
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
 
 interface NavbarContextType {
-  isDark: boolean;
-  setIsDark: (value: boolean) => void;
   darkMode: boolean;
   toggleDarkMode: () => void;
 }
 
 const NavbarContext = createContext<NavbarContextType>({
-  isDark: true,
-  setIsDark: () => {},
   darkMode: false,
   toggleDarkMode: () => {},
 });
 
 export function NavbarProvider({ children }: { children: React.ReactNode }) {
-  const [isDark, setIsDark] = useState(true);
   const [darkMode, setDarkMode] = useState(
     () => typeof window !== "undefined" && localStorage.getItem("theme") === "dark"
   );
@@ -31,7 +24,7 @@ export function NavbarProvider({ children }: { children: React.ReactNode }) {
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   return (
-    <NavbarContext.Provider value={{ isDark, setIsDark, darkMode, toggleDarkMode }}>
+    <NavbarContext.Provider value={{ darkMode, toggleDarkMode }}>
       {children}
     </NavbarContext.Provider>
   );

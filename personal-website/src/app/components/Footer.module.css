@@ -1,14 +1,39 @@
-/* src/app/components/Footer.module.css */
-
 .footer {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background-color: #000000; /* Neutral dark color for footer */
-  position: relative; /* Ensures it's part of the normal flow */
-  z-index: 1000;
-  color: white;
-  font-size: 0.875rem;
-  text-align: center;
+  padding: 2rem clamp(2rem, 6vw, 8rem);
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  /* extra padding at bottom to clear floating nav */
+  padding-bottom: 5rem;
+}
+
+.socials {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.socials a {
+  color: var(--text-muted);
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.socials a:hover {
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .footer {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    padding: 2rem 1.5rem 5rem;
+  }
 }

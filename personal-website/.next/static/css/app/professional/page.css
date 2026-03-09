@@ -1,534 +1,462 @@
-/*!************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/Navigation.module.css ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************/
-/* src/app/components/Navigation.module.css */
-
-.Navigation_navbar__4_Rwr {
-  position: fixed;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-  z-index: 1000;
-  opacity: 0; /* Initially hidden */
-  transition: opacity 0.5s ease-in-out; /* Smooth transition */
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/SocialMediaLinks.module.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+.SocialMediaLinks_socialMediaContainer__m5D78 {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
 }
 
-.Navigation_navbar__4_Rwr.Navigation_visible__pp5Pg {
-  opacity: 1; /* Visible when showNav is true */
+.SocialMediaLinks_socialLink___bumI {
+  color: var(--text-muted);
+  font-size: 1.35rem;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.Navigation_navbar__4_Rwr.Navigation_hidden__Oxtip {
-  opacity: 0; /* Hidden when showNav is false */
+.SocialMediaLinks_socialLink___bumI:hover {
+  color: var(--text);
+  transform: translateY(-2px);
 }
 
-.Navigation_navLinks__T8Ifl {
-  list-style: none;
+/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/professional/Professional.module.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************/
+.Professional_page__9hmVW {
+  min-height: 100vh;
+  padding-bottom: 4rem; /* space for floating nav */
+}
+
+/* ═══════════════════════ HERO ═══════════════════════ */
+.Professional_hero__X5U7s {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: clamp(6rem, 12vw, 10rem) clamp(2rem, 6vw, 8rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.Professional_heroNoise__Kbc5R {
+  position: absolute;
+  inset: 0;
+  background: var(--noise);
+  background-size: 200px 200px;
+  pointer-events: none;
+}
+
+.Professional_heroInner__wXCb1 {
+  position: relative;
+  max-width: 750px;
+}
+
+.Professional_heroTitle__f1LV6 {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.Professional_heroDivider__bNTr5 {
+  width: 3.5rem;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.Professional_heroSub__qUiZZ {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  max-width: 520px;
+}
+
+.Professional_accentText__Yn5EA {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.Professional_accentSecondaryText__XSJuZ {
+  color: var(--accent-secondary);
+  font-weight: 600;
+}
+
+.Professional_heroButtons__ZGH9M {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.Professional_primaryButton__IJP76 {
+  padding: 0.8rem 2rem;
+  background: var(--accent);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.Professional_primaryButton__IJP76:hover {
+  background: var(--accent-light);
+  transform: translateY(-1px);
+}
+
+.Professional_secondaryButton__2jHvO {
+  padding: 0.8rem 2rem;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease;
+  display: inline-block;
+}
+
+.Professional_secondaryButton__2jHvO:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ═══════════════════════ SHARED SECTION ═══════════════════════ */
+.Professional_sectionInner__hI3Zv {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+}
+
+.Professional_sectionHeader___mNpS {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.Professional_sectionIndex___WiRP {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+}
+
+.Professional_sectionTitle__OFPve {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* ═══════════════════════ SKILLS ═══════════════════════ */
+.Professional_skills__TNJpJ {
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  background: var(--bg-secondary);
+}
+
+.Professional_skillGrid__ja14z {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.Navigation_navLink__5YM_n {
-  font-family: "Poppins", sans-serif;
-  font-size: 1.2rem;
-  text-decoration: none;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-.Navigation_navLink__5YM_n::after {
-  content: "";
-  position: absolute;
-  width: 0%;
-  height: 2px;
-  display: block;
-  margin-top: 5px;
-  left: 0;
-  background: var(--color-primary, #6a7fdb); /* Fallback color */
-  transition: width 0.3s ease;
-}
-
-.Navigation_navLink__5YM_n:hover::after {
-  width: 100%;
-}
-
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/ThreeBodySimulation.module.css ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************/
-/* src/components/ThreeBodySimulation.module.css */
-
-.ThreeBodySimulation_canvas__qVq2v {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0; /* Ensure it's behind all other content */
-  pointer-events: none; /* Allows clicks to pass through */
-}
-
-/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/components/SocialMediaLinks.module.css ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************/
-/* src/app/components/SocialMediaLinks.module.css */
-
-.SocialMediaLinks_socialMediaContainer__m5D78 {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    margin-top: 2rem;
-  }
-  
-  .SocialMediaLinks_socialLink___bumI {
-    color: #6a7fdb; /* Primary color */
-    font-size: 2rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .SocialMediaLinks_socialLink___bumI:hover {
-    color: #889ee7; /* Hover color */
-    transform: scale(1.1);
-  }
-  
-/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./src/app/professional/Professional.module.css ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************/
-/* src/app/professional/Professional.module.css */
-
-/* Existing Styles ... */
-
-/* Landing Page Container */
-.Professional_container__IpWOV {
+.Professional_skillRow__0FrwK {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center vertically */
-  background: linear-gradient(135deg, #e0e0e0, #c0c0c0); /* Enhanced Silver Gradient */
-  color: #000000; /* Black text for visibility on silver */
-  text-align: center;
-  position: relative; /* For positioning child elements */
-  padding: 2rem;
-  min-height: 100vh; /* Ensure it occupies full viewport height */
-  transition: background 0.5s ease, color 0.5s ease;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
-/* Header Styling */
-.Professional_header__rmebR {
-  font-size: 4rem;
+.Professional_skillCategory__ZeAPM {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
   font-weight: 700;
-  font-family: 'Josefin Sans', sans-serif;
-  color: #000000; /* Black color */
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  min-width: 110px;
 }
 
-/* Content Paragraph */
-.Professional_content__Tm5Au {
-  font-size: 1.5rem;
-  margin: 1rem 0;
-  font-family: 'Merriweather', serif;
-  line-height: 1.8;
-  color: #000000; /* Black color */
+.Professional_skillTags__j0Ies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
-/* New CSS Classes for Colored Text */
-.Professional_blueText__wxV34 {
-  color: #1e90ff; /* Dodger Blue */
-  font-weight: bold; /* Optional: Make text bold */
+.Professional_skillTag__iSmPp {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  cursor: default;
 }
 
-.Professional_redText__1Or93 {
-  color: #ff4500; /* Orange Red */
-  font-weight: bold; /* Optional: Make text bold */
+.Professional_skillTag__iSmPp:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
 }
 
-.Professional_purpleText__4F0Gi {
-  color: #800080; /* Purple */
-  font-weight: bold; /* Optional: Make text bold */
+/* ═══════════════════════ PROJECTS ═══════════════════════ */
+.Professional_projects__wTgK2 {
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  background: var(--bg);
 }
 
-/* Contact Button */
-.Professional_contactButton__2MKdo {
-  margin-top: 2rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #6a7fdb, #889ee7);
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.Professional_contactButton__2MKdo:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Back to Home Link Styled as Button */
-.Professional_backToHome___UNd4 {
-  position: fixed; /* Fixed to top right */
-  top: 20px;
-  right: 20px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  background: #5a6473;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  z-index: 1001; /* Above Navigation */
-  text-decoration: none; /* Remove underline */
-  display: inline-block; /* Ensure block behavior for padding */
-}
-
-.Professional_backToHome___UNd4:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Scroll Down Arrow */
-.Professional_scrollDown__fAKCa {
-  position: absolute;
-  bottom: 2rem;
-  text-align: center;
-  animation: Professional_bounce__6jAWU 2s infinite;
-  cursor: pointer;
-  font-size: 1rem;
-  color: #000000; /* Black color */
-}
-
-.Professional_scrollDown__fAKCa i {
-  font-size: 2rem;
-  margin-top: 0.5rem;
-}
-
-@keyframes Professional_bounce__6jAWU {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
-  }
-}
-
-/* Projects Section Styling */
-.Professional_professionalProjectsSection__HwhN7 {
-  position: relative;
-  background: rgba(0, 0, 0, 0.8); /* Dark semi-transparent background for Projects */
-  color: #ffffff; /* White text for contrast */
-  text-align: center;
-  padding: 4rem 2rem; /* Increased padding */
-  z-index: 1;
-  min-height: 100vh; /* Full viewport height */
-  overflow: visible; /* Allow content to flow */
-  border-radius: 10px; /* Optional: Rounded corners */
-}
-
-/* Project Content Wrapper */
-.Professional_projectContent__N4ZoX {
-  z-index: 2;
+.Professional_projectList__a5tzO {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; /* Allow natural flow */
-  width: 100%;
-  height: auto; /* Allow content to expand */
+  gap: 2rem;
 }
 
-/* Projects Title */
-.Professional_projectsTitle__RsLui {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  font-family: 'Josefin Sans', sans-serif;
-}
-
-/* Projects Subtitle */
-.Professional_projectsSubtitle__l44p6 {
-  font-size: 1.5rem;
-  margin-bottom: 3rem;
-  font-family: 'Merriweather', serif;
-  color: #cccccc; /* Slightly darker for subtitle */
-}
-
-/* Project Cards Container */
-.Professional_projectCardsContainer__YurYM {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem; /* Increased gap between project cards */
-}
-
-/* Individual Project Card */
 .Professional_projectCard__4nxE_ {
-  background: #000000; /* Black background for project cards */
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Subtle white shadow */
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 90%; /* Increased width */
-  max-width: 900px; /* Increased max-width */
-  text-align: center;
-  margin: 0 auto;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px; /* Added padding for better spacing */
+  align-items: stretch;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .Professional_projectCard__4nxE_:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2); /* Enhanced white shadow on hover */
+  border-color: var(--border-strong);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
 }
 
-/* Project Image Container */
-.Professional_projectImageContainer__fHe5I {
-  width: 50%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.Professional_projectCard__4nxE_:nth-child(even) {
+  flex-direction: row-reverse;
 }
 
-/* Project Image Styling */
 .Professional_projectImage__hGH8h {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  cursor: pointer;
-  border-radius: 5px;
-  /* Optional: Add a subtle border or shadow */
-  border: 2px solid #ffffff;
-  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
-}
-
-/* Project Text Container */
-.Professional_projectTextContainer__0A6kS {
-  width: 50%;
-  padding: 30px; /* Increased padding */
-  text-align: left;
-}
-
-/* Project Title */
-.Professional_projectTitle__RfdEx {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #ffffff; /* White color */
-}
-
-/* Project Description */
-.Professional_projectDescription__mbaNb {
-  font-family: 'Merriweather', serif;
-  font-size: 1.25rem;
-  color: #cccccc; /* Light gray for better readability */
-  line-height: 1.5;
-  margin-bottom: 1rem;
-}
-
-/* External Links Styling (Optional) */
-.Professional_externalLink__nWcQw {
-  /* Add styles specific to external links if needed */
-}
-
-/* Internal Links Styling (Optional) */
-.Professional_internalLink__qWsL4 {
-  /* Add styles specific to internal links if needed */
-}
-
-/* Canvas Background */
-.Professional_canvasBackground__Sqa_f {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1; /* Ensure it's behind all other content */
-  pointer-events: none; /* Allows clicks to pass through */
-}
-
-/* Experience Section Styling */
-.Professional_experienceSection__Q87zx {
+  flex: 0 0 55%;
+  overflow: hidden;
   position: relative;
-  background: #f9f9f9;
-  color: #000000; /* Black text */
-  padding: 50px 0;
-  text-align: center;
+}
+
+.Professional_projectImage__hGH8h img {
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.Professional_projectCard__4nxE_:hover .Professional_projectImage__hGH8h img {
+  transform: scale(1.03);
+}
+
+.Professional_projectText__r5NOQ {
+  flex: 1 1;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  z-index: 1;
 }
 
-.Professional_experienceTitle__C1NO5 {
-  font-size: 3rem;
-  margin-bottom: 3rem;
-  font-family: 'Josefin Sans', sans-serif;
+.Professional_projectNumber__xcgPT {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
 }
 
-.Professional_experienceCardsContainer__yj2yX {
-  width: 90%;
-  max-width: 1200px;
+.Professional_projectTitleLink__m__by {
+  display: inline-block;
+}
+
+.Professional_projectTitle__RfdEx {
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  transition: color 0.2s ease;
+}
+
+.Professional_projectTitleLink__m__by:hover .Professional_projectTitle__RfdEx {
+  color: var(--accent);
+}
+
+.Professional_projectDesc__67owm {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ═══════════════════════ EXPERIENCE ═══════════════════════ */
+.Professional_experience__bDsoD {
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  background: var(--bg-secondary);
+}
+
+.Professional_experienceList__W9iue {
   display: flex;
   flex-direction: column;
-  gap: 3rem; /* Increased gap between experience cards */
-  align-items: center; /* Center the cards */
+  gap: 2rem;
 }
 
 .Professional_experienceCard__QQlnf {
-  background: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 100%;
-  max-width: 800px; /* Adjust as needed */
   display: flex;
-  flex-direction: column; /* Stack image and text vertically */
-  align-items: center; /* Center content horizontally */
-  text-align: left;
+  align-items: stretch;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .Professional_experienceCard__QQlnf:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-color: var(--border-strong);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.05);
 }
 
-.Professional_experienceImageContainer__xFa2e {
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.Professional_expImage__AC2DT {
+  flex: 0 0 35%;
+  overflow: hidden;
 }
 
-.Professional_experienceImage__kegWN {
-  width: 100%;
-  height: auto;
+.Professional_expImage__AC2DT img {
+  display: block;
+  height: 100%;
   object-fit: cover;
-  cursor: pointer;
-  border-radius: 10px 10px 0 0; /* Rounded top corners */
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.Professional_experienceTextContainer__fZ8wn {
-  width: 100%;
-  padding: 20px;
+.Professional_experienceCard__QQlnf:hover .Professional_expImage__AC2DT img {
+  transform: scale(1.03);
 }
 
-/* Experience Description as List */
-.Professional_experienceDescription__AVc0i {
-  font-family: 'Merriweather', serif;
-  font-size: 1rem;
-  color: #333333;
-  line-height: 1.5;
-  padding-left: 1.5rem; /* Indent for bullet points */
+.Professional_expText__xR8XQ {
+  flex: 1 1;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
 }
 
-.Professional_experienceDescription__AVc0i li {
+.Professional_expMeta__dWWs0 {
+  display: flex;
+  gap: 1rem;
   margin-bottom: 0.75rem;
-  list-style-type: disc; /* Standard bullet points */
 }
 
-/* Optional: Style for links within list items */
-.Professional_experienceDescription__AVc0i a {
-  color: #6a7fdb; /* Primary color for links */
-  text-decoration: none;
-  font-weight: 600;
+.Professional_expDate__l1ga5,
+.Professional_expLocation__kSWCh {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
 }
 
-.Professional_experienceDescription__AVc0i a:hover {
-  text-decoration: underline;
-}
-
-.Professional_experienceTitleText__s8J0S {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 1.75rem;
+.Professional_expTitle__1e_U7 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #1f2937; /* Dark color for titles */
+  color: var(--text);
+  margin-bottom: 0.25rem;
 }
 
-.Professional_experienceCompany__6Vqwv {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #555555;
-  margin-bottom: 0.5rem;
-}
-
-.Professional_experienceDetails__dPNE9 {
-  font-size: 0.95rem;
-  color: #777777;
+.Professional_expCompany__t3lDf {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
   margin-bottom: 1rem;
 }
 
-/* Assist Link Styling */
-.Professional_assistLink__S1UtZ {
-  color: #6a7fdb; /* Primary color for links */
-  text-decoration: none;
+.Professional_expBullets__IrZZY {
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.Professional_expBullets__IrZZY li {
+  margin-bottom: 0.4rem;
+}
+
+.Professional_expBullets__IrZZY li::marker {
+  color: var(--accent);
+}
+
+.Professional_inlineLink__x_DpL {
+  color: var(--accent);
   font-weight: 600;
-}
-
-.Professional_assistLink__S1UtZ:hover {
   text-decoration: underline;
+  -webkit-text-decoration-color: transparent;
+          text-decoration-color: transparent;
+  text-underline-offset: 2px;
+  transition: -webkit-text-decoration-color 0.2s ease;
+  transition: text-decoration-color 0.2s ease;
+  transition: text-decoration-color 0.2s ease, -webkit-text-decoration-color 0.2s ease;
 }
 
-/* Responsive Design for Experience Section */
+.Professional_inlineLink__x_DpL:hover {
+  -webkit-text-decoration-color: var(--accent);
+          text-decoration-color: var(--accent);
+}
+
+/* ═══════════════════════ RESPONSIVE ═══════════════════════ */
 @media (max-width: 768px) {
-  .Professional_experienceCardsContainer__yj2yX {
-    width: 95%;
+  .Professional_hero__X5U7s {
+    padding: 8rem 1.5rem 4rem;
+  }
+
+  .Professional_heroTitle__f1LV6 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .Professional_projectCard__4nxE_,
+  .Professional_projectCard__4nxE_:nth-child(even) {
+    flex-direction: column;
+  }
+
+  .Professional_projectImage__hGH8h {
+    flex: none;
+    width: 100%;
   }
 
   .Professional_experienceCard__QQlnf {
-    width: 100%;
     flex-direction: column;
   }
 
-  .Professional_experienceImage__kegWN {
-    border-radius: 10px 10px 0 0;
-  }
-
-  .Professional_experienceTextContainer__fZ8wn {
-    padding: 15px;
-  }
-
-  .Professional_projectCard__4nxE_ {
-    flex-direction: column;
-  }
-
-  .Professional_projectImageContainer__fHe5I,
-  .Professional_projectTextContainer__0A6kS {
+  .Professional_expImage__AC2DT {
+    flex: none;
     width: 100%;
-    padding: 0;
+    max-height: 200px;
   }
 
-  .Professional_projectTextContainer__0A6kS {
-    padding: 20px 0;
+  .Professional_skillRow__0FrwK {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
-  /* Adjust colored text sizes for smaller screens */
-  .Professional_blueText__wxV34,
-  .Professional_redText__1Or93,
-  .Professional_purpleText__4F0Gi {
-    font-size: 1.2rem;
-  }
-
-  /* Adjust Social Media Icons */
-  .Professional_socialMediaContainer__8KIoW {
-    gap: 1rem;
-  }
-
-  .Professional_socialLink__ls3T0 {
-    font-size: 1.5rem;
+  .Professional_sectionHeader___mNpS {
+    margin-bottom: 2rem;
   }
 }
 

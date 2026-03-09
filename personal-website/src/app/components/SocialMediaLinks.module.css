@@ -1,20 +1,17 @@
-/* src/app/components/SocialMediaLinks.module.css */
-
 .socialMediaContainer {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    margin-top: 2rem;
-  }
-  
-  .socialLink {
-    color: #6a7fdb; /* Primary color */
-    font-size: 2rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .socialLink:hover {
-    color: #889ee7; /* Hover color */
-    transform: scale(1.1);
-  }
-  
+  display: flex;
+  gap: 1.25rem;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+}
+
+.socialLink {
+  color: var(--text-muted);
+  font-size: 1.35rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.socialLink:hover {
+  color: var(--text);
+  transform: translateY(-2px);
+}

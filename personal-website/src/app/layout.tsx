@@ -11,12 +11,19 @@ export const metadata: Metadata = {
     description: "Personal portfolio of Joseph Cheng",
     type: "website",
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
+        <a href="#main-content" className="skipLink">
+          Skip to main content
+        </a>
         <LayoutClient>{children}</LayoutClient>
       </body>
     </html>

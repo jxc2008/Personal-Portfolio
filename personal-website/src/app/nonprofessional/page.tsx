@@ -1,65 +1,36 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaMusic, FaCompactDisc } from "react-icons/fa";
 import styles from "./NonProfessional.module.css";
-import Navigation from "../components/Navigation";
 import SocialMediaLinks from "../components/SocialMediaLinks";
-import Footer from "../components/Footer";
-import { staggerContainer, cardReveal } from "../utils/animations";
-
-const navLinks = [
-  { label: "Top", sectionId: "home" },
-  { label: "Writing", sectionId: "writingSection" },
-  { label: "Music", sectionId: "musicSection" },
-];
+import {
+  staggerContainer,
+  staggerContainerDramatic,
+  cardReveal,
+  heroReveal,
+  scaleReveal,
+} from "../utils/animations";
 
 export default function NonProfessional() {
-  const [showNav, setShowNav] = useState(false);
-  const writingSectionRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!writingSectionRef.current) return;
-      const writingTop = writingSectionRef.current.getBoundingClientRect().top;
-      setShowNav(writingTop <= window.innerHeight * 0.5);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const writingCards = [
     {
       category: "Essay",
-      /* TODO: Replace with real title */
       title: "Coming Soon",
-      /* TODO: Replace with real excerpt */
       excerpt: "My writing will appear here soon.",
+      featured: true,
     },
     {
       category: "Reflection",
-      /* TODO: Replace with real title */
       title: "Coming Soon",
-      /* TODO: Replace with real excerpt */
       excerpt: "My writing will appear here soon.",
+      featured: false,
     },
     {
       category: "Ideas",
-      /* TODO: Replace with real title */
       title: "Coming Soon",
-      /* TODO: Replace with real excerpt */
       excerpt: "My writing will appear here soon.",
+      featured: false,
     },
   ];
 
@@ -82,88 +53,103 @@ export default function NonProfessional() {
   ];
 
   return (
-    <>
-      <Navigation navColor="#ffffff" showNav={showNav} links={navLinks} />
-
-      {/* Section 1: Hero */}
+    <div className={styles.page}>
+      {/* ─── HERO ─── */}
       <section className={styles.hero} id="home">
-        <div>
-          <h1 className={`${styles.heroTitle} fade-in-name`}>Personal Passions</h1>
-          <p className={`${styles.heroTagline} fade-in`}>
-            Beyond the code — writing, music, and ideas.
-          </p>
-          <a
-            href="mailto:joseph.x.cheng@gmail.com"
-            className={styles.contactButton}
-          >
-            Contact Me
-          </a>
-          <SocialMediaLinks />
-        </div>
-        <div
-          className={styles.scrollDown}
-          onClick={() => scrollToSection("writingSection")}
-          aria-label="Scroll Down"
+        <div className={styles.heroNoise} />
+        <div className={styles.heroGradient} />
+        <motion.div
+          className={styles.heroInner}
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainerDramatic}
         >
-          <span className={styles.scrollArrow}>&#9660;</span>
+          <motion.p className={styles.heroLabel} variants={heroReveal}>
+            Beyond the code
+          </motion.p>
+          <motion.h1 className={styles.heroTitle} variants={heroReveal}>
+            Personal
+            <br />
+            Passions
+          </motion.h1>
+          <motion.p className={styles.heroTagline} variants={heroReveal}>
+            Writing, music, and ideas that shape how I think.
+          </motion.p>
+          <motion.div variants={heroReveal}>
+            <a href="mailto:joseph.x.cheng@gmail.com" className={styles.heroButton}>
+              Get in Touch
+            </a>
+          </motion.div>
+          <motion.div variants={heroReveal}>
+            <SocialMediaLinks />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ─── WRITING ─── */}
+      <section id="writingSection" className={styles.writing}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionIndex}>01</span>
+            <h2 className={styles.sectionTitle}>Writing &amp; Ideas</h2>
+          </div>
+
+          <motion.div
+            className={styles.writingGrid}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {writingCards.map((card, index) => (
+              <motion.article
+                key={index}
+                className={`${styles.writingCard} ${card.featured ? styles.writingCardFeatured : ""}`}
+                variants={cardReveal}
+              >
+                <span className={styles.chip}>{card.category}</span>
+                <h3 className={styles.cardTitle}>{card.title}</h3>
+                <p className={styles.cardExcerpt}>{card.excerpt}</p>
+                <span className={styles.readLink}>Read &rarr;</span>
+              </motion.article>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* Section 2: Writing & Ideas */}
-      <section
-        id="writingSection"
-        className={styles.writingSection}
-        ref={writingSectionRef}
-      >
-        <h2 className={styles.sectionTitle}>Writing &amp; Ideas</h2>
-        <p className={styles.sectionSubtitle}>
-          Essays, reflections, and ideas.
-        </p>
-        <motion.div className={styles.writingGrid} variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-          {writingCards.map((card, index) => (
-            <motion.div key={index} className={styles.writingCard} variants={cardReveal}>
-              <span className={styles.categoryChip}>{card.category}</span>
-              <h3 className={styles.cardTitle}>
-                {/* TODO: Replace with real title */}
-                {card.title}
-              </h3>
-              <p className={styles.cardExcerpt}>
-                {/* TODO: Replace with real excerpt */}
-                {card.excerpt}
-              </p>
-              <span className={styles.readLink}>Read &rarr;</span>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
+      {/* ─── MUSIC ─── */}
+      <section id="musicSection" className={styles.music}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionIndex}>02</span>
+            <h2 className={styles.sectionTitle}>Music</h2>
+          </div>
+          <p className={styles.sectionSub}>
+            Things I play when I&apos;m not writing code.
+          </p>
 
-      {/* Section 3: Music */}
-      <section id="musicSection" className={styles.musicSection}>
-        <h2 className={styles.sectionTitle}>Music</h2>
-        <p className={styles.sectionSubtitle}>
-          Things I play when I&apos;m not writing code.
-        </p>
-        <motion.div className={styles.musicGrid} variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-          {musicCards.map((card, index) => {
-            const Icon = card.icon;
-            return (
-              <motion.div key={index} className={styles.musicCard} variants={cardReveal}>
-                <Icon className={styles.musicIcon} />
-                <h3 className={styles.cardTitle}>{card.title}</h3>
-                <p className={styles.cardDescription}>{card.description}</p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+          <motion.div
+            className={styles.musicGrid}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {musicCards.map((card, index) => {
+              const Icon = card.icon;
+              return (
+                <motion.div key={index} className={styles.musicCard} variants={scaleReveal}>
+                  <div className={styles.musicIconWrap}>
+                    <Icon className={styles.musicIcon} />
+                  </div>
+                  <h3 className={styles.cardTitle}>{card.title}</h3>
+                  <p className={styles.cardDesc}>{card.description}</p>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
       </section>
-
-      {/* Section 4: Footer */}
-      <section className={styles.footerSection}>
-        <Link className={styles.backToHome} href="/">
-          Back to Home
-        </Link>
-        <Footer />
-      </section>
-    </>
+    </div>
   );
 }

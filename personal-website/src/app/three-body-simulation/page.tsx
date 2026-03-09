@@ -2,16 +2,12 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import styles from "./ThreeBodySimulationPage.module.css";
 import ThreeBodySimulation from "./../components/ThreeBodySimulation";
-import Navigation from "./../components/Navigation";
 
 const ThreeBodySimulationPage: React.FC = () => {
-  // State to handle navigation font color based on section
-  const [navColor, setNavColor] = useState("#ffffff"); // White for dark background
-
   // State for simulation controls visibility
   const [controlsVisible, setControlsVisible] = useState(true);
 
@@ -22,19 +18,6 @@ const ThreeBodySimulationPage: React.FC = () => {
   // State for pop-up visibility and animation
   const [popupVisible, setPopupVisible] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Customize if needed
-      setNavColor("#ffffff"); // Keep navigation white for consistency
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   // Handlers for simulation controls
   const handleMassChange = (index: number, value: number) => {
@@ -76,9 +59,6 @@ const ThreeBodySimulationPage: React.FC = () => {
           Back to Professional
         </button>
       </Link>
-
-      {/* Vertical Navigation on the Right */}
-      <Navigation navColor={navColor} /> {/* Pass navColor as prop */}
 
       {/* Simulation Container */}
       <section className={styles.simulationContainer}>

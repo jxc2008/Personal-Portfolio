@@ -1,0 +1,50 @@
+.dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor, 90);
+  will-change: transform;
+  transition: background 0.3s ease, width 0.25s ease, height 0.25s ease;
+  mix-blend-mode: normal;
+}
+
+.glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--glow);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: calc(var(--z-cursor, 90) - 1);
+  filter: blur(14px);
+  will-change: transform;
+  opacity: 0.7;
+  transition: background 0.3s ease, width 0.25s ease, height 0.25s ease, opacity 0.3s ease;
+}
+
+.dot.hovering {
+  background: var(--accent-secondary);
+  width: 12px;
+  height: 12px;
+}
+
+.glow.hovering {
+  background: rgba(8, 145, 178, 0.3);
+  width: 48px;
+  height: 48px;
+  opacity: 0.9;
+}
+
+@media (pointer: coarse) {
+  .dot,
+  .glow {
+    display: none;
+  }
+}

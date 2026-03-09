@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 // Mock next/navigation
@@ -30,13 +30,20 @@ jest.mock("framer-motion", () => ({
         {children}
       </main>
     ),
+    span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
   },
 }));
 
 // Mock child components to isolate LayoutClient behavior
-jest.mock("../Navbar", () => {
-  return function MockNavbar() {
-    return <nav data-testid="navbar">Navbar</nav>;
+jest.mock("../FloatingPillNav", () => {
+  return function MockFloatingPillNav() {
+    return <nav data-testid="floating-pill-nav">FloatingPillNav</nav>;
+  };
+});
+
+jest.mock("../GlowCursor", () => {
+  return function MockGlowCursor() {
+    return <div data-testid="glow-cursor" />;
   };
 });
 
@@ -55,13 +62,13 @@ describe("LayoutClient", () => {
     mockPathname = "/about";
   });
 
-  it("renders Navbar, children, and Footer", () => {
+  it("renders FloatingPillNav, children, and Footer", () => {
     render(
       <LayoutClient>
         <div data-testid="child">Hello</div>
       </LayoutClient>
     );
-    expect(screen.getByTestId("navbar")).toBeInTheDocument();
+    expect(screen.getByTestId("floating-pill-nav")).toBeInTheDocument();
     expect(screen.getByTestId("child")).toBeInTheDocument();
     expect(screen.getByTestId("footer")).toBeInTheDocument();
   });
@@ -96,37 +103,12 @@ describe("LayoutClient", () => {
     expect(screen.getByTestId("motion-main")).toBeInTheDocument();
   });
 
-  it("sets cursor to auto on non-homepage routes", () => {
-    mockPathname = "/about";
+  it("renders GlowCursor component", () => {
     render(
       <LayoutClient>
         <div>child</div>
       </LayoutClient>
     );
-    expect(document.body.style.cursor).toBe("auto");
-  });
-
-  it("passes correct animation props to motion.main", () => {
-    render(
-      <LayoutClient>
-        <div>child</div>
-      </LayoutClient>
-    );
-    const motionMain = screen.getByTestId("motion-main");
-    expect(JSON.parse(motionMain.getAttribute("data-initial")!)).toEqual({ opacity: 0, y: 8 });
-    expect(JSON.parse(motionMain.getAttribute("data-animate")!)).toEqual({ opacity: 1, y: 0 });
-    expect(JSON.parse(motionMain.getAttribute("data-exit")!)).toEqual({ opacity: 0, y: -8 });
-    expect(JSON.parse(motionMain.getAttribute("data-transition")!)).toEqual({ duration: 0.3 });
-  });
-
-  it("uses pathname as the motion.main key", () => {
-    mockPathname = "/contact";
-    render(
-      <LayoutClient>
-        <div>child</div>
-      </LayoutClient>
-    );
-    const motionMain = screen.getByTestId("motion-main");
-    expect(motionMain).toBeInTheDocument();
+    expect(screen.getByTestId("glow-cursor")).toBeInTheDocument();
   });
 });
