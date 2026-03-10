@@ -1,53 +1,315 @@
-# Joseph Cheng Portfolio — Improvements
+# PRD: Genshin Impact-Inspired Journey Portfolio Redesign
 
-## Tasks
+## 1. Overview
 
-### Phase 1: Quick Wins
+### Problem
+The current personal website follows a conventional section-based layout common to most developer portfolios. It lacks a distinctive narrative structure and visual identity that would make it memorable.
 
-- [x] Fix broken contact button on the non-professional page (`src/app/nonprofessional/page.tsx`): replace the `onClick={() => alert("Contact form coming soon!")}` button with `<a href="mailto:joseph.x.cheng@gmail.com" className={styles.contactButton}>Contact Me</a>`. Keep all existing CSS.
+### Vision
+Transform the portfolio into a **scroll-driven adventure** where a stylized traveler character journeys through the site, guiding visitors through an elemental world. Each section of the site maps to a Genshin Impact-inspired element, with unique particles, color palettes, and visual effects that create an immersive, game-like experience.
 
-- [x] Add a resume download button to the professional page (`src/app/professional/page.tsx` and `src/app/professional/Professional.module.css`): below the existing "Contact Me" button, add `<a href="/resume.pdf" download className={styles.resumeButton}>Download Resume</a>`. Wrap both buttons in a `<div className={styles.buttonRow}>` with `display: flex; gap: 1rem; flex-wrap: wrap`. Add `.resumeButton` to Professional.module.css with style `background: linear-gradient(135deg, #22c55e, #16a34a); color: white; padding: 0.75rem 2rem; border-radius: 999px; font-family: 'Josefin Sans', sans-serif; font-size: 1rem; text-decoration: none; transition: opacity 0.2s` and `:hover { opacity: 0.85 }`.
+### Inspiration
+- **NYU SVS (nyusvs.org)**: Journey-based information architecture, canvas animations at section transitions, progressive disclosure, scroll-triggered content reveals
+- **Genshin Impact**: Elemental color coding system, glassmorphism UI panels, particle effects, cel-shading aesthetics, fantasy adventure narrative in UI
 
-- [x] Update `src/app/components/Footer.tsx` to use a dynamic year: replace the hardcoded year `2025` with `{new Date().getFullYear()}`.
+---
 
-### Phase 2: Global Dark Mode Architecture
+## 2. Elemental Design System
 
-- [x] Extend `src/app/components/NavbarContext.tsx` to include global dark mode: add `darkMode: boolean` and `toggleDarkMode: () => void` to the context type and value. Initialize `darkMode` with a lazy state initializer: `useState(() => typeof window !== "undefined" && localStorage.getItem("theme") === "dark")`. Add a `useEffect` that calls `localStorage.setItem("theme", darkMode ? "dark" : "light")` whenever `darkMode` changes. Export a `useTheme()` convenience hook that returns `useContext(NavbarContext)`.
+### Element-to-Section Mapping
 
-- [x] Add global CSS custom properties for theming to `src/app/globals.css`: add a `:root` block with `--bg: #f0f4ff; --text: #1a1a2e; --card-bg: #ffffff; --border: rgba(0,0,0,0.1); --accent: #6a7fdb` and a `[data-theme="dark"]` block overriding all variables with dark values: `--bg: #0d0d1a; --text: #e8eaf6; --card-bg: #1a1a2e; --border: rgba(255,255,255,0.1); --accent: #818cf8`.
+| Element | Color | Section | Symbolism |
+|---------|-------|---------|-----------|
+| Anemo (Wind) | Teal `#66C2C2` | Home | Beginning, freedom, first breath |
+| Geo (Earth) | Amber `#D4A843` | Skills | Foundation, stability, building blocks |
+| Electro (Lightning) | Purple `#9B59D0` | Projects | Energy, creation, sparks of innovation |
+| Dendro (Nature) | Green `#5CB85C` | Experience | Growth, branching paths, cultivation |
+| Hydro (Water) | Blue `#4A90D9` | Personal Passions | Flow, depth, reflection |
 
-- [x] Split `src/app/layout.tsx` into a server component and a client component. Create `src/app/components/LayoutClient.tsx` marked `"use client"` — move all existing client logic into it (NavbarContext provider, Navbar, Footer, pathname-based useEffect for cursor). LayoutClient should also call `document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light")` in a `useEffect` whenever `darkMode` changes (read `darkMode` from `useTheme()`). Then rewrite `src/app/layout.tsx` as a Server Component (no `"use client"` directive) that exports `const metadata = { title: "Joseph Cheng | CS & Math @ NYU", description: "Personal portfolio of Joseph Cheng — CS and Mathematics student at NYU. Projects in physics simulation, quant trading, and calculus education.", openGraph: { title: "Joseph Cheng", description: "Personal portfolio of Joseph Cheng", type: "website" } }` and renders `<html lang="en"><body><LayoutClient>{children}</LayoutClient></body></html>`.
+### Visual Treatment Per Element
+Each element provides:
+- **Base color** for section backgrounds and accents
+- **Glow variant** (35-40% opacity) for hover states, borders, character aura
+- **Background tint** (6% opacity) for subtle section differentiation
+- **Unique particle preset** (shape, behavior, speed)
+- **Transition landscape** (SVG silhouettes for scene changes)
 
-- [x] Move the dark mode toggle from the home page into the Navbar. In `src/app/components/Navbar.tsx`, import and use `useTheme()` from NavbarContext, and add a sun/moon toggle button inside the nav panel (below the existing nav links). Use the same FaSun/FaMoon icons and styling that currently exist in `src/app/page.tsx`. Then remove the sun/moon toggle JSX, the `darkMode` local state, and its associated `useEffect` from `src/app/page.tsx`. Replace any remaining `darkMode` usage in `page.tsx` with `const { darkMode } = useTheme()`.
+---
 
-- [x] Update `src/app/professional/Professional.module.css` to use CSS custom properties instead of hardcoded dark colors: replace hardcoded background colors like `#1a1a2e`, `#0d0d1a`, `#2a2a3e` with `var(--bg)` and `var(--card-bg)`; replace hardcoded text colors like `#e8eaf6`, `#ffffff` with `var(--text)`. This allows the professional page to respond to the global dark/light theme toggle.
+## 3. The Traveler Character
 
-### Phase 3: New Content
+### Design
+A **CSS/SVG-coded stylized figure** - a hooded traveler with a flowing cloak and a glowing elemental orb. Abstract enough to animate smoothly, detailed enough to feel like a character. Built entirely in code (no external image assets).
 
-- [x] Add a skills tag cloud section to the professional page (`src/app/professional/page.tsx` and `src/app/professional/Professional.module.css`). Insert a new section between the intro/header and the projects sections. Use this data inline in the component: `const skills = { Languages: ["Python","TypeScript","JavaScript","C++","Java"], Frameworks: ["React","Next.js","Node.js"], "ML & Data": ["PyTorch","NumPy","Pandas","SQL"], Tools: ["Git","LaTeX","Figma","Linux"] }`. Render as: a wrapping `<section className={styles.skillsSection}>` with heading "Skills", then for each category a `<div className={styles.skillGroup}>` containing a `<span className={styles.skillCategory}>{category}</span>` and a `<div className={styles.skillTags}>` with `<span className={styles.skillTag}>` for each skill. CSS: `.skillsSection` uses `padding: 4rem 2rem; max-width: 1200px; margin: 0 auto`. `.skillGroup` uses `display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.2rem; flex-wrap: wrap`. `.skillCategory` uses `font-family: 'Josefin Sans',sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text); opacity: 0.6; min-width: 110px`. `.skillTag` uses `background: var(--card-bg); border: 1px solid var(--border); border-radius: 999px; padding: 0.3rem 0.9rem; font-size: 0.85rem; color: var(--text); transition: background 0.2s` with hover: `background: var(--accent); color: #fff; border-color: var(--accent)`.
+### Poses
+| Pose | Used When |
+|------|-----------|
+| Idle | Hero sections, pausing at content |
+| Walking | User is scrolling, character moves through page |
+| Casting | Section transitions, dramatic reveals |
+| Sitting | Connect/footer sections |
 
-- [x] Fully rebuild `src/app/nonprofessional/page.tsx` and `src/app/nonprofessional/NonProfessional.module.css` with four scroll sections matching the professional page's structure. Section 1 — Hero (100vh, background: linear-gradient(135deg, #b2454e, #ffba93)): render "Personal Passions" as an h1, tagline "Beyond the code — writing, music, and ideas." as a p, a Contact Me mailto anchor styled as `.contactButton`, the existing `<SocialMediaLinks />` component, and a bouncing scroll-down arrow (▼). Section 2 — Writing & Ideas (min-height: 100vh, background: var(--bg) defaulting to #1a1a2e): heading "Writing & Ideas", subtitle "Essays, reflections, and ideas.", then a 2-column auto-fit grid (`grid-template-columns: repeat(auto-fit, minmax(280px,1fr))`) of 3 writing cards. Each card has: a category chip (e.g. "Essay"), a title (add `{/* TODO: Replace with real title */}` comment and placeholder like "Coming Soon"), a 2-line excerpt (add `{/* TODO: Replace with real excerpt */}` comment and placeholder "My writing will appear here soon."), and a greyed-out "Read →" span. Section 3 — Music (min-height: 100vh, background: #f9f5f0): heading "Music", subtitle "Things I play when I'm not writing code.", then a 3-column auto-fit grid of 3 piano-focused cards using react-icons: Card 1 title "Classical Pieces" with FaMusic icon, Card 2 title "Original Compositions" with FaMusic icon, Card 3 title "Covers & Transcriptions" with FaCompactDisc icon — each with a short placeholder description. Section 4 — Footer: `<Link className={styles.backToHome} href="/">Back to Home</Link>` directly (NOT `<Link><button>`) and `<Footer />`. Add the `<Navigation />` sidebar component with the same scroll-triggered show/hide logic as the professional page (useRef + getBoundingClientRect to show nav after scrolling past hero). Use CSS custom properties throughout for dark mode compatibility.
+### Behavior
+- Character is fixed-positioned and moves based on scroll progress
+- Follows a per-page waypoint path (x, y coordinates at scroll percentages)
+- Glow color matches the current section's element
+- Faces the direction of travel
+- Smoothly transitions between poses at section boundaries
 
-### Phase 4: Animations
+---
 
-- [x] Create a shared Framer Motion animation variants file at `src/app/utils/animations.ts` with three exports: `fadeInUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }`, `staggerContainer = { hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }`, and `cardReveal = { hidden: { opacity: 0, y: 40, scale: 0.97 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5 } } }`.
+## 4. Page Specifications
 
-- [x] Add Framer Motion animations to the home page (`src/app/page.tsx` and `src/app/page.module.css`): (1) Import `motion` from framer-motion and `fadeInUp` from utils/animations. (2) Wrap the hero heading and "I'm" text in `<motion.div initial="hidden" animate="visible" variants={fadeInUp}>`. (3) Replace CSS `transform: scale(1.05)` hover on the clickable `.split` panels with `<motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}>` — remove conflicting CSS hover transform rules. (4) Replace the CSS `@keyframes bounce` on the scroll arrow with `<motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}>` — remove the `@keyframes bounce` CSS. (5) Remove the `.fade-in` class from any elements that are now animated by Framer Motion to avoid conflicting opacity transitions.
+### 4.1 Home Page - Anemo Theme
 
-- [x] Add Framer Motion scroll-triggered animations to the professional page (`src/app/professional/page.tsx`): import `motion` and `staggerContainer`, `cardReveal` from `src/app/utils/animations`. Wrap the `.projectCardsContainer` div with `<motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>`. Wrap each individual project card div with `<motion.div variants={cardReveal}>`. Do the same for each experience card. For the skills section added in Phase 3, also wrap the skill groups container in a staggerContainer motion.div.
+**Narrative**: The journey begins. Wind particles swirl as the traveler introduces themselves.
 
-- [x] Add page transition animations to `src/app/components/LayoutClient.tsx`: import `AnimatePresence` and `motion` from framer-motion. Import `usePathname` from next/navigation. Wrap the `{children}` render with `<AnimatePresence mode="wait"><motion.main key={pathname} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3 }}>{children}</motion.main></AnimatePresence>`.
+| Section | Content | Effects |
+|---------|---------|---------|
+| Hero (100vh) | Name, subtitle, scroll cue | Anemo particles, glassmorphism text panel, character idle |
+| Journey Intro | "Follow the traveler..." | Character starts walking, parallax wind landscape |
+| Featured Project | Three-Body Simulation showcase | Glassmorphism card, electro glow hover, character pauses |
+| Explore Portals | Professional + Personal links | Element-colored portal cards with glow borders |
+| Connect | Email CTA, social links | Character sitting, glassmorphism panel |
 
-- [x] Add Framer Motion whileInView animations to the non-professional page (`src/app/nonprofessional/page.tsx`): wrap the writing card grid container in `<motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>` and each writing card in `<motion.div variants={cardReveal}>`. Do the same for the music card grid and each music card.
+### 4.2 Professional Page - Multi-Element Journey
 
-### Phase 5: Mobile Responsiveness
+**Narrative**: A timeline-based adventure through skills, projects, and experience. The traveler walks through four elemental zones, each revealing a chapter of the professional story.
 
-- [x] Fix home page mobile responsiveness (`src/app/page.module.css`): add a `@media (max-width: 768px)` block with `.name { font-size: 3.5rem }` and `.im { font-size: 2rem }`. The sun/moon toggle no longer lives here (moved to Navbar in Phase 2), so no toggle styling needed.
+| Zone | Element | Content | Unique Effects |
+|------|---------|---------|----------------|
+| Hero | Anemo | Title, intro, CTA buttons | Wind particles, character enters |
+| Transition | Anemo->Geo | Parallax landscape | Plains to rocky terrain |
+| Skills | Geo | 4 skill categories as tag clouds | Glassmorphism cards, earth particles, amber glow |
+| Transition | Geo->Electro | Parallax landscape | Stone pillars with lightning |
+| Projects | Electro | Project cards (expandable) | Electric border glow, lightning particles, casting pose |
+| Transition | Electro->Dendro | Parallax landscape | Energy tendrils to vines |
+| Experience | Dendro | Timeline as growing vine/tree | Branch entries, nature particles, walking along vine |
 
-- [x] Fix professional page mobile responsiveness (`src/app/professional/Professional.module.css`): inside the existing `@media (max-width: 768px)` block (or add one if missing), add: `.header { font-size: 2.5rem }`, `.projectTitle { font-size: 1.5rem }`, `.projectsTitle { font-size: 2rem }`, `.skillsSection { padding: 2rem 1rem }`.
+### 4.3 Non-Professional Page - Hydro Theme
 
-- [x] Add a hamburger menu button to the Navbar for mobile (`src/app/components/Navbar.tsx` and `src/app/components/Navbar.module.css`): import `FaBars` and `FaTimes` from react-icons/fa. Add a `<button className={styles.hamburger} onClick={() => setIsVisible(v => !v)} aria-label="Toggle navigation">` that renders `FaTimes` when nav is visible, `FaBars` otherwise. Style `.hamburger` with `position: fixed; top: 1rem; left: 1rem; z-index: 1000; width: 44px; height: 44px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); display: none; align-items: center; justify-content: center; cursor: pointer`. In the media query, show it: `@media (pointer: coarse) { .hamburger { display: flex } }`.
+**Narrative**: A reflective journey through personal passions, flowing like water.
 
-### Phase 6: Write PRD to Project
+| Section | Content | Effects |
+|---------|---------|---------|
+| Hero | Title, tagline | Bubble/water particles, glassmorphism panel |
+| Writing | Essay/reflection/ideas cards | Cards float like bubbles, water ripple hover |
+| Music | Classical/original/covers cards | Audio-wave border animations, rhythmic particle pulse |
 
-- [x] Write this file's task list as `prd.md` to the project root (`/personal-website/prd.md`) documenting all changes made. The file should note which tasks are completed (change `- [ ]` to `- [x]`) for each task that was successfully implemented.
+### 4.4 Three-Body Simulation - Minimal Update
+- Glassmorphism on controls panel
+- Electro accent colors on UI
+- Existing canvas simulation unchanged
+
+---
+
+## 5. Scroll-Driven Journey Engine
+
+### Architecture
+- **Lenis** provides smooth scroll normalization
+- **GSAP ScrollTrigger** drives character position, section pinning, and scene transitions
+- **JourneyContext** (React Context) broadcasts current element, scroll progress, and active section to all components
+- **useJourneySection hook** registers sections with the scroll engine
+- **Framer Motion** retained for enter/exit animations and `whileInView` reveals
+
+### Scene Transitions
+Between major sections, a full-width transition zone:
+1. Parallax SVG landscape silhouettes (3-4 layers at different scroll speeds)
+2. Background gradient crossfades from one element to the next
+3. Character walks through the scene
+4. GSAP pins the transition briefly for dramatic effect
+
+---
+
+## 6. Visual Effects
+
+### Glassmorphism
+All content panels use frosted glass treatment:
+- `backdrop-filter: blur(20px)`
+- Semi-transparent background (`rgba(255,255,255,0.08)`)
+- Subtle border (`rgba(255,255,255,0.12)`)
+- Element-colored glow on hover
+
+### Particles (tsparticles)
+Full-screen particle layer behind content. Each element has a unique preset:
+- **Anemo**: Swirling wind circles + leaves
+- **Geo**: Slowly floating diamonds + squares
+- **Electro**: Darting lines + flickering dots
+- **Dendro**: Gently rising circles + triangle leaves
+- **Hydro**: Rising bubbles with wobble
+
+Particles transition smoothly when the active element changes.
+
+### Navigation
+Floating pill nav gains:
+- Glassmorphism styling
+- Element-colored active indicator
+- Scroll progress bar colored with active element
+- Small elemental icon next to active page
+
+### Cursor
+Existing GlowCursor changes glow color to match the active element.
+
+---
+
+## 7. Content Data Model
+
+Data extracted from pages into typed config files for easy expansion:
+
+```typescript
+// src/app/data/professional.ts
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  image: string;
+  link?: string;
+  github?: string;
+  timelineDate: string; // for chronological ordering
+}
+
+interface SkillCategory {
+  name: string;
+  icon: string;
+  skills: string[];
+}
+
+interface Experience {
+  id: string;
+  title: string;
+  organization: string;
+  period: string;
+  description: string;
+  image: string;
+  link?: string;
+  timelineDate: string;
+}
+```
+
+---
+
+## 8. Performance Strategy
+
+### Target: Max visual impact with graceful degradation
+
+| Device | Strategy |
+|--------|----------|
+| Desktop (1024px+) | Full effects: all particles, character animation, parallax, scene transitions |
+| Tablet (768-1023px) | Reduced particles (60%), simplified transitions, character at 60px |
+| Mobile (<768px) | Minimal particles, color-fade transitions (no parallax), smaller character |
+| Reduced motion | No particles, static character, no parallax, simple color fades, native scroll |
+
+### Technical optimizations
+- Dynamic imports for CharacterLayer and ElementalParticles (no SSR)
+- `gsap.matchMedia()` for viewport-specific animation sets
+- Canvas particles capped at 30fps on mobile
+- `will-change: transform` on character layer
+- Intersection Observer to lazy-load tsparticles
+- Code-split character pose data
+
+---
+
+## 9. Tech Stack
+
+| Tool | Role |
+|------|------|
+| Next.js 13.5.6 | Framework (existing) |
+| React 18 | UI (existing) |
+| TypeScript | Language (existing) |
+| Framer Motion 10 | Enter/exit animations, whileInView (existing) |
+| GSAP + ScrollTrigger | Scroll-driven character, pinning, timelines (NEW) |
+| Lenis | Smooth scroll normalization (NEW) |
+| tsparticles | Elemental particle system (NEW) |
+| CSS Modules | Styling (existing) |
+| CSS Custom Properties | Elemental theming (extend existing) |
+
+---
+
+## 10. Accessibility Requirements
+
+- All decorative elements (particles, character, landscapes): `aria-hidden="true"`
+- Glassmorphism panels: WCAG AA contrast maintained
+- `prefers-reduced-motion`: all heavy effects disabled, content fully accessible
+- Existing skip link, focus-visible styles, keyboard navigation preserved
+- Scene transitions never trap keyboard focus
+- Semantic HTML hierarchy maintained
+
+---
+
+## 11. New Files to Create
+
+```
+src/app/
+  components/
+    character/
+      TravelerSVG.tsx           -- SVG character with pose support
+      CharacterPoses.ts         -- Path data for each pose
+      CharacterLayer.tsx        -- Fixed-position character container
+      useCharacterScroll.ts     -- Scroll-driven character position hook
+    journey/
+      SmoothScroll.tsx          -- Lenis wrapper
+      SceneTransition.tsx       -- Between-section parallax transitions
+      ParallaxLandscape.tsx     -- SVG landscape silhouettes with parallax
+      useJourneySection.ts      -- Hook to register a section with scroll engine
+    particles/
+      ElementalParticles.tsx    -- Full-screen tsparticles layer
+    ui/
+      GlassPanel.tsx            -- Reusable glassmorphism container
+      GlassCard.tsx             -- Glassmorphism card with hover glow
+      ElementBadge.tsx          -- Colored badge showing element type
+      SectionHeader.tsx         -- Unified section header with element icon
+    icons/
+      ElementIcons.tsx          -- SVG icons for each element
+  context/
+    JourneyContext.tsx          -- Global journey state
+  config/
+    journeyPath.ts             -- Character waypoints per page
+    particles.ts               -- tsparticles configs per element
+    elements.ts                -- Element color/name/icon mapping
+  data/
+    professional.ts            -- Projects, skills, experience data
+    nonprofessional.ts         -- Writing, music data
+  styles/
+    glassmorphism.module.css   -- Shared glass effect classes
+  utils/
+    scrollUtils.ts             -- GSAP ScrollTrigger utility functions
+```
+
+### Existing files to modify
+- `globals.css` - elemental color variables, z-index scale
+- `LayoutClient.tsx` - wrap with JourneyProvider, SmoothScroll, CharacterLayer, ElementalParticles
+- `FloatingPillNav.tsx` - glassmorphism, element color indicator, progress bar
+- `GlowCursor.tsx` - glow color from active element
+- `page.tsx` (home) - full redesign with anemo theme
+- `professional/page.tsx` - multi-element journey redesign
+- `nonprofessional/page.tsx` - hydro theme redesign
+- `three-body-simulation/page.tsx` - glassmorphism styling
+- `utils/animations.ts` - add cinematic reveal variants
+
+---
+
+## 12. Implementation Order
+
+1. **Foundation** - design system, dependencies, data extraction
+2. **Character** - SVG traveler with poses
+3. **Scroll Engine** - Lenis + GSAP + JourneyContext
+4. **Particles** - elemental particle system
+5. **Pages** - redesign all pages (professional is most complex)
+6. **Nav + Polish** - update nav, cursor, layout wrapper
+7. **Performance** - optimization pass, reduced motion, cross-browser testing
+
+---
+
+## 13. Success Criteria
+
+- [ ] Traveler character smoothly journeys through each page on scroll
+- [ ] Each section displays its elemental color theme, particles, and glassmorphism
+- [ ] Scene transitions between sections feel cinematic with parallax landscapes
+- [ ] Navigation reflects current element with color and icon
+- [ ] All content is accessible with reduced motion enabled
+- [ ] Lighthouse performance score >= 90 on desktop
+- [ ] Site works on Chrome, Firefox, Safari
+- [ ] Mobile experience is smooth with simplified effects
+- [ ] Content data model supports easy addition of new projects/experiences
+- [ ] Dark mode works correctly with all elemental themes
