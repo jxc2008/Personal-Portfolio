@@ -83,8 +83,13 @@ export default function Professional() {
             >
               Contact Me
             </button>
-            <a href="/resume.pdf" download className={styles.secondaryButton}>
-              Resume &darr;
+            <a
+              href="https://www.linkedin.com/in/joseph-cheng-b03886296/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.secondaryButton}
+            >
+              LinkedIn &rarr;
             </a>
           </motion.div>
           <motion.div variants={heroReveal}>
@@ -233,7 +238,14 @@ export default function Professional() {
                   <span className={styles.expDate}>Feb 2024 - May 2024</span>
                   <span className={styles.expLocation}>New York, NY</span>
                 </div>
-                <h3 className={styles.expTitle}>Undergraduate Research Assistant</h3>
+                <a
+                  href="https://github.com/ExtraMediumDev/SPY-Prediction-using-LSTM-Neural-Network"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.expTitleLink}
+                >
+                  <h3 className={styles.expTitle}>Undergraduate Research Assistant</h3>
+                </a>
                 <p className={styles.expCompany}>NYU Stern Undergraduate Research</p>
                 <ul className={styles.expBullets}>
                   <li>
@@ -278,8 +290,22 @@ export default function Professional() {
                   <span className={styles.expDate}>Feb 2024 - May 2024</span>
                   <span className={styles.expLocation}>New York, NY</span>
                 </div>
-                <h3 className={styles.expTitle}>Marketing Intern at Startup</h3>
-                <p className={styles.expCompany}>Intoit</p>
+                <a
+                  href="https://www.intoitapp.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.expTitleLink}
+                >
+                  <h3 className={styles.expTitle}>Marketing Intern at Startup</h3>
+                </a>
+                <a
+                  href="https://www.intoitapp.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.expTitleLink}
+                >
+                  <p className={styles.expCompany}>Intoit</p>
+                </a>
                 <ul className={styles.expBullets}>
                   <li>
                     Reached out to venture capitalists which helped raise $100,000 pre-seed

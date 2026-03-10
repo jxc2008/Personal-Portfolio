@@ -75,7 +75,7 @@ export default function Home() {
             className={styles.featuredCard}
             style={{ y: featuredY, scale: featuredScale }}
           >
-            <div className={styles.featuredImageWrap}>
+            <Link href="/three-body-simulation" className={styles.featuredImageWrap}>
               <Image
                 src="/images/three-body-simulation-image.png"
                 alt="Three-Body Simulation — interactive gravitational physics demo"
@@ -86,7 +86,7 @@ export default function Home() {
                 priority
               />
               <div className={styles.featuredImageOverlay} />
-            </div>
+            </Link>
           </motion.div>
 
           <div className={styles.featuredText}>

@@ -356,11 +356,22 @@
   margin-bottom: 0.25rem;
 }
 
+.expTitleLink {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.expTitleLink:hover .expTitle,
+.expTitleLink:hover .expCompany {
+  color: var(--accent);
+}
+
 .expCompany {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-secondary);
   margin-bottom: 1rem;
+  transition: color 0.2s ease;
 }
 
 .expBullets {
