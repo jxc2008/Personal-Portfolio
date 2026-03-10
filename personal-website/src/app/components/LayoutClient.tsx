@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { NavbarProvider, useTheme } from "./NavbarContext";
 import FloatingPillNav from "./FloatingPillNav";
 import GlowCursor from "./GlowCursor";
@@ -26,18 +26,15 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
       <ThemeSync />
       <GlowCursor />
       <FloatingPillNav />
-      <AnimatePresence mode="wait">
-        <motion.main
-          id="main-content"
-          key={pathname}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          {children}
-        </motion.main>
-      </AnimatePresence>
+      <motion.main
+        id="main-content"
+        key={pathname}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        {children}
+      </motion.main>
       <Footer />
     </NavbarProvider>
   );
