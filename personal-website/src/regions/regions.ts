@@ -137,20 +137,23 @@ const valorantRidge: Region = {
         {
           id: "roster-churn",
           title: "Roster churn makes prices less reliable",
-          status: "testing",
+          status: "preregistered",
+          statusLabel: "Pre-registered for Kickoff 2027",
           summary: "After big roster changes, are favourites priced worse, and do underdogs return more at the real closing odds?",
           points: [{ label: "Churn", value: "Share of a team's starting five who are new since last season" }],
         },
         {
           id: "region-lag",
           title: "Regions lag at internationals",
-          status: "testing",
+          status: "tested",
+          statusLabel: "Tested — no effect at close",
           summary: "At an international event, a region whose teams have already fallen short of their prices against other regions may keep being overpriced until the market catches up.",
         },
         {
           id: "round-variance",
           title: "Some teams swing harder",
-          status: "testing",
+          status: "tested",
+          statusLabel: "Tested — no effect at close",
           summary: "Do some teams win and lose maps by wider round margins than their prices suggest? If so, handicap and map prices should be wider for them.",
         },
       ],
@@ -175,7 +178,7 @@ const valorantRidge: Region = {
         key: "veto-calculator",
         props: {
           // The map pool itself is VALORANT_MAP_POOL in config.ts.
-          example: { Ascent: 62, Bind: 48, Corrode: 55, Haven: 41, Icebox: 66, Lotus: 52, Sunset: 37 },
+          example: { Abyss: 62, Bind: 48, Corrode: 55, Haven: 41, Lotus: 52, Summit: 66, Sunset: 37 },
           teams: ["Team A", "Team B"],
         },
       },

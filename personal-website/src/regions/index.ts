@@ -18,6 +18,8 @@ export const STATUS_LABEL: Record<Status, string> = {
   shipped: "Shipped",
   building: "Building",
   testing: "Testing",
+  tested: "Tested",
+  preregistered: "Pre-registered",
   drafting: "Drafting",
   planned: "Planned",
 };

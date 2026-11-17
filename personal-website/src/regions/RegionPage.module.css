@@ -231,6 +231,17 @@
   background: linear-gradient(90deg, var(--r-accent) 50%, transparent 50%);
 }
 
+/* Finished, whatever the result: a solid neutral dot. */
+.status[data-status="tested"]::before {
+  background: var(--r-ink-soft);
+  border-color: var(--r-ink-soft);
+}
+
+/* Written down before the data exists: an open accent ring. */
+.status[data-status="preregistered"]::before {
+  border-color: var(--r-accent);
+}
+
 .status[data-status="drafting"]::before {
   border-style: dashed;
   border-color: var(--r-ink-soft);

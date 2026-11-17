@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import type { ReactNode } from "react";
-import { formatAsOf, VALORANT_MAP_POOL } from "../config";
+import { VALORANT_MAP_POOL } from "../config";
 import RegionPage from "../RegionPage";
 
 jest.mock("next/link", () => ({
@@ -38,7 +38,7 @@ describe("RegionPage", () => {
 
   it("shows when the map pool was last updated", () => {
     render(<RegionPage slug="valorant-ridge" />);
-    expect(screen.getByText(`Map pool as of ${formatAsOf(VALORANT_MAP_POOL.asOf)}`)).toBeInTheDocument();
+    expect(screen.getByText("Map pool as of Patch 13.08 (Oct 2026)")).toBeInTheDocument();
     for (const map of VALORANT_MAP_POOL.maps) expect(screen.getByLabelText(map)).toBeInTheDocument();
   });
 
@@ -46,7 +46,12 @@ describe("RegionPage", () => {
     render(<RegionPage slug="valorant-ridge" />);
     expect(screen.getByText(/With best play from here/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Finish with best play" }));
-    expect(screen.getByText(/of the time on/)).toHaveTextContent(/Team A wins the series \d+\.\d% of the time on \w+ \(\d+%\), \w+ \(\d+%\), \w+ \(\d+%\)\./);
+    const result = screen.getByText(/of the time on/);
+    expect(result).toHaveTextContent(/Team A wins the series \d+\.\d% of the time on \w+ \(\d+%\), \w+ \(\d+%\), \w+ \(\d+%\)\./);
+    // The three maps played all come from the current pool.
+    const played = Array.from(result.textContent!.matchAll(/(\w+) \(\d+%\)/g), (m) => m[1]);
+    expect(played).toHaveLength(3);
+    for (const map of played) expect(VALORANT_MAP_POOL.maps).toContain(map);
     fireEvent.click(screen.getByRole("button", { name: "Undo" }));
     expect(screen.getByText(/With best play from here/)).toBeInTheDocument();
   });
@@ -84,6 +89,13 @@ describe("RegionPage", () => {
     expect(within(banner).queryByTestId("region-key-art")).not.toBeInTheDocument();
     expect(within(banner).queryByTestId("region-art-scrim")).not.toBeInTheDocument();
     expect(banner).not.toHaveAttribute("data-art");
+  });
+
+  it("shows the research results as statuses", () => {
+    render(<RegionPage slug="valorant-ridge" />);
+    expect(screen.getByText("Regions lag at internationals").closest("li")).toHaveTextContent("Tested — no effect at close");
+    expect(screen.getByText("Some teams swing harder").closest("li")).toHaveTextContent("Tested — no effect at close");
+    expect(screen.getByText("Roster churn makes prices less reliable").closest("li")).toHaveTextContent("Pre-registered for Kickoff 2027");
   });
 
   it("marks stubs as still being charted", () => {

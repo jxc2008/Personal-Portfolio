@@ -1,5 +1,5 @@
 import { getRegion, postsFor, regionAnchors, REGIONS, t, worldTagline } from "..";
-import { formatAsOf, VALORANT_MAP_POOL } from "../config";
+import { formatAsOf, mapPoolLabel, VALORANT_MAP_POOL } from "../config";
 import type { Post, Text } from "../types";
 
 /** Every Text-valued leaf in a piece of content. */
@@ -43,14 +43,28 @@ describe("region content", () => {
     expect(REGIONS.filter((r) => r.state === "open")).toHaveLength(1);
   });
 
+  it("uses the Patch 13.08 map pool", () => {
+    expect(VALORANT_MAP_POOL.maps).toEqual(["Abyss", "Bind", "Corrode", "Haven", "Lotus", "Summit", "Sunset"]);
+    expect(mapPoolLabel()).toBe("as of Patch 13.08 (Oct 2026)");
+  });
+
   it("keeps the veto examples in step with the map pool in config.ts", () => {
     expect(VALORANT_MAP_POOL.maps).toHaveLength(7);
     expect(new Set(VALORANT_MAP_POOL.maps).size).toBe(7);
-    for (const s of REGIONS.flatMap((r) => r.sections)) {
-      if (s.widget?.key !== "veto-calculator") continue;
-      // A stale example map means the pool rotated: update the examples in regions.ts.
-      expect(Object.keys(s.widget.props.example).filter((m) => !VALORANT_MAP_POOL.maps.includes(m))).toEqual([]);
+    const vetoes = REGIONS.flatMap((r) => r.sections).filter((s) => s.widget?.key === "veto-calculator");
+    expect(vetoes.length).toBeGreaterThan(0);
+    for (const s of vetoes) {
+      // A mismatch means the pool rotated: update the examples in regions.ts.
+      expect(Object.keys(s.widget!.props.example).sort()).toEqual([...VALORANT_MAP_POOL.maps].sort());
     }
+  });
+
+  it("states the research results on the Ridge", () => {
+    const research = getRegion("valorant-ridge")?.sections.find((s) => s.id === "research");
+    const label = (id: string) => research?.entries.find((e) => e.id === id)?.statusLabel;
+    expect(label("region-lag")).toBe("Tested — no effect at close");
+    expect(label("round-variance")).toBe("Tested — no effect at close");
+    expect(label("roster-churn")).toBe("Pre-registered for Kickoff 2027");
   });
 
   it("labels the Far Shore's Mandarin as a draft", () => {
@@ -65,11 +79,13 @@ describe("region content", () => {
 });
 
 describe("helpers", () => {
-  it("formats the map pool date and rejects malformed ones", () => {
-    expect(formatAsOf("2025-09")).toBe("September 2025");
-    expect(formatAsOf(VALORANT_MAP_POOL.asOf)).toMatch(/^[A-Z][a-z]+ \d{4}$/);
+  it("formats the map pool label and rejects malformed values", () => {
+    expect(formatAsOf("2026-10")).toBe("Oct 2026");
+    expect(formatAsOf("2025-09")).toBe("Sep 2025");
     expect(() => formatAsOf("2025-13")).toThrow();
-    expect(() => formatAsOf("Sept 2025")).toThrow();
+    expect(() => formatAsOf("Oct 2026")).toThrow();
+    expect(mapPoolLabel({ patch: "12.01", asOf: "2026-01" })).toBe("as of Patch 12.01 (Jan 2026)");
+    expect(() => mapPoolLabel({ patch: "13.8", asOf: "2026-10" })).toThrow();
   });
 
   it("t falls back to English", () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
-import { formatAsOf, VALORANT_MAP_POOL } from "../config";
+import { mapPoolLabel, VALORANT_MAP_POOL } from "../config";
 import type { VetoWidgetProps } from "../types";
 import { finalMaps, greedy, options, solve, stepsFor, type Side } from "./veto";
 import styles from "./VetoCalculator.module.css";
@@ -65,7 +65,7 @@ export default function VetoCalculator({ example, teams: defaultTeams }: VetoWid
         <table className={styles.maps}>
           <caption>
             <span>Chance {team(0)} wins each map</span>
-            <span className={styles.asOf}>Map pool as of {formatAsOf(VALORANT_MAP_POOL.asOf)}</span>
+            <span className={styles.asOf}>Map pool {mapPoolLabel()}</span>
           </caption>
           <tbody>
             {pool.map((map, i) => {

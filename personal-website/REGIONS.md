@@ -66,16 +66,16 @@ The phone banner is the tight one: the subject needs to sit between about 38% an
 - **Wide screens:** the shade is a soft radial fade out of the top-left corner, with no hard edge. The text is held to the upper left: the title is about 15% smaller than on drawn banners, and the description is capped at 80% of the text column. The description scales with the banner (16 px up to about 1030 px wide, about 22 px at 1440), so it keeps the same proportion as the banner grows.
 - **Tablets (641–1023 px):** the same fade, reaching a little further, because the narrow text column runs further down.
 - **Phones (under 640 px):** only the title stays over the art, on a shaded band at the top. The description and language switch move below the image, on the themed page colours, so no length of copy can cover the subject.
-- **Tiles** (home page and the "Other regions" strip): the same dark treatment as the banner, in both themes, while the art is showing. The shade is solid behind the name and fades out by 34% of the tile's height, above Ridge's mast at 38%. On the smallest strip tiles (phone width, 160×90) the name sits right on the mast tip and the fade's tail reaches the mast; those tiles are thumbnails and the layout was already that tight.
+- **Tiles** (home page and the "Other regions" strip): the same dark treatment as the banner, in both themes, while the art is showing. The shade is solid behind the name and fades out by 34% of the tile's height, above Ridge's mast at 38%. On the small strip tiles at phone width (160×90) a top-left name would land on the mast tip, so there the name sits bottom-left, slightly smaller, with the shade rising from the bottom edge.
 
 **The keep-clear boxes and the e2e test.** `art.keepClear` lists the parts of the image that must stay in frame and never sit behind text. For Ridge that's the mast and the outpost, measured on the 2400×1350 file; update the boxes if the image changes. `e2e/keyart.spec.ts` (Playwright, real browser) checks every region with key art at 390, 768, 1024 and 1440 px in both themes:
 
-1. Each keep-clear box is fully in frame, and no line of banner text or control overlaps it.
+1. Each keep-clear box is fully in frame, and no text or control overlaps it, on the banner, the home tile and the small "Other regions" tile.
 2. The banner text, and the region's name on its home tile and its "Other regions" tile, meet WCAG AA against the actual pixels behind them. It's measured on every pixel of each line with the text hidden and no halo, so the worst spot counts.
 
 Run it with `npm run build && npm run test:e2e`. It isn't part of `npm test`.
 
-**Results on the real image.** All 32 checks pass. Tile names measure 8.05–9.35:1. Light and dark mode now measure the same, since the banner is dark in both. The worst pixel behind each piece of text:
+**Results on the real image.** All 48 checks pass. Tile names measure 8.05–9.35:1. Light and dark mode now measure the same, since the banner is dark in both. The worst pixel behind each piece of text:
 
 | Width | Title (needs 3:1) | Description (needs 4.5:1) |
 |---|---|---|
@@ -90,14 +90,13 @@ The trade-off: on wide screens the text ends 60–140 px from the mast, so a fad
 Drafted from the thunderedge and valorant-pricing-model repos (both public; both linked from the page).
 
 - **Pricing system:** the live engine (Building), the side-baseline double-count fix (Drafting; the 59.9% vs 55% example is from the research report), and ThunderEdge (Shipped).
-- **Research hypotheses:** roster churn, region lag, round-variance. All three are marked Testing, and I left the results out on purpose. The report is from 2026-11-17, it is still being rebuilt, and the historical odds are winner-only. Publish findings once you're happy with them.
+- **Research hypotheses:** region lag and round variance are "Tested — no effect at close"; roster churn is "Pre-registered for Kickoff 2027". An entry's `statusLabel` in `regions.ts` overrides the default status text when a result needs saying.
 - **Champions post-mortems:** 2025 and 2026, both Planned. Nothing is written yet, and I didn't invent any.
 - **Veto calculator:** an exact minimax over the VCT best-of-three veto (ban, ban, pick, pick, ban, ban, decider).
   - You set each map's win chance. It shows every option at the current step with the series price it leads to, marks the best choice for whoever is acting, and can finish the veto with best play or undo step by step.
   - It compares best play against "ban your worst, pick your best".
   - It assumes maps are independent. The example numbers are made up, and the note under the calculator says so.
-  - **Map pool:** one value, `VALORANT_MAP_POOL` in `src/regions/config.ts` (`maps` plus an `asOf` year-month). The calculator shows "Map pool as of September 2025". The example chances in `regions.ts` are keyed by map name; a test fails if an example names a map that has left the pool.
-  - **Still to confirm:** the maps (Ascent, Bind, Corrode, Haven, Icebox, Lotus, Sunset) and the `asOf` date. I'm not certain of either.
+  - **Map pool:** one value, `VALORANT_MAP_POOL` in `src/regions/config.ts`: Abyss, Bind, Corrode, Haven, Lotus, Summit, Sunset, with `patch: "13.08"` and `asOf: "2026-10"`. The calculator shows "Map pool as of Patch 13.08 (Oct 2026)". When the pool rotates, update the maps, patch and date there, and the example chances in `regions.ts` (a test fails unless the examples name exactly the pool's maps).
 
 No live P&L appears anywhere.
 
@@ -134,6 +133,4 @@ The candidates are Cormorant Garamond (current), Fraunces, Instrument Serif, Shi
 
 ## Open questions
 
-1. Confirm the veto map pool and its `asOf` date in `config.ts`.
-2. Whether to publish any research results yet.
-3. The 中文 text (marked as draft on the page until you finalise it).
+1. The 中文 text (marked as draft on the page until you finalise it).
