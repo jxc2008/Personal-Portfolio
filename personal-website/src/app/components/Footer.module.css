@@ -29,6 +29,22 @@
   color: var(--text);
 }
 
+/* Region pages: the region's paper and ink instead of the site's colours. */
+.regional {
+  background: var(--r-bg);
+  border-top-color: var(--r-rule);
+  color: var(--r-muted);
+  font-size: 0.8125rem;
+}
+
+.regional .socials a {
+  color: var(--r-muted);
+}
+
+.regional .socials a:hover {
+  color: var(--r-ink);
+}
+
 @media (max-width: 640px) {
   .footer {
     flex-direction: column;

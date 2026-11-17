@@ -482,3 +482,18 @@
     margin-top: 1.5rem;
   }
 }
+
+/* Desktop: descriptions at 16px, small labels at least 13px. */
+@media (min-width: 1024px) {
+  .facts,
+  .points dd,
+  .links {
+    font-size: 1rem;
+  }
+
+  .status,
+  .points dt,
+  .postDate {
+    font-size: 0.85rem;
+  }
+}

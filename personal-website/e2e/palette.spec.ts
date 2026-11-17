@@ -1,5 +1,5 @@
-// Region page bodies: every piece of text below the banner meets WCAG AA against the
-// background it actually sits on (paper, a section band, a card or a tinted button),
+// Region page bodies and their footer: every piece of text below the banner meets WCAG AA
+// against the background it actually sits on (paper, a section band, a card or a tinted button),
 // in both themes, for every region. Key art and drawn scenery are covered elsewhere
 // (keyart.spec.ts) and skipped here.
 
@@ -8,6 +8,7 @@ import { REGIONS } from "../src/regions/regions";
 
 const SIZES = [
   { width: 390, height: 844 },
+  { width: 1024, height: 768 },
   { width: 1440, height: 900 },
 ];
 const THEMES = ["light", "dark"] as const;
@@ -15,12 +16,13 @@ const THEMES = ["light", "dark"] as const;
 for (const region of REGIONS) {
   for (const size of SIZES) {
     for (const theme of THEMES) {
-      test(`${region.slug} at ${size.width}px, ${theme}: body text meets WCAG AA`, async ({ page }) => {
+      test(`${region.slug} at ${size.width}px, ${theme}: body and footer text meet WCAG AA`, async ({ page }) => {
         await page.setViewportSize(size);
         await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
         await page.goto(`/regions/${region.slug}`, { waitUntil: "networkidle" });
 
-        const failures = await page.locator("article").first().evaluate((article) => {
+        const failures = await page.evaluate(() => {
+          const roots = [document.querySelector("article"), document.querySelector("footer")].filter(Boolean) as Element[];
           // Resolve any CSS colour (including color-mix and oklab) to sRGB through a canvas.
           const ctx = document.createElement("canvas").getContext("2d", { willReadFrequently: true })!;
           const rgba = (css: string): [number, number, number, number] => {
@@ -51,27 +53,32 @@ for (const region of REGIONS) {
 
           const out: string[] = [];
           const seen = new Set<Element>();
-          const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
-          while (walker.nextNode()) {
-            const el = walker.currentNode.parentElement;
-            if (!el || seen.has(el) || !walker.currentNode.textContent?.trim()) continue;
-            seen.add(el);
-            // Over art: the banner, and tile art in the "Other regions" strip.
-            if (el.closest("header") || el.closest("a span:has(> svg)")) continue;
-            // WCAG exempts disabled controls.
-            if (el.closest("button:disabled")) continue;
-            const cs = getComputedStyle(el);
-            if (cs.visibility === "hidden" || cs.display === "none" || el.getClientRects().length === 0) continue;
-            const bg = backgroundOf(el);
-            const fg = over(rgba(cs.color), bg);
-            const px = parseFloat(cs.fontSize);
-            const need = px >= 24 || (px >= 18.66 && Number(cs.fontWeight) >= 700) ? 3 : 4.5;
-            const r = ratio(fg, bg);
-            if (r < need) out.push(`${r.toFixed(2)} < ${need}: <${el.tagName.toLowerCase()}> "${el.textContent!.trim().slice(0, 40)}"`);
+          for (const root of roots) {
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+            while (walker.nextNode()) {
+              const el = walker.currentNode.parentElement;
+              if (!el || seen.has(el) || !walker.currentNode.textContent?.trim()) continue;
+              seen.add(el);
+              // Over art: the banner, and tile art in the "Other regions" strip.
+              if (el.closest("header") || el.closest("a span:has(> svg)")) continue;
+              // WCAG exempts disabled controls.
+              if (el.closest("button:disabled")) continue;
+              const cs = getComputedStyle(el);
+              if (cs.visibility === "hidden" || cs.display === "none" || el.getClientRects().length === 0) continue;
+              const bg = backgroundOf(el);
+              const fg = over(rgba(cs.color), bg);
+              const px = parseFloat(cs.fontSize);
+              const need = px >= 24 || (px >= 18.66 && Number(cs.fontWeight) >= 700) ? 3 : 4.5;
+              const r = ratio(fg, bg);
+              if (r < need) out.push(`${r.toFixed(2)} < ${need}: <${el.tagName.toLowerCase()}> "${el.textContent!.trim().slice(0, 40)}"`);
+            }
           }
           return out;
         });
         expect(failures).toEqual([]);
+        // The footer takes the region's page colours.
+        const [footerBg, pageBg] = await page.evaluate(() => [document.querySelector("footer")!, document.querySelector("article")!].map((el) => getComputedStyle(el).backgroundColor));
+        expect(footerBg).toBe(pageBg);
       });
     }
   }

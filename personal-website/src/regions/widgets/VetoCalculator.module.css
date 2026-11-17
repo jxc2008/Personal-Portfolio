@@ -329,3 +329,23 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Desktop: descriptions at 16px, small labels at least 13px. */
+@media (min-width: 1024px) {
+  .compare {
+    font-size: 1rem;
+  }
+
+  .teamField,
+  .starts legend,
+  .maps caption,
+  .step::before,
+  .choiceValue,
+  .bestTag {
+    font-size: 0.85rem;
+  }
+
+  .note {
+    font-size: 0.875rem;
+  }
+}

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { NavbarProvider, useTheme } from "./NavbarContext";
 import FloatingPillNav from "./FloatingPillNav";
 import Footer from "./Footer";
+import { getRegion } from "@/regions";
 
 function ThemeSync() {
   const { darkMode } = useTheme();
@@ -19,6 +20,7 @@ function ThemeSync() {
 
 export default function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const region = pathname?.startsWith("/regions/") ? getRegion(pathname.split("/")[2] ?? "") : undefined;
 
   return (
     <NavbarProvider>
@@ -34,7 +36,7 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
       >
         {children}
       </motion.main>
-      <Footer />
+      <Footer region={region} />
     </NavbarProvider>
   );
 }

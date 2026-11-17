@@ -105,3 +105,14 @@
     background: linear-gradient(0deg, var(--scrim) 0, var(--scrim) 1.9rem, var(--scrim-soft), transparent 2.9rem);
   }
 }
+
+/* Desktop: descriptions at 16px, small labels at least 13px. */
+@media (min-width: 1024px) {
+  .short {
+    font-size: 1rem;
+  }
+
+  .state {
+    font-size: 0.85rem;
+  }
+}
