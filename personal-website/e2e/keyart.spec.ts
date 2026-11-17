@@ -9,6 +9,7 @@ import type { KeyArt } from "../src/regions/types";
 
 const SIZES = [
   { width: 390, height: 844 },
+  { width: 768, height: 1024 }, // tablet range (641-1023 px)
   { width: 1024, height: 768 },
   { width: 1440, height: 900 },
 ];

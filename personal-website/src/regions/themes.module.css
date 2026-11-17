@@ -1,7 +1,8 @@
 /* Region palettes. Every region page and tile sets data-region on an element
    with .theme; the template and scenery read only these tokens.
    --r-*  page colours        --s-*  banner scenery colours
-   --r-banner-*  text over the banner */
+   --r-banner-*  text over the banner
+   --r-art-*     text over key art, the same in both themes */
 
 /* ─── VALORANT Ridge: cold dawn at altitude / night on the ridge ─── */
 .theme[data-region="valorant-ridge"] {
@@ -18,6 +19,11 @@
   --r-banner-ink: #1e2a36;
   --r-banner-soft: rgba(30, 42, 54, 0.82);
   --r-banner-halo: 0 0 20px rgba(241, 228, 228, 0.55);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #e8edf2;
+  --r-art-soft: rgba(232, 237, 242, 0.84);
+  --r-art-halo: 0 1px 2px rgba(5, 8, 16, 0.6), 0 0 22px rgba(5, 8, 16, 0.5);
+  --r-art-shade: #121a23;
   --r-display-weight: 720;
   --r-display-track: -0.012em;
   --s-sky-top: #9db6cc;
@@ -78,6 +84,11 @@
   --r-banner-ink: #f3ecdc;
   --r-banner-soft: rgba(243, 236, 220, 0.82);
   --r-banner-halo: 0 1px 2px rgba(6, 18, 12, 0.5);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #f3ecdc;
+  --r-art-soft: rgba(243, 236, 220, 0.82);
+  --r-art-halo: 0 1px 2px rgba(6, 18, 12, 0.5);
+  --r-art-shade: #0f1714;
   --r-display-weight: 600;
   --r-display-track: -0.01em;
   --s-sky-top: #21463a;
@@ -115,6 +126,11 @@
   --r-banner-ink: #f4ede2;
   --r-banner-soft: rgba(244, 237, 226, 0.82);
   --r-banner-halo: 0 1px 2px rgba(10, 4, 10, 0.5);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #f4ede2;
+  --r-art-soft: rgba(244, 237, 226, 0.82);
+  --r-art-halo: 0 1px 2px rgba(10, 4, 10, 0.5);
+  --r-art-shade: #140f15;
   --r-display-weight: 400;
   --r-display-track: 0;
   --s-sky-top: #1d1323;
@@ -153,6 +169,11 @@
   --r-banner-ink: #1d2742;
   --r-banner-soft: rgba(29, 39, 66, 0.82);
   --r-banner-halo: 0 0 18px rgba(240, 232, 226, 0.6);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #e8ecf5;
+  --r-art-soft: rgba(232, 236, 245, 0.84);
+  --r-art-halo: 0 1px 2px rgba(4, 6, 16, 0.6), 0 0 20px rgba(4, 6, 16, 0.5);
+  --r-art-shade: #0f1424;
   --r-display-weight: 700;
   --r-display-track: 0.01em;
   --s-sky-top: #a7bbd6;
@@ -200,6 +221,11 @@
   --r-banner-ink: #eaf5fc;
   --r-banner-soft: rgba(234, 245, 252, 0.82);
   --r-banner-halo: 0 1px 2px rgba(4, 12, 28, 0.5);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #eaf5fc;
+  --r-art-soft: rgba(234, 245, 252, 0.82);
+  --r-art-halo: 0 1px 2px rgba(4, 12, 28, 0.5);
+  --r-art-shade: #0c1522;
   --r-display-weight: 500;
   --r-display-track: -0.02em;
   --s-sky-top: #173156;

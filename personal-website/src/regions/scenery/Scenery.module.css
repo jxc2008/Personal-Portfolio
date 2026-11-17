@@ -45,6 +45,13 @@
   pointer-events: none;
 }
 
+/* Banners take the dark treatment over key art in both themes (RegionPage), so
+   their shade is the region's dark background. */
+.scrim[data-variant="banner"] {
+  --scrim: color-mix(in srgb, var(--r-art-shade) 80%, transparent);
+  --scrim-soft: color-mix(in srgb, var(--r-art-shade) 45%, transparent);
+}
+
 /* Banner, wide screens: a soft radial fade out of the top-left corner, where the
    text sits (RegionPage holds it to the upper left). No hard edge anywhere. Tuned
    so every pixel behind the text meets WCAG AA in both themes; the fade's tail

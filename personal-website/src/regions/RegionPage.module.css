@@ -87,7 +87,7 @@
 
 .langSwitch button[aria-pressed="true"] {
   background: var(--r-banner-ink);
-  color: var(--s-sky-top);
+  color: var(--r-banner-on-ink, var(--s-sky-top));
 }
 
 /* ─── Body ─── */
@@ -359,6 +359,15 @@
   }
 }
 
+/* Key art banners always take the dark treatment (light text over a dark shade),
+   whatever the theme; the page below stays themed. */
+.banner[data-art] {
+  --r-banner-ink: var(--r-art-ink);
+  --r-banner-soft: var(--r-art-soft);
+  --r-banner-halo: var(--r-art-halo);
+  --r-banner-on-ink: var(--r-art-shade);
+}
+
 /* Over key art, keep the text in the upper left, well short of the art's subject
    (kept right of centre by its focus point), so the shade behind the text
    (Scenery.module.css) can fade out softly before reaching it. */
@@ -371,8 +380,10 @@
     font-size: clamp(3rem, 7vw, 6.5rem);
   }
 
+  /* Scales with the banner, so it holds the same proportion at 1440 as at 1024. */
   .banner[data-art] .lede {
     max-width: min(36rem, 80%);
+    font-size: clamp(1rem, 1.55vw, 1.4rem);
   }
 }
 
@@ -410,6 +421,7 @@
     --r-banner-ink: var(--r-ink);
     --r-banner-soft: var(--r-ink-soft);
     --r-banner-halo: none;
+    --r-banner-on-ink: var(--r-bg);
     margin-left: var(--gutter);
     margin-right: var(--gutter);
   }
