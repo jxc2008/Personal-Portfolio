@@ -1,4 +1,5 @@
 import { getRegion, postsFor, regionAnchors, REGIONS, t, worldTagline } from "..";
+import { formatAsOf, VALORANT_MAP_POOL } from "../config";
 import type { Post, Text } from "../types";
 
 /** Every Text-valued leaf in a piece of content. */
@@ -42,16 +43,35 @@ describe("region content", () => {
     expect(REGIONS.filter((r) => r.state === "open")).toHaveLength(1);
   });
 
-  it("gives every veto widget a seven-map pool with an example value per map", () => {
+  it("keeps the veto examples in step with the map pool in config.ts", () => {
+    expect(VALORANT_MAP_POOL.maps).toHaveLength(7);
+    expect(new Set(VALORANT_MAP_POOL.maps).size).toBe(7);
     for (const s of REGIONS.flatMap((r) => r.sections)) {
       if (s.widget?.key !== "veto-calculator") continue;
-      expect(s.widget.props.pool).toHaveLength(7);
-      expect(s.widget.props.example).toHaveLength(7);
+      // A stale example map means the pool rotated: update the examples in regions.ts.
+      expect(Object.keys(s.widget.props.example).filter((m) => !VALORANT_MAP_POOL.maps.includes(m))).toEqual([]);
     }
+  });
+
+  it("labels the Far Shore's Mandarin as a draft", () => {
+    expect(getRegion("far-shore")?.draftLanguages).toEqual(["zh"]);
+  });
+
+  it("places HI-LO on the Trading Floor and DerivaDash in the Lab", () => {
+    const entryIds = (slug: string) => getRegion(slug)?.sections.flatMap((s) => s.entries.map((e) => e.id));
+    expect(entryIds("trading-floor")).toContain("hi-lo");
+    expect(entryIds("the-lab")).toContain("derivadash");
   });
 });
 
 describe("helpers", () => {
+  it("formats the map pool date and rejects malformed ones", () => {
+    expect(formatAsOf("2025-09")).toBe("September 2025");
+    expect(formatAsOf(VALORANT_MAP_POOL.asOf)).toMatch(/^[A-Z][a-z]+ \d{4}$/);
+    expect(() => formatAsOf("2025-13")).toThrow();
+    expect(() => formatAsOf("Sept 2025")).toThrow();
+  });
+
   it("t falls back to English", () => {
     expect(t("plain", "zh")).toBe("plain");
     expect(t({ en: "Far Shore", zh: "彼岸" }, "zh")).toBe("彼岸");

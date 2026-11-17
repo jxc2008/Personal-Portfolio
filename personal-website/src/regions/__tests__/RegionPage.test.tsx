@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import type { ReactNode } from "react";
+import { formatAsOf, VALORANT_MAP_POOL } from "../config";
 import RegionPage from "../RegionPage";
 
 jest.mock("next/link", () => ({
@@ -35,6 +36,12 @@ describe("RegionPage", () => {
     ]);
   });
 
+  it("shows when the map pool was last updated", () => {
+    render(<RegionPage slug="valorant-ridge" />);
+    expect(screen.getByText(`Map pool as of ${formatAsOf(VALORANT_MAP_POOL.asOf)}`)).toBeInTheDocument();
+    for (const map of VALORANT_MAP_POOL.maps) expect(screen.getByLabelText(map)).toBeInTheDocument();
+  });
+
   it("plays out the veto and can step back", () => {
     render(<RegionPage slug="valorant-ridge" />);
     expect(screen.getByText(/With best play from here/)).toBeInTheDocument();
@@ -57,5 +64,16 @@ describe("RegionPage", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("彼岸");
     expect(container.querySelector("article")).toHaveAttribute("lang", "zh-Hans");
     expect(screen.getByRole("button", { name: "中文" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("中文译文为草稿")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "English" }));
+    expect(screen.queryByText("中文译文为草稿")).not.toBeInTheDocument();
+  });
+
+  it("links HI-LO and DerivaDash to their live sites", () => {
+    render(<RegionPage slug="trading-floor" />);
+    expect(screen.getByRole("link", { name: "Play HI-LO" })).toHaveAttribute("href", "https://hi-lo-quant-trading-game.vercel.app");
+    document.body.innerHTML = "";
+    render(<RegionPage slug="the-lab" />);
+    expect(screen.getByRole("link", { name: "Open DerivaDash" })).toHaveAttribute("href", "https://derivadash.com");
   });
 });

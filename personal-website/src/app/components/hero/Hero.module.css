@@ -111,11 +111,13 @@
   transition: color 2s ease, text-shadow 2s ease;
 }
 
+/* Shippori Mincho runs wide: this keeps "Joseph Cheng" on one line from phone to desktop. */
 .title {
-  font-size: clamp(3.1rem, 7.6vw, 7.25rem);
+  font-size: clamp(2.6rem, 6.3vw, 6.1rem);
   font-weight: 600;
-  line-height: 0.95;
-  letter-spacing: -0.01em;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
   text-shadow: var(--halo);
   transition: text-shadow 2s ease;
 }

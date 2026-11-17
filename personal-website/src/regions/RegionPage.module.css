@@ -48,9 +48,22 @@
   text-shadow: var(--r-banner-halo);
 }
 
+.langRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin-top: 1.4rem;
+}
+
+.draftTag {
+  font-size: 0.85rem;
+  color: var(--r-banner-soft);
+  text-shadow: var(--r-banner-halo);
+}
+
 .langSwitch {
   display: inline-flex;
-  margin-top: 1.4rem;
   border: 1px solid var(--r-banner-soft);
   border-radius: 999px;
   padding: 2px;

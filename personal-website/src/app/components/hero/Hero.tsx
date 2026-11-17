@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { Cormorant_Garamond } from "next/font/google";
+import { Shippori_Mincho } from "next/font/google";
 import { HeroEngine } from "./HeroEngine";
 import {
   DEFAULT_PARALLAX,
@@ -16,8 +16,8 @@ import { computeTod, parseTodOverride, TOD_ALT, TOD_IMAGE, todBootstrapSource, t
 import { worldTagline } from "@/regions";
 import styles from "./Hero.module.css";
 
-// Placeholder display face; swap freely.
-const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600"], display: "swap" });
+// Title face, chosen from the comparison in docs/title-fonts.
+const display = Shippori_Mincho({ subsets: ["latin"], weight: "600", display: "swap" });
 
 const SECTION_ID = "hero";
 const IMG_ID = "hero-static";

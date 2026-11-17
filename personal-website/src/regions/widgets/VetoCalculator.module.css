@@ -83,6 +83,12 @@
   padding-bottom: 0.4rem;
 }
 
+.asOf {
+  float: right;
+  margin-left: 1rem;
+  color: var(--r-muted);
+}
+
 .maps th,
 .maps td {
   padding: 0.35rem 0;

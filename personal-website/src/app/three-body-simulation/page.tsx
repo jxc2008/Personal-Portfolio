@@ -53,11 +53,9 @@ const ThreeBodySimulationPage: React.FC = () => {
       {/* Canvas Background */}
       <ThreeBodySimulation />
 
-      {/* Back to Professional Page Button */}
-      <Link href="/professional">
-        <button className={styles.backButton} aria-label="Back to Professional Page">
-          Back to Professional
-        </button>
+      {/* Back to the region this lives in */}
+      <Link href="/regions/the-lab">
+        <button className={styles.backButton}>Back to The Lab</button>
       </Link>
 
       {/* Simulation Container */}

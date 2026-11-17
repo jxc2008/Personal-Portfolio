@@ -12,6 +12,7 @@ import styles from "./RegionPage.module.css";
 
 const HTML_LANG: Record<Lang, string> = { en: "en", zh: "zh-Hans" };
 const SWITCH_LABEL: Record<Lang, string> = { en: "English", zh: "中文" };
+const DRAFT_LABEL: Record<Lang, string> = { en: "Draft text", zh: "中文译文为草稿" };
 
 function EntryRow({ entry, lang }: { entry: Entry; lang: Lang }) {
   return (
@@ -108,12 +109,15 @@ export default function RegionPage({ slug }: { slug: Region["slug"] }) {
           <h1 className={styles.name}>{t(region.name, lang)}</h1>
           <p className={styles.lede}>{t(region.lede, lang)}</p>
           {languages.length > 1 && (
-            <div className={styles.langSwitch} role="group" aria-label="Language">
-              {languages.map((l) => (
-                <button key={l} type="button" lang={HTML_LANG[l]} aria-pressed={lang === l} onClick={() => setLang(l)}>
-                  {SWITCH_LABEL[l]}
-                </button>
-              ))}
+            <div className={styles.langRow}>
+              <div className={styles.langSwitch} role="group" aria-label="Language">
+                {languages.map((l) => (
+                  <button key={l} type="button" lang={HTML_LANG[l]} aria-pressed={lang === l} onClick={() => setLang(l)}>
+                    {SWITCH_LABEL[l]}
+                  </button>
+                ))}
+              </div>
+              {region.draftLanguages?.includes(lang) && <span className={styles.draftTag}>{DRAFT_LABEL[lang]}</span>}
             </div>
           )}
         </div>

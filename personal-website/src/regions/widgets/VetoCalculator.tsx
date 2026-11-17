@@ -1,16 +1,20 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
+import { formatAsOf, VALORANT_MAP_POOL } from "../config";
 import type { VetoWidgetProps } from "../types";
 import { finalMaps, greedy, options, solve, stepsFor, type Side } from "./veto";
 import styles from "./VetoCalculator.module.css";
 
 const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
 
-export default function VetoCalculator({ pool, example, teams: defaultTeams }: VetoWidgetProps) {
+const pool = VALORANT_MAP_POOL.maps;
+const exampleChances = (example: Record<string, number>) => pool.map((map) => example[map] ?? 50);
+
+export default function VetoCalculator({ example, teams: defaultTeams }: VetoWidgetProps) {
   const uid = useId();
   const [names, setNames] = useState<[string, string]>(defaultTeams);
-  const [chances, setChances] = useState<number[]>(() => pool.map((_, i) => example[i] ?? 50));
+  const [chances, setChances] = useState<number[]>(() => exampleChances(example));
   const [first, setFirst] = useState<Side>(0);
   const [history, setHistory] = useState<number[]>([]);
 
@@ -59,7 +63,10 @@ export default function VetoCalculator({ pool, example, teams: defaultTeams }: V
         </fieldset>
 
         <table className={styles.maps}>
-          <caption>Chance {team(0)} wins each map</caption>
+          <caption>
+            <span>Chance {team(0)} wins each map</span>
+            <span className={styles.asOf}>Map pool as of {formatAsOf(VALORANT_MAP_POOL.asOf)}</span>
+          </caption>
           <tbody>
             {pool.map((map, i) => {
               const id = `${uid}-map-${i}`;
@@ -87,7 +94,7 @@ export default function VetoCalculator({ pool, example, teams: defaultTeams }: V
           </tbody>
         </table>
         <div className={styles.presets}>
-          <button type="button" onClick={() => setChances(pool.map((_, i) => example[i] ?? 50))}>
+          <button type="button" onClick={() => setChances(exampleChances(example))}>
             Use example numbers
           </button>
           <button type="button" onClick={() => setChances(pool.map(() => 50))}>

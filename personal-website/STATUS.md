@@ -23,7 +23,7 @@ A full-viewport hero at the top of `/` that replaces the old text-only hero. The
 
 `GlowCursor.tsx` (site-wide) gained a generic opt-out: any element marked `data-glow-cursor="off"` hides the glow while the pointer is over it, and the hero uses it.
 
-No new dependencies. The display font is Cormorant Garamond via `next/font` (self-hosted at build time) and is a placeholder.
+No new dependencies. The title font is Shippori Mincho 600 via `next/font` (self-hosted at build time), chosen from the comparison in `docs/title-fonts/`; it replaced the Cormorant Garamond placeholder.
 
 ### 1. Depth parallax
 - **Shader:** the prototype's one-step refinement is replaced by a short ray-march.
@@ -125,6 +125,6 @@ No new dependencies. The display font is Cormorant Garamond via `next/font` (sel
 3. **The floating nav pill still renders over the hero.** Restyle it when the rest of the site is redesigned.
 4. **Portrait framing drops the left trees and left reeds** in exchange for the sun. If you'd rather keep more of the left, lower the sun padding or cap the focal point (`PORTRAIT_FOCAL_U` and `SUN_PAD` in `sceneMath.ts`).
 5. **The time of day is the visitor's clock, not the sun.** A sun-position calculation would be a contained change in `timeOfDay.ts`.
-6. **Typography is placeholder** (Cormorant Garamond 600 and the existing DM Sans subtitle).
+6. ~~Typography is placeholder~~ Resolved: the title is Shippori Mincho 600 (one line from 320 px to 1920 px; still the LCP element). The subtitle is the existing DM Sans.
 7. **`.next/` is tracked on `main`.** It is untracked on its own branch, `chore/untrack-next-build`.
 8. Safari before 18 ignores canvas `filter`, so near petals render sharp instead of slightly blurred there. This is cosmetic only.

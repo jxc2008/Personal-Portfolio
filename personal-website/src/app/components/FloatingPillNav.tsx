@@ -13,24 +13,12 @@ const mainLinks = [
   { href: "/#regions", label: "Regions", isActive: (path: string) => path.startsWith("/regions/") },
 ];
 
-const sectionAnchors: Record<string, { id: string; label: string }[]> = {
-  "/professional": [
-    { id: "skillsSection", label: "Skills" },
-    { id: "projectsSection", label: "Projects" },
-    { id: "experienceSection", label: "Experience" },
-  ],
-  "/nonprofessional": [
-    { id: "writingSection", label: "Writing" },
-    { id: "musicSection", label: "Music" },
-  ],
-};
-
 export default function FloatingPillNav() {
   const pathname = usePathname();
   const { darkMode, toggleDarkMode } = useTheme();
 
   const region = pathname.startsWith("/regions/") ? getRegion(pathname.split("/")[2] ?? "") : undefined;
-  const anchors = region ? regionAnchors(region) : sectionAnchors[pathname] || [];
+  const anchors = region ? regionAnchors(region) : [];
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);

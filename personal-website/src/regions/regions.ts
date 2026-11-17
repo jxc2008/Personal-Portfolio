@@ -12,6 +12,24 @@ const tradingFloor: Region = {
   state: "charting",
   sections: [
     {
+      id: "trading-game",
+      title: "Trading game",
+      navLabel: "HI-LO",
+      entries: [
+        {
+          id: "hi-lo",
+          title: "HI-LO",
+          status: "shipped",
+          summary: "A real-time multiplayer trading game: players quote bid-ask spreads, go long or short, and watch positions update live.",
+          points: [{ label: "Built with", value: "React Native, Flask, MongoDB, Socket.IO" }],
+          links: [
+            { label: "Play HI-LO", href: "https://hi-lo-quant-trading-game.vercel.app" },
+            { label: "Source on GitHub", href: "https://github.com/jxc2008/Hi-Lo-Quant-Trading-Game" },
+          ],
+        },
+      ],
+    },
+    {
       id: "write-ups",
       title: "Write-ups",
       navLabel: "Write-ups",
@@ -146,9 +164,8 @@ const valorantRidge: Region = {
       widget: {
         key: "veto-calculator",
         props: {
-          // Update when the competitive map pool rotates.
-          pool: ["Ascent", "Bind", "Corrode", "Haven", "Icebox", "Lotus", "Sunset"],
-          example: [62, 48, 55, 41, 66, 52, 37],
+          // The map pool itself is VALORANT_MAP_POOL in config.ts.
+          example: { Ascent: 62, Bind: 48, Corrode: 55, Haven: 41, Icebox: 66, Lotus: 52, Sunset: 37 },
           teams: ["Team A", "Team B"],
         },
       },
@@ -199,6 +216,8 @@ const farShore: Region = {
   scenery: "shore",
   state: "charting",
   languages: ["en", "zh"],
+  // The Mandarin text is a first draft; the page labels it until this is removed.
+  draftLanguages: ["zh"],
   sections: [
     {
       id: "japan",
@@ -253,7 +272,20 @@ const theLab: Region = {
       id: "tools",
       title: "Tools",
       navLabel: "Tools",
-      entries: [{ id: "greeks", title: "Greeks playground", status: "planned", summary: "Move spot, volatility, and time, and see how an option's price and Greeks respond." }],
+      entries: [
+        {
+          id: "derivadash",
+          title: "DerivaDash",
+          status: "shipped",
+          summary: "Generates calculus problems, checks your answers, and adjusts the difficulty as you improve, keeping track of your progress.",
+          points: [{ label: "Built with", value: "React, Flask, Vercel" }],
+          links: [
+            { label: "Open DerivaDash", href: "https://derivadash.com" },
+            { label: "Source on GitHub", href: "https://github.com/jxc2008/DerivaDash" },
+          ],
+        },
+        { id: "greeks", title: "Greeks playground", status: "planned", summary: "Move spot, volatility, and time, and see how an option's price and Greeks respond." },
+      ],
     },
     {
       id: "teaching",

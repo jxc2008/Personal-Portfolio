@@ -34,10 +34,9 @@ export interface Entry {
 export type WidgetRef = { key: "veto-calculator"; props: VetoWidgetProps };
 
 export interface VetoWidgetProps {
-  /** Current map pool, in display order. */
-  pool: string[];
-  /** Example chances (percent) that the first team wins each map, same order as `pool`. */
-  example: number[];
+  /** Example chances (percent) that the first team wins each map, by map name.
+      The map pool itself lives in config.ts; maps missing here start at 50. */
+  example: Record<string, number>;
   teams: [string, string];
 }
 
@@ -65,6 +64,8 @@ export interface Region {
   state: "open" | "charting";
   /** Languages the page can switch between; the first is the default. */
   languages?: Lang[];
+  /** Languages whose text is still a draft; the page labels them as such. */
+  draftLanguages?: Lang[];
   /** A few plain sentences under the banner. */
   facts?: Text[];
   sections: Section[];

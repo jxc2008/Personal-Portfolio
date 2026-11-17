@@ -14,6 +14,7 @@ Branch `feat/regions`. The site is now "A world in five regions": Trading Floor,
 | Per-region display faces | `src/regions/fonts.ts` |
 | Banner art (SVG, seeded) | `src/regions/scenery/` |
 | Interactive pieces | `src/regions/widgets/` (veto calculator) |
+| Values that go stale (VALORANT map pool + "as of" date) | `src/regions/config.ts` |
 | Route | `src/app/regions/[slug]/page.tsx` → `/regions/<slug>` |
 | Home page tiles | `src/regions/RegionsIndex.tsx`, `RegionTile.tsx` |
 
@@ -38,7 +39,7 @@ Every region uses the same structure with its own palette, display face and bann
 | Trading Floor | price paths fanning out over green felt and ledger rules | Bodoni Moda |
 | VALORANT Ridge | layered ridgelines at dawn, strata on the near ridge; stars in dark mode | Sofia Sans Condensed |
 | Piano Hall | a stage light over a keyboard | Gloock |
-| Far Shore | vermilion sun, wave rows, an island | Shippori Mincho |
+| Far Shore | vermilion sun, wave rows, an island | Zen Kaku Gothic New (Shippori Mincho went to the site title) |
 | The Lab | the figure-eight three-body orbit (integrated, not drawn) and a nudged copy that drifts apart, on blueprint grid | IBM Plex Mono |
 
 Each palette has light and dark variants that follow the site's theme toggle. On Ridge the banner itself changes: dawn in light mode, night with stars in dark mode.
@@ -54,7 +55,8 @@ Drafted from the thunderedge and valorant-pricing-model repos (both public; both
   - You set each map's win chance. It shows every option at the current step with the series price it leads to, marks the best choice for whoever is acting, and can finish the veto with best play or undo step by step.
   - It compares best play against "ban your worst, pick your best".
   - It assumes maps are independent. The example numbers are made up, and the note under the calculator says so.
-  - **The map pool needs checking:** it's Ascent, Bind, Corrode, Haven, Icebox, Lotus, Sunset in `regions.ts`. I wasn't sure of the current competitive pool.
+  - **Map pool:** one value, `VALORANT_MAP_POOL` in `src/regions/config.ts` (`maps` plus an `asOf` year-month). The calculator shows "Map pool as of September 2025". The example chances in `regions.ts` are keyed by map name; a test fails if an example names a map that has left the pool.
+  - **Still to confirm:** the maps (Ascent, Bind, Corrode, Haven, Icebox, Lotus, Sunset) and the `asOf` date. I'm not certain of either.
 
 No live P&L appears anywhere.
 
@@ -62,9 +64,18 @@ No live P&L appears anywhere.
 
 - The hero has the tagline above the name. The scroll cue now goes to the new "The regions" section: five tiles, each in its region's style.
 - The old Explore tiles (Professional / Personal) are gone. The nav is now Home and Regions. On a region page it also lists that region's sections.
-- `/professional` and `/nonprofessional` still build but are no longer linked. HI-LO and DerivaDash from the old Projects page aren't placed in a region yet.
+- `/professional` and `/nonprofessional` are deleted. `next.config.js` redirects both to `/#regions` (308, permanent). The three-body page's back button now goes to The Lab.
+- HI-LO is on the Trading Floor (its own "Trading game" section) and DerivaDash is in The Lab under Tools. Both are marked Shipped and link to their live sites and GitHub repos.
+  - hilotrader.org, the old link, returns 404, so HI-LO links to its Vercel deployment instead.
+- The old pages' images in `public/images/` (hilo, derivadash, marketing-internship, undergraduate-research) are no longer used. I left them in place.
 
-## Title font comparison
+## Mandarin
+
+The Far Shore's 中文 text is a draft. `draftLanguages: ["zh"]` in `regions.ts` makes the page show "中文译文为草稿" next to the language switch while 中文 is selected. Remove that line once the text is final.
+
+## Title font
+
+**Decided:** Shippori Mincho 600, set slightly smaller than the placeholder so it stays on one line from 320 px to 1920 px. It is still the LCP element (about 120 ms in a local production run). The comparison that led to it is below.
 
 All six candidates are on the live hero at all four times of day, at the same size and position. Sheets are in `docs/title-fonts/`:
 
@@ -77,13 +88,11 @@ The candidates are Cormorant Garamond (current), Fraunces, Instrument Serif, Shi
 ## Verification
 
 - `tsc`, `next lint` and `next build` are clean. All five region pages are statically generated.
-- Jest: the new suites (`src/regions/__tests__`: veto solver vs an independent minimax on random pools, content integrity, template rendering, veto interaction, 中文 switch), plus the updated home and hero tests, all pass. The 23 failures in professional, nonprofessional, animations and globals-css were there before and are unchanged.
+- Jest: the new suites (`src/regions/__tests__`: veto solver vs an independent minimax on random pools, content integrity, map-pool config, template rendering, veto interaction, 中文 switch and draft label; `src/__tests__/redirects.test.ts`), plus the updated home and hero tests, all pass. 15 failures remain in the animations and globals-css suites. They were there before this work; the other 8 old failures went away with the deleted pages.
 - Screenshots in `docs/region-screenshots/` (desktop light/dark, mobile, the stubs' banners, home tiles). There are no horizontal overflow and no console errors at 390 px.
 
 ## Open questions
 
-1. Map pool for the veto calculator (see above).
+1. Confirm the veto map pool and its `asOf` date in `config.ts`.
 2. Whether to publish any research results yet.
-3. Delete `/professional` and `/nonprofessional`, or keep them unlinked?
-4. Where HI-LO and DerivaDash go (Trading Floor and The Lab are the obvious homes).
-5. The title font, and whether Far Shore keeps Shippori Mincho if the title takes it.
+3. The 中文 text (marked as draft on the page until you finalise it).
