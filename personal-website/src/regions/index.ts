@@ -3,7 +3,7 @@ import { REGIONS } from "./regions";
 import type { Lang, Post, Region, Status, Text } from "./types";
 
 export { REGIONS, POSTS };
-export type { Entry, Lang, Link, Post, Region, RegionSlug, KeyArt, SceneryKey, Section, Status, Text, VetoWidgetProps, WidgetRef } from "./types";
+export type { Palette, Entry, Lang, Link, Post, Region, RegionSlug, KeyArt, SceneryKey, Section, Status, Text, VetoWidgetProps, WidgetRef } from "./types";
 
 export function getRegion(slug: string): Region | undefined {
   return REGIONS.find((r) => r.slug === slug);
@@ -38,4 +38,17 @@ export function postsFor(slug: Region["slug"], posts: Post[] = POSTS): Post[] {
 /** Floating-nav anchors for a region page. */
 export function regionAnchors(region: Region): { id: string; label: string }[] {
   return region.sections.filter((s) => s.navLabel).map((s) => ({ id: s.id, label: s.navLabel as string }));
+}
+
+/**
+ * A region's palette as CSS custom properties (--pl-* light, --pd-* dark), set on
+ * the element that carries its theme. themes.module.css picks the set for the
+ * current theme and derives the rest.
+ */
+export function paletteVars(region: Region): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [theme, prefix] of [["light", "--pl-"], ["dark", "--pd-"]] as const) {
+    for (const [key, value] of Object.entries(region.palette[theme])) out[prefix + key] = value;
+  }
+  return out;
 }

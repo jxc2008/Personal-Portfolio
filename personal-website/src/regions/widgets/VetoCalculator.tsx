@@ -163,7 +163,7 @@ export default function VetoCalculator({ example, teams: defaultTeams }: VetoWid
 
         <div className={styles.actions}>
           {current && (
-            <button type="button" onClick={() => setHistory([...history, ...best.line])}>
+            <button type="button" className={styles.primary} onClick={() => setHistory([...history, ...best.line])}>
               Finish with best play
             </button>
           )}

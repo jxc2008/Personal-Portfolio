@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { t } from "./index";
+import { paletteVars, t } from "./index";
 import { REGION_FONT } from "./fonts";
 import RegionArt from "./scenery/RegionArt";
 import type { Region } from "./types";
@@ -13,6 +13,7 @@ export default function RegionTile({ region, size = "tall" }: { region: Region; 
       href={`/regions/${region.slug}`}
       className={`${themes.theme} ${REGION_FONT[region.slug]} ${styles.tile} ${styles[size]}`}
       data-region={region.slug}
+      style={paletteVars(region)}
     >
       <span className={styles.art}>
         <RegionArt region={region} variant="tile" />
