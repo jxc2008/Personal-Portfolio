@@ -90,4 +90,17 @@
     aspect-ratio: 16 / 9;
     --tile-shade-solid: 2.6rem;
   }
+
+  /* Small "Other regions" tiles over key art: these are only ~90px tall, so a name
+     at the top lands on the subject (Ridge's mast tip). Put it bottom-left, slightly
+     smaller, with the shade rising from the bottom edge instead. */
+  .wide .art:has([data-variant="tile"]) .name {
+    top: auto;
+    bottom: 0.65rem;
+    font-size: 1.1rem;
+  }
+
+  .wide .art [data-variant="tile"] {
+    background: linear-gradient(0deg, var(--scrim) 0, var(--scrim) 1.9rem, var(--scrim-soft), transparent 2.9rem);
+  }
 }

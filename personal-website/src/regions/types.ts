@@ -9,7 +9,7 @@ export type Lang = "en" | "zh";
 export type Text = string | { en: string; zh: string };
 
 /** Where a piece of work stands. Shown on every entry. */
-export type Status = "shipped" | "building" | "testing" | "drafting" | "planned";
+export type Status = "shipped" | "building" | "testing" | "tested" | "preregistered" | "drafting" | "planned";
 
 export interface Link {
   label: Text;
@@ -20,6 +20,8 @@ export interface Entry {
   id: string;
   title: Text;
   status: Status;
+  /** Replaces the status's default label when a result needs saying, e.g. "Tested — no effect at close". */
+  statusLabel?: Text;
   summary: Text;
   /** Longer paragraphs. Entries with details render as a full row. */
   details?: Text[];

@@ -1,8 +1,8 @@
 // Key art checks in a real browser, for every region with key art:
-//  1. each keepClear box (e.g. Ridge's mast) stays in frame and no banner text sits on it;
-//  2. the banner text, and the region's name on its home tile, meet WCAG AA against
-//     whatever is behind them, measured per pixel with the text hidden and no halo,
-//     so the worst spot in the art counts.
+//  1. each keepClear box (e.g. Ridge's mast) stays in frame, and no text sits on it, on the
+//     banner, the home tile and the small "Other regions" tile;
+//  2. the text in those three places meets WCAG AA against whatever is behind it, measured
+//     per pixel with the text hidden and no halo, so the worst spot in the art counts.
 
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { REGIONS } from "../src/regions/regions";
@@ -21,15 +21,14 @@ const ART = 'header img[data-testid="region-key-art"]';
 type Box = { left: number; top: number; right: number; bottom: number };
 type KeepClear = NonNullable<KeyArt["keepClear"]>;
 
-async function open(page: Page, slug: string, theme: string) {
-  await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
+async function open(page: Page, slug: string) {
   await page.goto(`/regions/${slug}`, { waitUntil: "networkidle" });
   await page.locator(ART).evaluate((img: HTMLImageElement) => img.decode());
 }
 
 /** Where each keepClear box lands on screen, following object-fit: cover and object-position. */
-function keepClearOnScreen(page: Page, boxes: KeepClear) {
-  return page.locator(ART).evaluate((img: HTMLImageElement, boxes: KeepClear) => {
+function keepClearOnScreen(img: Locator, boxes: KeepClear) {
+  return img.evaluate((img: HTMLImageElement, boxes: KeepClear) => {
     const r = img.getBoundingClientRect();
     const [px, py] = getComputedStyle(img).objectPosition.split(" ").map((v) => parseFloat(v) / 100);
     const k = Math.max(r.width / img.naturalWidth, r.height / img.naturalHeight);
@@ -44,9 +43,9 @@ function keepClearOnScreen(page: Page, boxes: KeepClear) {
   }, boxes);
 }
 
-/** Every rendered line of text, and every control, in the banner. */
-function bannerText(page: Page) {
-  return page.locator("header").first().evaluate((header) => {
+/** Every rendered line of text, and every control, in `container`. */
+function textIn(container: Locator) {
+  return container.evaluate((header) => {
     const out: (Box & { text: string })[] = [];
     const walker = document.createTreeWalker(header, NodeFilter.SHOW_TEXT);
     while (walker.nextNode()) {
@@ -124,51 +123,76 @@ async function expectAA(page: Page, container: Locator, textSelector: string) {
   for (const w of worst) expect(w.min, `${w.tag} line contrast`).toBeGreaterThanOrEqual(w.need);
 }
 
+/** Fails if a keepClear box is cropped or any text in `container` overlaps it. */
+async function expectClear(container: Locator, boxes: KeepClear) {
+  const { frame, boxes: onScreen } = await keepClearOnScreen(container.locator('img[data-testid="region-key-art"]'), boxes);
+  const text = await textIn(container);
+  expect(text.length).toBeGreaterThan(0);
+  for (const box of onScreen) {
+    expect(inside(box, frame), `${box.label} is cropped`).toBe(true);
+    expect(text.filter((t) => overlaps(t, box)).map((t) => t.text), `text over the ${box.label}`).toEqual([]);
+  }
+}
+
+/** The art of `slug`'s tile on the home page. */
+async function homeTile(page: Page, slug: string) {
+  await page.goto("/?tod=day", { waitUntil: "networkidle" });
+  return loaded(page.locator(`#regions a[href="/regions/${slug}"] span:has(> img[data-testid="region-key-art"])`));
+}
+
+/** The art of `slug`'s small tile in the "Other regions" strip of another region's page. */
+async function stripTile(page: Page, slug: string) {
+  const elsewhere = REGIONS.find((r) => r.slug !== slug)!;
+  await page.goto(`/regions/${elsewhere.slug}`, { waitUntil: "networkidle" });
+  return loaded(page.getByRole("navigation", { name: "Other regions" }).locator(`a[href="/regions/${slug}"] span:has(> img[data-testid="region-key-art"])`));
+}
+
+async function loaded(art: Locator) {
+  await art.scrollIntoViewIfNeeded();
+  await art.locator("img").evaluate((img: HTMLImageElement) => img.decode());
+  return art;
+}
+
 const overlaps = (a: Box, b: Box) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 const inside = (a: Box, f: Box) => a.left >= f.left && a.right <= f.right && a.top >= f.top && a.bottom <= f.bottom;
 
+const TILE_NAME = ":scope > span:last-child";
+
 for (const region of withArt) {
+  const boxes = region.art!.keepClear!;
   for (const size of SIZES) {
     for (const theme of THEMES) {
-      test(`${region.slug} at ${size.width}px, ${theme}: key art subject in frame and clear of text`, async ({ page }) => {
-        await page.setViewportSize(size);
-        await open(page, region.slug, theme);
-        const { frame, boxes } = await keepClearOnScreen(page, region.art!.keepClear!);
-        const text = await bannerText(page);
-        expect(text.length).toBeGreaterThan(0);
-        for (const box of boxes) {
-          expect(inside(box, frame), `${box.label} is cropped`).toBe(true);
-          expect(text.filter((t) => overlaps(t, box)).map((t) => t.text), `text over the ${box.label}`).toEqual([]);
-        }
-      });
+      test.describe(`${region.slug} at ${size.width}px, ${theme}`, () => {
+        test.beforeEach(async ({ page }) => {
+          await page.setViewportSize(size);
+          await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
+        });
 
-      test(`${region.slug} at ${size.width}px, ${theme}: banner text meets WCAG AA over the art`, async ({ page }) => {
-        await page.setViewportSize(size);
-        await open(page, region.slug, theme);
-        await expectAA(page, page.locator("header").first(), "h1, p");
-      });
+        test("banner: key art subject in frame and clear of text", async ({ page }) => {
+          await open(page, region.slug);
+          await expectClear(page.locator("header").first(), boxes);
+        });
 
-      test(`${region.slug} at ${size.width}px, ${theme}: home tile name meets WCAG AA over the art`, async ({ page }) => {
-        await page.setViewportSize(size);
-        await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
-        await page.goto("/?tod=day", { waitUntil: "networkidle" });
-        const art = page.locator(`#regions a[href="/regions/${region.slug}"] span:has(> img[data-testid="region-key-art"])`);
-        await art.scrollIntoViewIfNeeded();
-        await art.locator("img").evaluate((img: HTMLImageElement) => img.decode());
-        await expectAA(page, art, ":scope > span:last-child");
-      });
+        test("banner: text meets WCAG AA over the art", async ({ page }) => {
+          await open(page, region.slug);
+          await expectAA(page, page.locator("header").first(), "h1, p");
+        });
 
-      test(`${region.slug} at ${size.width}px, ${theme}: "Other regions" tile name meets WCAG AA over the art`, async ({ page }) => {
-        await page.setViewportSize(size);
-        await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
-        const elsewhere = REGIONS.find((r) => r.slug !== region.slug)!;
-        await page.goto(`/regions/${elsewhere.slug}`, { waitUntil: "networkidle" });
-        const art = page
-          .getByRole("navigation", { name: "Other regions" })
-          .locator(`a[href="/regions/${region.slug}"] span:has(> img[data-testid="region-key-art"])`);
-        await art.scrollIntoViewIfNeeded();
-        await art.locator("img").evaluate((img: HTMLImageElement) => img.decode());
-        await expectAA(page, art, ":scope > span:last-child");
+        test("home tile: subject in frame and clear of the name", async ({ page }) => {
+          await expectClear(await homeTile(page, region.slug), boxes);
+        });
+
+        test("home tile: name meets WCAG AA over the art", async ({ page }) => {
+          await expectAA(page, await homeTile(page, region.slug), TILE_NAME);
+        });
+
+        test('"Other regions" tile: subject in frame and clear of the name', async ({ page }) => {
+          await expectClear(await stripTile(page, region.slug), boxes);
+        });
+
+        test('"Other regions" tile: name meets WCAG AA over the art', async ({ page }) => {
+          await expectAA(page, await stripTile(page, region.slug), TILE_NAME);
+        });
       });
     }
   }

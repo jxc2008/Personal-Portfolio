@@ -20,7 +20,7 @@ function EntryRow({ entry, lang }: { entry: Entry; lang: Lang }) {
       <div className={styles.entryHead}>
         <h3 className={styles.entryTitle}>{t(entry.title, lang)}</h3>
         <span className={styles.status} data-status={entry.status}>
-          {STATUS_LABEL[entry.status]}
+          {entry.statusLabel ? t(entry.statusLabel, lang) : STATUS_LABEL[entry.status]}
         </span>
       </div>
       <p className={styles.summary}>{t(entry.summary, lang)}</p>
