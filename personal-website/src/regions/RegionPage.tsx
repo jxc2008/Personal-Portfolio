@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type PointerEvent } from "react";
+import { useCallback, useRef, useState, type PointerEvent } from "react";
 import { getRegion, postsFor, REGIONS, STATUS_LABEL, t } from "./index";
 import { REGION_FONT } from "./fonts";
 import RegionTile from "./RegionTile";
@@ -80,6 +80,9 @@ export default function RegionPage({ slug }: { slug: Region["slug"] }) {
   const region = getRegion(slug) as Region;
   const languages = region.languages ?? ["en"];
   const [lang, setLang] = useState<Lang>(languages[0]);
+  // The banner lays out for key art only while the art is showing; if it fails, the drawn banner and its usual layout return.
+  const [artFailed, setArtFailed] = useState(false);
+  const onArtFail = useCallback(() => setArtFailed(true), []);
   const bannerRef = useRef<HTMLElement>(null);
   const posts = postsFor(region.slug);
   const others = REGIONS.filter((r) => r.slug !== region.slug);
@@ -106,11 +109,13 @@ export default function RegionPage({ slug }: { slug: Region["slug"] }) {
       <header
         ref={bannerRef}
         className={styles.banner}
-        data-art={region.art ? "" : undefined}
+        data-art={region.art && !artFailed ? "" : undefined}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
       >
-        <RegionArt region={region} variant="banner" />
+        <div className={styles.bannerArt}>
+          <RegionArt region={region} variant="banner" onFail={onArtFail} />
+        </div>
         <div className={styles.bannerCopy}>
           <h1 className={styles.name}>{t(region.name, lang)}</h1>
           <p className={styles.lede}>{t(region.lede, lang)}</p>

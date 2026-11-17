@@ -74,6 +74,7 @@ describe("RegionPage", () => {
     fireEvent.error(within(banner).getByTestId("region-key-art"));
     expect(within(banner).queryByTestId("region-key-art")).not.toBeInTheDocument();
     expect(within(banner).queryByTestId("region-art-scrim")).not.toBeInTheDocument();
+    expect(banner).not.toHaveAttribute("data-art");
     expect(banner.querySelector("svg")).toBeInTheDocument();
   });
 

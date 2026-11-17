@@ -18,6 +18,11 @@
   background: var(--s-sky-top);
 }
 
+.bannerArt {
+  position: absolute;
+  inset: 0;
+}
+
 .bannerCopy {
   position: absolute;
   z-index: 1;
@@ -354,10 +359,62 @@
   }
 }
 
-/* Over key art, keep the text in the left half so the art's subject (kept right of
-   centre by its focus point) stays clear. Phones stack the text above it instead. */
+/* Over key art, keep the text in the upper left, well short of the art's subject
+   (kept right of centre by its focus point), so the shade behind the text
+   (Scenery.module.css) can fade out softly before reaching it. */
 @media (min-width: 641px) {
   .banner[data-art] .bannerCopy {
     max-width: min(44rem, 50%);
+  }
+
+  .banner[data-art] .name {
+    font-size: clamp(3rem, 7vw, 6.5rem);
+  }
+
+  .banner[data-art] .lede {
+    max-width: min(36rem, 80%);
+  }
+}
+
+/* Phones with key art: only the title stays over the image. The description and
+   language row move below it, onto the page colours, so no length of copy can
+   cover the art's subject. The art keeps the banner's height, so it crops the same. */
+@media (max-width: 640px) {
+  .banner[data-art] {
+    height: auto;
+    overflow: visible;
+    background: none;
+  }
+
+  .banner[data-art] .bannerArt {
+    position: relative;
+    height: clamp(460px, 76svh, 780px);
+    overflow: hidden;
+    background: var(--s-sky-top);
+  }
+
+  .banner[data-art] .bannerCopy {
+    display: contents;
+  }
+
+  .banner[data-art] .name {
+    position: absolute;
+    z-index: 1;
+    top: clamp(72px, 11vh, 110px);
+    left: var(--gutter);
+    right: var(--gutter);
+  }
+
+  .banner[data-art] .lede,
+  .banner[data-art] .langRow {
+    --r-banner-ink: var(--r-ink);
+    --r-banner-soft: var(--r-ink-soft);
+    --r-banner-halo: none;
+    margin-left: var(--gutter);
+    margin-right: var(--gutter);
+  }
+
+  .banner[data-art] .lede {
+    margin-top: 1.5rem;
   }
 }

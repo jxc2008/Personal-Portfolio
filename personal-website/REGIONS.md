@@ -61,9 +61,30 @@ VALORANT Ridge uses `/regions/ridge.webp` with focus `58% 52%` (the outpost). Fo
 
 The phone banner is the tight one: the subject needs to sit between about 38% and 72% across.
 
-**Text over key art.** When a region's art is showing, a shade in the page background colour sits behind the text. It's light behind dark text in light mode and dark behind light text in dark mode. On the banner it covers the upper left on wide screens, and on phones it covers a band across the top. On tiles it covers the top edge behind the name. On wide screens the banner text is also held to the left half. The shade isn't drawn if the image fails, since the drawn scenery is already painted to sit behind text.
+**Text over key art.** While a region's art is showing, a shade in the page background colour sits behind the text: light behind dark text in light mode, dark behind light text in dark mode. If the image fails, the drawn banner and its usual layout come back.
 
-**Checked on the real image** (2400×1350; mast measured at 60.1% across, 38–51.5% down). The mast and outpost are fully in frame at 1440, 1024 and 390 wide in both themes, and on the home tile at desktop and phone width. No line of text covers the mast. On phones the clearance is small: the mast tip is 3 px above the bottom of the description's last line, which only clears because "Champions." is short. A longer description would cover the mast tip on phones. Screenshots are in `docs/region-screenshots/keyart/`.
+- **Wide screens:** the shade is a soft radial fade out of the top-left corner, with no hard edge. The text is held to the upper left: the title is about 15% smaller than on drawn banners, and the description is capped at 80% of the text column.
+- **Tablets (641–1023 px):** the same fade, reaching a little further, because the narrow text column runs further down.
+- **Phones (under 640 px):** only the title stays over the art, on a shaded band at the top. The description and language switch move below the image, so no length of copy can cover the subject.
+- **Tiles:** a shade along the top edge, behind the name.
+
+**The keep-clear boxes and the e2e test.** `art.keepClear` lists the parts of the image that must stay in frame and never sit behind text. For Ridge that's the mast and the outpost, measured on the 2400×1350 file; update the boxes if the image changes. `e2e/keyart.spec.ts` (Playwright, real browser) checks every region with key art at 390, 1024 and 1440 px in both themes:
+
+1. Each keep-clear box is fully in frame, and no line of banner text or control overlaps it.
+2. The banner text meets WCAG AA against the actual pixels behind it. It's measured on every pixel of each line with the text hidden and no halo, so the worst spot counts.
+
+Run it with `npm run build && npm run test:e2e`. It isn't part of `npm test`.
+
+**Results on the real image.** All 12 checks pass. The worst pixel behind each piece of text:
+
+| Width | Theme | Title (needs 3:1) | Description (needs 4.5:1) |
+|---|---|---|---|
+| 1024 | light | 6.83 | 5.51 |
+| 1024 | dark | 4.58 | 5.74 |
+| 1440 | light | 7.10 | 4.84 |
+| 1440 | dark | 5.10 | 4.98 |
+
+The trade-off: on wide screens the text ends 60–140 px from the mast, so a fade with no visible edge can't reach zero before the mast. The tip gets about a quarter-strength shade, and the base almost none. On tablets it's nearer half-strength at the tip. Screenshots are in `docs/region-screenshots/keyart/`.
 
 ## VALORANT Ridge content
 

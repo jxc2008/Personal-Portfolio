@@ -12,7 +12,7 @@ import styles from "./Scenery.module.css";
 /** "banner" loads first and shades behind the region's title and lede; "tile" lazy-loads and shades behind the name. */
 export type ArtVariant = "banner" | "tile";
 
-export default function RegionArt({ region, variant }: { region: Region; variant: ArtVariant }) {
+export default function RegionArt({ region, variant, onFail }: { region: Region; variant: ArtVariant; onFail?: () => void }) {
   const [failed, setFailed] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const banner = variant === "banner";
@@ -22,6 +22,10 @@ export default function RegionArt({ region, variant }: { region: Region; variant
     const img = imgRef.current;
     if (img?.complete && img.naturalWidth === 0) setFailed(true);
   }, []);
+
+  useEffect(() => {
+    if (failed) onFail?.();
+  }, [failed, onFail]);
 
   const showArt = Boolean(region.art) && !failed;
   return (

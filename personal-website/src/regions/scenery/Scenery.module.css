@@ -45,13 +45,19 @@
   pointer-events: none;
 }
 
-/* Banner, wide screens: the text sits in the left half (RegionPage caps it there),
-   so shade the upper left and fade out before the middle of the frame. */
+/* Banner, wide screens: a soft radial fade out of the top-left corner, where the
+   text sits (RegionPage holds it to the upper left). No hard edge anywhere. Tuned
+   so every pixel behind the text meets WCAG AA in both themes; the fade's tail
+   leaves a light shade (about a quarter strength) on Ridge's mast tip. */
 .scrim[data-variant="banner"] {
-  /* The text ends near 56% across; Ridge's mast is at 60%, so fade out by 59%. */
-  background: linear-gradient(90deg, var(--scrim) 0%, var(--scrim) 46%, var(--scrim-soft) 54%, transparent 59%);
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 50%, transparent 78%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 50%, transparent 78%);
+  background: radial-gradient(ellipse 72% 115% at 0% 0%, var(--scrim) 0%, var(--scrim) 62%, var(--scrim-soft) 80%, transparent 100%);
+}
+
+/* Tablets: the text column is narrow and runs further down, so the fade reaches further. */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .scrim[data-variant="banner"] {
+    background: radial-gradient(ellipse 80% 120% at 0% 0%, var(--scrim) 0%, var(--scrim) 62%, var(--scrim-soft) 80%, transparent 100%);
+  }
 }
 
 /* Tiles: just behind the name along the top edge. */
@@ -59,11 +65,10 @@
   background: linear-gradient(180deg, var(--scrim) 0%, var(--scrim-soft) 16%, transparent 30%);
 }
 
-/* Banner, phones: the text spans the full width, so shade the top band instead. */
+/* Banner, phones: only the title sits over the art (RegionPage moves the rest
+   below), so shade a band across the top that fades out well above the subject. */
 @media (max-width: 640px) {
   .scrim[data-variant="banner"] {
-    background: linear-gradient(180deg, var(--scrim) 0%, var(--scrim) 30%, var(--scrim-soft) 36%, transparent 42%);
-    -webkit-mask-image: none;
-    mask-image: none;
+    background: linear-gradient(180deg, var(--scrim) 0%, var(--scrim) 19%, transparent 36%);
   }
 }

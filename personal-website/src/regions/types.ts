@@ -58,6 +58,9 @@ export interface KeyArt {
   src: string;
   /** CSS object-position: the point that stays in frame when the image is cropped. */
   focus: string;
+  /** Parts of the image (fractions of its width and height) that must stay in frame
+      and never sit behind banner text. Checked in the browser by e2e/keyart.spec.ts. */
+  keepClear?: { label: string; x: [number, number]; y: [number, number] }[];
 }
 
 export interface Region {

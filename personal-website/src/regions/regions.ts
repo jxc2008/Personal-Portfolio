@@ -74,7 +74,15 @@ const valorantRidge: Region = {
   lede: "Where I model professional VALORANT: a pricing engine for match markets, the questions I'm testing with it, and a look back at each Champions.",
   scenery: "ridge",
   // Focal point is the outpost; keep it and the mast in frame at every width.
-  art: { src: "/regions/ridge.webp", focus: "58% 52%" },
+  art: {
+    src: "/regions/ridge.webp",
+    focus: "58% 52%",
+    // Measured on the 2400x1350 file. Update these if the image changes.
+    keepClear: [
+      { label: "mast", x: [0.596, 0.606], y: [0.381, 0.515] },
+      { label: "outpost", x: [0.558, 0.63], y: [0.515, 0.585] },
+    ],
+  },
   state: "open",
   facts: [
     "Covers tier-1 VCT from 2023 onward, plus the Esports World Cup.",
