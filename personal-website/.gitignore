@@ -4,3 +4,7 @@ node_modules
 
 # Source archive for hero assets (extracted alongside)
 public/hero/*.zip
+
+# Playwright output (npm run test:e2e)
+/test-results/
+/playwright-report/
