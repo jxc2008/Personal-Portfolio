@@ -1,9 +1,10 @@
 // Key art checks in a real browser, for every region with key art:
 //  1. each keepClear box (e.g. Ridge's mast) stays in frame and no banner text sits on it;
-//  2. the banner text meets WCAG AA against whatever is behind it, measured per pixel
-//     with the text hidden and no halo, so the worst spot in the art counts.
+//  2. the banner text, and the region's name on its home tile, meet WCAG AA against
+//     whatever is behind them, measured per pixel with the text hidden and no halo,
+//     so the worst spot in the art counts.
 
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import { REGIONS } from "../src/regions/regions";
 import type { KeyArt } from "../src/regions/types";
 
@@ -64,6 +65,65 @@ function bannerText(page: Page) {
   });
 }
 
+/**
+ * Fails unless every line of `textSelector` inside `container` that sits over the key art
+ * meets WCAG AA (4.5:1, or 3:1 for large text) against every pixel behind it. The text is
+ * hidden (with its halo) before the screenshot, so the art itself is what's measured.
+ */
+async function expectAA(page: Page, container: Locator, textSelector: string) {
+  const lines = await container.evaluate((root, sel) => {
+    const art = root.querySelector("img")!.getBoundingClientRect();
+    const cr = root.getBoundingClientRect();
+    const out: { tag: string; color: string; need: number; x: number; y: number; w: number; h: number }[] = [];
+    for (const el of Array.from(root.querySelectorAll<HTMLElement>(sel))) {
+      el.setAttribute("data-aa-text", "");
+      const cs = getComputedStyle(el);
+      const px = parseFloat(cs.fontSize);
+      const large = px >= 24 || (px >= 18.66 && Number(cs.fontWeight) >= 700);
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      for (const r of Array.from(range.getClientRects())) {
+        // Only text over the art (on phones the banner description sits below it).
+        if (r.bottom <= art.top || r.top >= art.bottom) continue;
+        out.push({ tag: el.tagName, color: cs.color, need: large ? 3 : 4.5, x: r.left - cr.left, y: r.top - cr.top, w: r.width, h: Math.min(r.height, art.bottom - r.top) });
+      }
+    }
+    return out;
+  }, textSelector);
+  expect(lines.length).toBeGreaterThan(0);
+  await page.addStyleTag({ content: "[data-aa-text] { color: transparent !important; text-shadow: none !important; }" });
+  const png = (await container.screenshot()).toString("base64");
+  const worst = await page.evaluate(
+    async ({ png, lines }) => {
+      const img = new Image();
+      img.src = `data:image/png;base64,${png}`;
+      await img.decode();
+      const c = document.createElement("canvas");
+      c.width = img.width;
+      c.height = img.height;
+      const g = c.getContext("2d")!;
+      g.drawImage(img, 0, 0);
+      const lin = (v: number) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+      const lum = (r: number, gg: number, b: number) => 0.2126 * lin(r) + 0.7152 * lin(gg) + 0.0722 * lin(b);
+      return lines.map((ln) => {
+        const [tr, tg, tb, ta = 1] = ln.color.match(/[\d.]+/g)!.map(Number);
+        const d = g.getImageData(Math.round(ln.x), Math.round(ln.y), Math.max(1, Math.round(ln.w)), Math.max(1, Math.round(ln.h))).data;
+        let min = Infinity;
+        for (let i = 0; i < d.length; i += 4) {
+          // Text colour may be translucent: blend it over this pixel first.
+          const a = lum(ta * tr + (1 - ta) * d[i], ta * tg + (1 - ta) * d[i + 1], ta * tb + (1 - ta) * d[i + 2]);
+          const b = lum(d[i], d[i + 1], d[i + 2]);
+          min = Math.min(min, (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05));
+        }
+        return { tag: ln.tag, need: ln.need, min: Number(min.toFixed(2)) };
+      });
+    },
+    { png, lines },
+  );
+  console.log(worst.map((w) => `${w.tag} ${w.min}`).join(", "));
+  for (const w of worst) expect(w.min, `${w.tag} line contrast`).toBeGreaterThanOrEqual(w.need);
+}
+
 const overlaps = (a: Box, b: Box) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 const inside = (a: Box, f: Box) => a.left >= f.left && a.right <= f.right && a.top >= f.top && a.bottom <= f.bottom;
 
@@ -85,56 +145,30 @@ for (const region of withArt) {
       test(`${region.slug} at ${size.width}px, ${theme}: banner text meets WCAG AA over the art`, async ({ page }) => {
         await page.setViewportSize(size);
         await open(page, region.slug, theme);
-        const header = page.locator("header").first();
-        // Lines of text that sit over the art (on phones the description is below it).
-        const lines = await header.evaluate((h) => {
-          const art = h.querySelector("img")!.getBoundingClientRect();
-          const hr = h.getBoundingClientRect();
-          const out: { tag: string; color: string; need: number; x: number; y: number; w: number; h: number }[] = [];
-          for (const el of Array.from(h.querySelectorAll<HTMLElement>("h1, p"))) {
-            const cs = getComputedStyle(el);
-            const px = parseFloat(cs.fontSize);
-            const large = px >= 24 || (px >= 18.66 && Number(cs.fontWeight) >= 700);
-            const range = document.createRange();
-            range.selectNodeContents(el);
-            for (const r of Array.from(range.getClientRects())) {
-              if (r.bottom <= art.top || r.top >= art.bottom) continue;
-              out.push({ tag: el.tagName, color: cs.color, need: large ? 3 : 4.5, x: r.left - hr.left, y: r.top - hr.top, w: r.width, h: Math.min(r.height, art.bottom - r.top) });
-            }
-          }
-          return out;
-        });
-        expect(lines.length).toBeGreaterThan(0);
-        await page.addStyleTag({ content: "header h1, header p { color: transparent !important; text-shadow: none !important; }" });
-        const png = (await header.screenshot()).toString("base64");
-        const worst = await page.evaluate(
-          async ({ png, lines }) => {
-            const img = new Image();
-            img.src = `data:image/png;base64,${png}`;
-            await img.decode();
-            const c = document.createElement("canvas");
-            c.width = img.width;
-            c.height = img.height;
-            const g = c.getContext("2d")!;
-            g.drawImage(img, 0, 0);
-            const lin = (v: number) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
-            const lum = (r: number, gg: number, b: number) => 0.2126 * lin(r) + 0.7152 * lin(gg) + 0.0722 * lin(b);
-            return lines.map((ln) => {
-              const [tr, tg, tb, ta = 1] = ln.color.match(/[\d.]+/g)!.map(Number);
-              const d = g.getImageData(Math.round(ln.x), Math.round(ln.y), Math.max(1, Math.round(ln.w)), Math.max(1, Math.round(ln.h))).data;
-              let min = Infinity;
-              for (let i = 0; i < d.length; i += 4) {
-                // Text colour may be translucent: blend it over this pixel first.
-                const a = lum(ta * tr + (1 - ta) * d[i], ta * tg + (1 - ta) * d[i + 1], ta * tb + (1 - ta) * d[i + 2]);
-                const b = lum(d[i], d[i + 1], d[i + 2]);
-                min = Math.min(min, (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05));
-              }
-              return { tag: ln.tag, need: ln.need, min: Number(min.toFixed(2)) };
-            });
-          },
-          { png, lines },
-        );
-        for (const w of worst) expect(w.min, `${w.tag} line contrast`).toBeGreaterThanOrEqual(w.need);
+        await expectAA(page, page.locator("header").first(), "h1, p");
+      });
+
+      test(`${region.slug} at ${size.width}px, ${theme}: home tile name meets WCAG AA over the art`, async ({ page }) => {
+        await page.setViewportSize(size);
+        await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
+        await page.goto("/?tod=day", { waitUntil: "networkidle" });
+        const art = page.locator(`#regions a[href="/regions/${region.slug}"] span:has(> img[data-testid="region-key-art"])`);
+        await art.scrollIntoViewIfNeeded();
+        await art.locator("img").evaluate((img: HTMLImageElement) => img.decode());
+        await expectAA(page, art, ":scope > span:last-child");
+      });
+
+      test(`${region.slug} at ${size.width}px, ${theme}: "Other regions" tile name meets WCAG AA over the art`, async ({ page }) => {
+        await page.setViewportSize(size);
+        await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
+        const elsewhere = REGIONS.find((r) => r.slug !== region.slug)!;
+        await page.goto(`/regions/${elsewhere.slug}`, { waitUntil: "networkidle" });
+        const art = page
+          .getByRole("navigation", { name: "Other regions" })
+          .locator(`a[href="/regions/${region.slug}"] span:has(> img[data-testid="region-key-art"])`);
+        await art.scrollIntoViewIfNeeded();
+        await art.locator("img").evaluate((img: HTMLImageElement) => img.decode());
+        await expectAA(page, art, ":scope > span:last-child");
       });
     }
   }

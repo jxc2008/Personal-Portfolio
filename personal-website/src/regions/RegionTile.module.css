@@ -36,8 +36,20 @@
   text-shadow: var(--r-banner-halo);
 }
 
+/* Over key art, the name takes the dark treatment in both themes, like the banner.
+   Keyed to the shade, which only renders while the art is showing. */
+.art:has([data-variant="tile"]) {
+  --r-banner-ink: var(--r-art-ink);
+  --r-banner-halo: var(--r-art-halo);
+}
+
 .wide .name {
   font-size: 1.35rem;
+}
+
+/* Where the name ends, for the shade behind it over key art (Scenery.module.css). */
+.wide .art {
+  --tile-shade-solid: 2.4rem;
 }
 
 .short {
@@ -76,5 +88,6 @@
 @media (max-width: 640px) {
   .tall .art {
     aspect-ratio: 16 / 9;
+    --tile-shade-solid: 2.6rem;
   }
 }

@@ -34,22 +34,15 @@
   object-fit: cover;
 }
 
-/* Shade behind text on key art. It is the page background colour, which always
-   contrasts with the banner ink: light behind dark text in light mode, dark
-   behind light text in dark mode. */
+/* Shade behind text on key art. Text over key art always takes the dark
+   treatment, whatever the theme (light text, RegionPage and RegionTile), so the
+   shade is the region's dark background. */
 .scrim {
-  --scrim: color-mix(in srgb, var(--r-bg) 80%, transparent);
-  --scrim-soft: color-mix(in srgb, var(--r-bg) 45%, transparent);
+  --scrim: color-mix(in srgb, var(--r-art-shade) 80%, transparent);
+  --scrim-soft: color-mix(in srgb, var(--r-art-shade) 45%, transparent);
   position: absolute;
   inset: 0;
   pointer-events: none;
-}
-
-/* Banners take the dark treatment over key art in both themes (RegionPage), so
-   their shade is the region's dark background. */
-.scrim[data-variant="banner"] {
-  --scrim: color-mix(in srgb, var(--r-art-shade) 80%, transparent);
-  --scrim-soft: color-mix(in srgb, var(--r-art-shade) 45%, transparent);
 }
 
 /* Banner, wide screens: a soft radial fade out of the top-left corner, where the
@@ -67,9 +60,13 @@
   }
 }
 
-/* Tiles: just behind the name along the top edge. */
+/* Tiles: solid behind the name (RegionTile sets --tile-shade-solid to where the
+   name ends), then a fade that is gone by 34% of the tile's height, above Ridge's
+   mast at 38%. On very small tiles the fade keeps a minimum length rather than
+   turning into a hard edge, so its tail can reach the subject there. */
 .scrim[data-variant="tile"] {
-  background: linear-gradient(180deg, var(--scrim) 0%, var(--scrim-soft) 16%, transparent 30%);
+  --solid: var(--tile-shade-solid, 2.9rem);
+  background: linear-gradient(180deg, var(--scrim) 0, var(--scrim) var(--solid), var(--scrim-soft), transparent max(34%, calc(var(--solid) + 1.75rem)));
 }
 
 /* Banner, phones: only the title sits over the art (RegionPage moves the rest

@@ -66,16 +66,16 @@ The phone banner is the tight one: the subject needs to sit between about 38% an
 - **Wide screens:** the shade is a soft radial fade out of the top-left corner, with no hard edge. The text is held to the upper left: the title is about 15% smaller than on drawn banners, and the description is capped at 80% of the text column. The description scales with the banner (16 px up to about 1030 px wide, about 22 px at 1440), so it keeps the same proportion as the banner grows.
 - **Tablets (641–1023 px):** the same fade, reaching a little further, because the narrow text column runs further down.
 - **Phones (under 640 px):** only the title stays over the art, on a shaded band at the top. The description and language switch move below the image, on the themed page colours, so no length of copy can cover the subject.
-- **Tiles:** a shade along the top edge, behind the name. Tiles still follow the theme (dark name on a light shade in light mode).
+- **Tiles** (home page and the "Other regions" strip): the same dark treatment as the banner, in both themes, while the art is showing. The shade is solid behind the name and fades out by 34% of the tile's height, above Ridge's mast at 38%. On the smallest strip tiles (phone width, 160×90) the name sits right on the mast tip and the fade's tail reaches the mast; those tiles are thumbnails and the layout was already that tight.
 
 **The keep-clear boxes and the e2e test.** `art.keepClear` lists the parts of the image that must stay in frame and never sit behind text. For Ridge that's the mast and the outpost, measured on the 2400×1350 file; update the boxes if the image changes. `e2e/keyart.spec.ts` (Playwright, real browser) checks every region with key art at 390, 768, 1024 and 1440 px in both themes:
 
 1. Each keep-clear box is fully in frame, and no line of banner text or control overlaps it.
-2. The banner text meets WCAG AA against the actual pixels behind it. It's measured on every pixel of each line with the text hidden and no halo, so the worst spot counts.
+2. The banner text, and the region's name on its home tile and its "Other regions" tile, meet WCAG AA against the actual pixels behind them. It's measured on every pixel of each line with the text hidden and no halo, so the worst spot counts.
 
 Run it with `npm run build && npm run test:e2e`. It isn't part of `npm test`.
 
-**Results on the real image.** All 16 checks pass. Light and dark mode now measure the same, since the banner is dark in both. The worst pixel behind each piece of text:
+**Results on the real image.** All 32 checks pass. Tile names measure 8.05–9.35:1. Light and dark mode now measure the same, since the banner is dark in both. The worst pixel behind each piece of text:
 
 | Width | Title (needs 3:1) | Description (needs 4.5:1) |
 |---|---|---|
