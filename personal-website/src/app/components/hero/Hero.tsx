@@ -13,6 +13,7 @@ import {
   zoomFor,
 } from "./sceneMath";
 import { computeTod, parseTodOverride, TOD_ALT, TOD_IMAGE, todBootstrapSource, type Tod } from "./timeOfDay";
+import { worldTagline } from "@/regions";
 import styles from "./Hero.module.css";
 
 // Placeholder display face; swap freely.
@@ -132,6 +133,7 @@ export default function Hero({ nextId }: HeroProps) {
       <canvas ref={fxRef} className={`${styles.layer} ${styles.fx}`} aria-hidden="true" />
 
       <div className={styles.copy}>
+        <p className={styles.tagline}>{worldTagline()}</p>
         <h1 id="hero-title" className={`${styles.title} ${display.className}`}>
           Joseph Cheng
         </h1>

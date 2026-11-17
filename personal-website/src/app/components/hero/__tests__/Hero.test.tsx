@@ -36,6 +36,7 @@ describe("Hero", () => {
     mockMatchMedia(false);
     render(<Hero nextId="featured" />);
     expect(screen.getByRole("heading", { level: 1, name: "Joseph Cheng" })).toBeInTheDocument();
+    expect(screen.getByText("A world in five regions")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Scroll to content" })).toHaveAttribute("href", "#featured");
   });
 

@@ -1,0 +1,61 @@
+import { fireEvent, render, screen, within } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import type { ReactNode } from "react";
+import RegionPage from "../RegionPage";
+
+jest.mock("next/link", () => ({
+  __esModule: true,
+  default: ({ href, children, ...rest }: { href: string; children: ReactNode }) => (
+    <a href={href} {...rest}>
+      {children}
+    </a>
+  ),
+}));
+
+describe("RegionPage", () => {
+  it("renders VALORANT Ridge from its data", () => {
+    render(<RegionPage slug="valorant-ridge" />);
+    expect(screen.getByRole("heading", { level: 1, name: "VALORANT Ridge" })).toBeInTheDocument();
+    for (const name of ["Pricing system", "Research hypotheses", "Champions post-mortems", "Veto calculator", "Field notes"]) {
+      expect(screen.getByRole("heading", { level: 2, name })).toBeInTheDocument();
+    }
+    expect(screen.getByText("Live pricing engine").closest("li")).toHaveTextContent("Building");
+    expect(screen.getByText(/No posts yet/)).toBeInTheDocument();
+    expect(screen.queryByText(/still being charted/)).not.toBeInTheDocument();
+  });
+
+  it("links to the four other regions", () => {
+    render(<RegionPage slug="valorant-ridge" />);
+    const travel = screen.getByRole("navigation", { name: "Other regions" });
+    expect(within(travel).getAllByRole("link").map((a) => a.getAttribute("href"))).toEqual([
+      "/regions/trading-floor",
+      "/regions/piano-hall",
+      "/regions/far-shore",
+      "/regions/the-lab",
+    ]);
+  });
+
+  it("plays out the veto and can step back", () => {
+    render(<RegionPage slug="valorant-ridge" />);
+    expect(screen.getByText(/With best play from here/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Finish with best play" }));
+    expect(screen.getByText(/of the time on/)).toHaveTextContent(/Team A wins the series \d+\.\d% of the time on \w+ \(\d+%\), \w+ \(\d+%\), \w+ \(\d+%\)\./);
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(screen.getByText(/With best play from here/)).toBeInTheDocument();
+  });
+
+  it("marks stubs as still being charted", () => {
+    render(<RegionPage slug="piano-hall" />);
+    expect(screen.getByText(/still being charted/)).toBeInTheDocument();
+    expect(screen.getByText("Playable keyboard").closest("li")).toHaveTextContent("Planned");
+  });
+
+  it("switches the Far Shore to 中文", () => {
+    const { container } = render(<RegionPage slug="far-shore" />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Far Shore");
+    fireEvent.click(screen.getByRole("button", { name: "中文" }));
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("彼岸");
+    expect(container.querySelector("article")).toHaveAttribute("lang", "zh-Hans");
+    expect(screen.getByRole("button", { name: "中文" })).toHaveAttribute("aria-pressed", "true");
+  });
+});

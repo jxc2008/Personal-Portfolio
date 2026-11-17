@@ -1,0 +1,80 @@
+.tile {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 0.6rem;
+  color: var(--text);
+}
+
+.art {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--s-sky-top);
+  isolation: isolate;
+}
+
+.tall .art {
+  aspect-ratio: 3 / 4;
+}
+
+.wide .art {
+  aspect-ratio: 16 / 9;
+}
+
+.name {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  top: 0.9rem;
+  font-family: var(--r-display);
+  font-weight: var(--r-display-weight);
+  letter-spacing: var(--r-display-track);
+  font-size: clamp(1.45rem, 2vw, 1.8rem);
+  line-height: 1;
+  color: var(--r-banner-ink);
+  text-shadow: var(--r-banner-halo);
+}
+
+.wide .name {
+  font-size: 1.35rem;
+}
+
+.short {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.state {
+  align-self: end;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.tile[data-region] .art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.tile:hover .short {
+  color: var(--text);
+}
+
+.tile:hover .art {
+  box-shadow: 0 0 0 2px var(--r-accent);
+}
+
+.tile:focus-visible {
+  outline-offset: 6px;
+}
+
+@media (max-width: 640px) {
+  .tall .art {
+    aspect-ratio: 16 / 9;
+  }
+}

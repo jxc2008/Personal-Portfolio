@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { useTheme } from "./NavbarContext";
+import { getRegion, regionAnchors } from "@/regions";
 import styles from "./FloatingPillNav.module.css";
 
 const mainLinks = [
-  { href: "/", label: "Home" },
-  { href: "/professional", label: "Projects" },
-  { href: "/nonprofessional", label: "Passions" },
+  { href: "/", label: "Home", isActive: (path: string) => path === "/" },
+  { href: "/#regions", label: "Regions", isActive: (path: string) => path.startsWith("/regions/") },
 ];
 
 const sectionAnchors: Record<string, { id: string; label: string }[]> = {
@@ -29,7 +29,8 @@ export default function FloatingPillNav() {
   const pathname = usePathname();
   const { darkMode, toggleDarkMode } = useTheme();
 
-  const anchors = sectionAnchors[pathname] || [];
+  const region = pathname.startsWith("/regions/") ? getRegion(pathname.split("/")[2] ?? "") : undefined;
+  const anchors = region ? regionAnchors(region) : sectionAnchors[pathname] || [];
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -41,7 +42,7 @@ export default function FloatingPillNav() {
       <div className={styles.inner}>
         {mainLinks.map((link) => (
           <Link key={link.href} href={link.href} className={styles.link}>
-            {pathname === link.href && (
+            {link.isActive(pathname) && (
               <motion.span
                 className={styles.activeIndicator}
                 layoutId="pillIndicator"

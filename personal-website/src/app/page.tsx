@@ -7,7 +7,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import SocialMediaLinks from "./components/SocialMediaLinks";
 import Hero from "./components/hero/Hero";
-import { heroReveal, staggerContainerDramatic, scaleReveal } from "./utils/animations";
+import RegionsIndex from "@/regions/RegionsIndex";
+import { scaleReveal } from "./utils/animations";
 
 export default function Home() {
   const featuredRef = useRef<HTMLElement>(null);
@@ -20,7 +21,11 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Hero nextId="featured" />
+      <Hero nextId="regions" />
+
+      {/* ─── REGIONS ─── */}
+      <RegionsIndex />
+
 
       {/* ─── FEATURED PROJECT ─── */}
       <section id="featured" className={styles.featured} ref={featuredRef}>
@@ -63,35 +68,6 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
-
-      {/* ─── EXPLORE ─── */}
-      <section className={styles.explore}>
-        <motion.div
-          className={styles.exploreInner}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-120px" }}
-          variants={staggerContainerDramatic}
-        >
-          <motion.div variants={heroReveal}>
-            <Link href="/professional" className={styles.exploreTile}>
-              <span className={styles.tileIndex}>Projects</span>
-              <h3 className={styles.tileHeading}>Professional<br />Pursuits</h3>
-              <p className={styles.tileDesc}>Research, engineering, and quantitative work</p>
-              <span className={styles.tileArrow}>&rarr;</span>
-            </Link>
-          </motion.div>
-
-          <motion.div variants={heroReveal}>
-            <Link href="/nonprofessional" className={styles.exploreTile}>
-              <span className={styles.tileIndex}>Passions</span>
-              <h3 className={styles.tileHeading}>Personal<br />Interests</h3>
-              <p className={styles.tileDesc}>Writing, piano, ideas, and creative exploration</p>
-              <span className={styles.tileArrow}>&rarr;</span>
-            </Link>
-          </motion.div>
-        </motion.div>
       </section>
 
       {/* ─── CONNECT ─── */}
