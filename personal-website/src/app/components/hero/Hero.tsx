@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { Cormorant_Garamond } from "next/font/google";
+import { Shippori_Mincho } from "next/font/google";
 import { HeroEngine } from "./HeroEngine";
 import {
   DEFAULT_PARALLAX,
@@ -13,10 +13,11 @@ import {
   zoomFor,
 } from "./sceneMath";
 import { computeTod, parseTodOverride, TOD_ALT, TOD_IMAGE, todBootstrapSource, type Tod } from "./timeOfDay";
+import { worldTagline } from "@/regions";
 import styles from "./Hero.module.css";
 
-// Placeholder display face; swap freely.
-const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600"], display: "swap" });
+// Title face, chosen from the comparison in docs/title-fonts.
+const display = Shippori_Mincho({ subsets: ["latin"], weight: "600", display: "swap" });
 
 const SECTION_ID = "hero";
 const IMG_ID = "hero-static";
@@ -102,7 +103,6 @@ export default function Hero({ nextId }: HeroProps) {
       className={styles.hero}
       style={ZOOM_STYLE}
       aria-labelledby="hero-title"
-      data-glow-cursor="off"
       suppressHydrationWarning
     >
       {/* Plain <img>: its src depends on the visitor's local time, picked by the
@@ -132,6 +132,7 @@ export default function Hero({ nextId }: HeroProps) {
       <canvas ref={fxRef} className={`${styles.layer} ${styles.fx}`} aria-hidden="true" />
 
       <div className={styles.copy}>
+        <p className={styles.tagline}>{worldTagline()}</p>
         <h1 id="hero-title" className={`${styles.title} ${display.className}`}>
           Joseph Cheng
         </h1>

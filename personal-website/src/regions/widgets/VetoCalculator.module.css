@@ -1,0 +1,311 @@
+/* Uses the region's tokens (--r-*), so it takes on whichever region embeds it. */
+.veto {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid var(--r-line);
+  border-radius: 6px;
+  background: var(--r-surface);
+  font-variant-numeric: tabular-nums;
+}
+
+.veto button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ─── Setup ─── */
+.teams {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.teamField {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--r-ink-soft);
+}
+
+.teamField input {
+  width: 100%;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--r-ink);
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--r-line-strong);
+  border-radius: 4px;
+  background: var(--r-bg);
+}
+
+.starts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  border: 0;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.starts legend {
+  float: left;
+  margin-right: 0.5rem;
+  color: var(--r-ink-soft);
+  font-size: 0.8rem;
+}
+
+.starts label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+.starts input {
+  accent-color: var(--r-accent);
+}
+
+.maps {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.maps caption {
+  text-align: left;
+  font-size: 0.8rem;
+  color: var(--r-ink-soft);
+  padding-bottom: 0.4rem;
+}
+
+.asOf {
+  float: right;
+  margin-left: 1rem;
+  color: var(--r-muted);
+}
+
+.maps th,
+.maps td {
+  padding: 0.35rem 0;
+  border-top: 1px solid var(--r-line);
+}
+
+.maps th {
+  width: 6.5rem;
+  text-align: left;
+  font-weight: 500;
+}
+
+.maps td:nth-child(2) {
+  padding: 0.35rem 0.75rem;
+}
+
+.num {
+  width: 3rem;
+  text-align: right;
+}
+
+.used th,
+.used .num {
+  color: var(--r-muted);
+}
+
+.maps input[type="range"] {
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--r-accent) var(--fill), var(--r-accent-2) var(--fill));
+  cursor: pointer;
+}
+
+.maps input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--r-bg);
+  border: 2px solid var(--r-ink);
+}
+
+.maps input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--r-bg);
+  border: 2px solid var(--r-ink);
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-top: 0.9rem;
+}
+
+.presets button,
+.actions button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.85rem;
+  color: var(--r-accent-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--r-line-strong);
+  text-underline-offset: 3px;
+}
+
+.presets button:hover,
+.actions button:hover:not(:disabled) {
+  text-decoration-color: currentColor;
+}
+
+/* ─── Veto board ─── */
+.steps {
+  list-style: none;
+  counter-reset: step;
+  margin-bottom: 1.25rem;
+}
+
+.step {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 1.75rem auto 1fr;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--r-line);
+}
+
+.step::before {
+  content: counter(step);
+  color: var(--r-muted);
+  font-size: 0.8rem;
+}
+
+.step:last-child::before {
+  content: "";
+}
+
+.who {
+  color: var(--r-ink-soft);
+  font-size: 0.9rem;
+}
+
+.chosen {
+  justify-self: end;
+  font-family: var(--r-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.banned {
+  color: var(--r-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.later .who {
+  color: var(--r-muted);
+}
+
+.now .who {
+  color: var(--r-ink);
+  font-weight: 600;
+}
+
+.choices {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.choices button {
+  display: grid;
+  gap: 0.1rem;
+  text-align: left;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--r-line-strong);
+  border-radius: 4px;
+  background: var(--r-bg);
+  transition: border-color 0.15s ease;
+}
+
+.choices button:hover {
+  border-color: var(--r-ink);
+}
+
+.choices button.best {
+  border-color: var(--r-accent);
+  box-shadow: inset 0 0 0 1px var(--r-accent);
+}
+
+.choiceMap {
+  font-weight: 600;
+}
+
+.choiceValue {
+  font-size: 0.8rem;
+  color: var(--r-ink-soft);
+}
+
+.bestTag {
+  font-size: 0.75rem;
+  color: var(--r-accent-ink);
+}
+
+.result {
+  padding: 1rem 0;
+  border-top: 1px solid var(--r-line-strong);
+}
+
+.price {
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.price strong {
+  font-family: var(--r-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--r-accent-ink);
+}
+
+.compare {
+  margin-top: 0.35rem;
+  font-size: 0.88rem;
+  color: var(--r-ink-soft);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+
+.actions button:disabled {
+  color: var(--r-muted);
+  cursor: default;
+  text-decoration: none;
+}
+
+.note {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--r-muted);
+  max-width: 46ch;
+}
+
+@media (max-width: 860px) {
+  .veto {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -135,94 +135,6 @@
   transform: translateX(3px);
 }
 
-/* ═══════════════════════ EXPLORE ═══════════════════════ */
-.explore {
-  padding: clamp(4rem, 8vw, 7rem) clamp(2rem, 6vw, 8rem);
-  background: var(--bg-secondary);
-}
-
-.exploreInner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-.exploreTile {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(2rem, 3vw, 3rem);
-  min-height: 320px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.exploreTile::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.exploreTile:hover {
-  border-color: var(--border-strong);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
-}
-
-.exploreTile:hover::after {
-  opacity: 1;
-}
-
-.tileIndex {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.tileHeading {
-  font-family: var(--font-heading);
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--text);
-  margin: 1rem 0;
-}
-
-.tileDesc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  max-width: 300px;
-}
-
-.tileArrow {
-  align-self: flex-end;
-  font-size: 1.5rem;
-  color: var(--text-muted);
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.exploreTile:hover .tileArrow {
-  color: var(--accent);
-  transform: translateX(4px);
-}
-
 /* ═══════════════════════ CONNECT ═══════════════════════ */
 .connect {
   padding: clamp(5rem, 10vw, 10rem) clamp(2rem, 6vw, 8rem);
@@ -294,13 +206,5 @@
   .featuredText {
     grid-column: 1;
     margin-top: 2rem;
-  }
-
-  .exploreInner {
-    grid-template-columns: 1fr;
-  }
-
-  .exploreTile {
-    min-height: 240px;
   }
 }

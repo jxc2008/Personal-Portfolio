@@ -36,6 +36,7 @@ describe("Hero", () => {
     mockMatchMedia(false);
     render(<Hero nextId="featured" />);
     expect(screen.getByRole("heading", { level: 1, name: "Joseph Cheng" })).toBeInTheDocument();
+    expect(screen.getByText("A world in five regions")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Scroll to content" })).toHaveAttribute("href", "#featured");
   });
 
@@ -59,12 +60,6 @@ describe("Hero", () => {
     mockMatchMedia(true);
     render(<Hero nextId="featured" />);
     expect(mockEngine).not.toHaveBeenCalled();
-  });
-
-  it("opts out of the site's glow cursor", () => {
-    mockMatchMedia(false);
-    const { container } = render(<Hero nextId="featured" />);
-    expect(container.querySelector("section")).toHaveAttribute("data-glow-cursor", "off");
   });
 
   it("hides the decorative canvases from assistive tech", () => {

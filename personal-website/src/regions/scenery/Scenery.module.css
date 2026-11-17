@@ -1,0 +1,78 @@
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Pointer parallax: the banner sets --px/--py in [-1, 1]; --d is the layer's depth. */
+.layer {
+  transform: translate3d(calc(var(--px, 0) * var(--d, 0) * -1px), calc(var(--py, 0) * var(--d, 0) * -0.4px), 0);
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.stars {
+  opacity: var(--s-stars, 0);
+  transition: opacity 0.6s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Key art laid over the drawn scenery (see RegionArt). */
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Shade behind text on key art. Text over key art always takes the dark
+   treatment, whatever the theme (light text, RegionPage and RegionTile), so the
+   shade is the region's dark background. */
+.scrim {
+  --scrim: color-mix(in srgb, var(--r-art-shade) 80%, transparent);
+  --scrim-soft: color-mix(in srgb, var(--r-art-shade) 45%, transparent);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Banner, wide screens: a soft radial fade out of the top-left corner, where the
+   text sits (RegionPage holds it to the upper left). No hard edge anywhere. Tuned
+   so every pixel behind the text meets WCAG AA in both themes; the fade's tail
+   leaves a light shade (about a quarter strength) on Ridge's mast tip. */
+.scrim[data-variant="banner"] {
+  background: radial-gradient(ellipse 72% 115% at 0% 0%, var(--scrim) 0%, var(--scrim) 62%, var(--scrim-soft) 80%, transparent 100%);
+}
+
+/* Tablets: the text column is narrow and runs further down, so the fade reaches further. */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .scrim[data-variant="banner"] {
+    background: radial-gradient(ellipse 80% 120% at 0% 0%, var(--scrim) 0%, var(--scrim) 62%, var(--scrim-soft) 80%, transparent 100%);
+  }
+}
+
+/* Tiles: solid behind the name (RegionTile sets --tile-shade-solid to where the
+   name ends), then a fade that is gone by 34% of the tile's height, above Ridge's
+   mast at 38%. On very small tiles the fade keeps a minimum length rather than
+   turning into a hard edge, so its tail can reach the subject there. */
+.scrim[data-variant="tile"] {
+  --solid: var(--tile-shade-solid, 2.9rem);
+  background: linear-gradient(180deg, var(--scrim) 0, var(--scrim) var(--solid), var(--scrim-soft), transparent max(34%, calc(var(--solid) + 1.75rem)));
+}
+
+/* Banner, phones: only the title sits over the art (RegionPage moves the rest
+   below), so shade a band across the top that fades out well above the subject. */
+@media (max-width: 640px) {
+  .scrim[data-variant="banner"] {
+    background: linear-gradient(180deg, var(--scrim) 0%, var(--scrim) 19%, transparent 36%);
+  }
+}

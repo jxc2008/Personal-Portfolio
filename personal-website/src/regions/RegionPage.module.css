@@ -1,0 +1,432 @@
+/* Shared region template. Colours and the display face come from the region's
+   tokens (themes.module.css + fonts.ts); this file only sets structure. */
+
+.page {
+  --gutter: clamp(20px, 6vw, 112px);
+  background: var(--r-bg);
+  color: var(--r-ink);
+  padding-bottom: 6rem; /* room for the floating nav */
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* ─── Banner ─── */
+.banner {
+  position: relative;
+  height: clamp(460px, 76svh, 780px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--s-sky-top);
+}
+
+.bannerArt {
+  position: absolute;
+  inset: 0;
+}
+
+.bannerCopy {
+  position: absolute;
+  z-index: 1;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: clamp(88px, 15vh, 170px);
+  max-width: 44rem;
+  color: var(--r-banner-ink);
+}
+
+.name {
+  font-family: var(--r-display);
+  font-weight: var(--r-display-weight);
+  letter-spacing: var(--r-display-track);
+  font-size: clamp(3rem, 8.4vw, 7.5rem);
+  line-height: 0.92;
+  text-shadow: var(--r-banner-halo);
+  text-wrap: balance;
+}
+
+.lede {
+  margin-top: 1.1rem;
+  max-width: 36rem;
+  font-size: clamp(1rem, 1.45vw, 1.2rem);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--r-banner-soft);
+  text-shadow: var(--r-banner-halo);
+}
+
+.langRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin-top: 1.4rem;
+}
+
+.draftTag {
+  font-size: 0.85rem;
+  color: var(--r-banner-soft);
+  text-shadow: var(--r-banner-halo);
+}
+
+.langSwitch {
+  display: inline-flex;
+  border: 1px solid var(--r-banner-soft);
+  border-radius: 999px;
+  padding: 2px;
+}
+
+.langSwitch button {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--r-banner-ink);
+  cursor: pointer;
+}
+
+.langSwitch button[aria-pressed="true"] {
+  background: var(--r-banner-ink);
+  color: var(--r-banner-on-ink, var(--s-sky-top));
+}
+
+/* ─── Body ─── */
+.body {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.facts {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.25rem clamp(1.5rem, 3vw, 3rem);
+  padding: clamp(2rem, 4vw, 3rem) 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--r-ink-soft);
+}
+
+.facts li {
+  padding-top: 0.8rem;
+  border-top: 2px solid var(--r-accent);
+}
+
+.charting {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding: 0.9rem 1.1rem;
+  border-left: 3px solid var(--r-accent);
+  background: var(--r-surface);
+  color: var(--r-ink-soft);
+  max-width: 40rem;
+}
+
+/* Two columns: heading and intro on the left, the work on the right. */
+.section {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 1.5rem clamp(2rem, 5vw, 5rem);
+  padding-top: clamp(3.5rem, 7vw, 6rem);
+  scroll-margin-top: 1.5rem;
+}
+
+.sectionHead {
+  align-self: start;
+  position: sticky;
+  top: 2rem;
+}
+
+/* Sections with a widget stack: the widget needs the full width. */
+.wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.wide .sectionHead {
+  position: static;
+  max-width: 40rem;
+}
+
+.sectionTitle {
+  font-family: var(--r-display);
+  font-weight: var(--r-display-weight);
+  letter-spacing: var(--r-display-track);
+  font-size: clamp(1.9rem, 3.4vw, 2.75rem);
+  line-height: 1.02;
+}
+
+.intro {
+  margin-top: 0.85rem;
+  color: var(--r-ink-soft);
+  line-height: 1.6;
+  max-width: 40ch;
+}
+
+.wide .intro {
+  max-width: 62ch;
+}
+
+.entries {
+  list-style: none;
+}
+
+.entry {
+  padding: 1.4rem 0 1.6rem;
+  border-top: 1px solid var(--r-line-strong);
+}
+
+.entry:last-child {
+  border-bottom: 1px solid var(--r-line-strong);
+}
+
+.entryHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
+.entryTitle {
+  font-family: var(--r-display);
+  font-weight: var(--r-display-weight);
+  letter-spacing: var(--r-display-track);
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  line-height: 1.15;
+}
+
+.featured .entryTitle {
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: var(--r-ink-soft);
+  white-space: nowrap;
+}
+
+.status::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--r-muted);
+}
+
+.status[data-status="shipped"]::before {
+  background: var(--r-ink);
+  border-color: var(--r-ink);
+}
+
+.status[data-status="building"]::before {
+  background: var(--r-accent);
+  border-color: var(--r-accent);
+}
+
+.status[data-status="testing"]::before {
+  border-color: var(--r-accent);
+  background: linear-gradient(90deg, var(--r-accent) 50%, transparent 50%);
+}
+
+.status[data-status="drafting"]::before {
+  border-style: dashed;
+  border-color: var(--r-ink-soft);
+}
+
+.status[data-status="planned"] {
+  color: var(--r-muted);
+}
+
+.summary {
+  margin-top: 0.6rem;
+  max-width: 64ch;
+  line-height: 1.6;
+}
+
+.featured .summary {
+  font-size: 1.08rem;
+}
+
+.detail {
+  margin-top: 0.75rem;
+  max-width: 64ch;
+  line-height: 1.65;
+  color: var(--r-ink-soft);
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.9rem 1.5rem;
+  margin-top: 1.1rem;
+}
+
+.points dt {
+  font-size: 0.8rem;
+  color: var(--r-muted);
+}
+
+.points dd {
+  margin-top: 0.15rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.92rem;
+}
+
+.links a,
+.postLink {
+  color: var(--r-accent-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--r-line-strong);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.links a:hover,
+.postLink:hover {
+  text-decoration-color: currentColor;
+}
+
+.postLink {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  text-decoration: none;
+}
+
+.postDate {
+  font-size: 0.85rem;
+  color: var(--r-muted);
+}
+
+.empty {
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--r-line-strong);
+  color: var(--r-ink-soft);
+}
+
+/* ─── Travel strip ─── */
+.travel {
+  max-width: 1240px;
+  margin: clamp(4rem, 8vw, 7rem) auto 0;
+  padding: clamp(2rem, 4vw, 3rem) var(--gutter) 0;
+  border-top: 1px solid var(--r-line);
+}
+
+.travelTitle {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.travelList {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sectionHead {
+    position: static;
+  }
+
+  .travelList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .bannerCopy {
+    top: clamp(72px, 11vh, 110px);
+  }
+}
+
+/* Key art banners always take the dark treatment (light text over a dark shade),
+   whatever the theme; the page below stays themed. */
+.banner[data-art] {
+  --r-banner-ink: var(--r-art-ink);
+  --r-banner-soft: var(--r-art-soft);
+  --r-banner-halo: var(--r-art-halo);
+  --r-banner-on-ink: var(--r-art-shade);
+}
+
+/* Over key art, keep the text in the upper left, well short of the art's subject
+   (kept right of centre by its focus point), so the shade behind the text
+   (Scenery.module.css) can fade out softly before reaching it. */
+@media (min-width: 641px) {
+  .banner[data-art] .bannerCopy {
+    max-width: min(44rem, 50%);
+  }
+
+  .banner[data-art] .name {
+    font-size: clamp(3rem, 7vw, 6.5rem);
+  }
+
+  /* Scales with the banner, so it holds the same proportion at 1440 as at 1024. */
+  .banner[data-art] .lede {
+    max-width: min(36rem, 80%);
+    font-size: clamp(1rem, 1.55vw, 1.4rem);
+  }
+}
+
+/* Phones with key art: only the title stays over the image. The description and
+   language row move below it, onto the page colours, so no length of copy can
+   cover the art's subject. The art keeps the banner's height, so it crops the same. */
+@media (max-width: 640px) {
+  .banner[data-art] {
+    height: auto;
+    overflow: visible;
+    background: none;
+  }
+
+  .banner[data-art] .bannerArt {
+    position: relative;
+    height: clamp(460px, 76svh, 780px);
+    overflow: hidden;
+    background: var(--s-sky-top);
+  }
+
+  .banner[data-art] .bannerCopy {
+    display: contents;
+  }
+
+  .banner[data-art] .name {
+    position: absolute;
+    z-index: 1;
+    top: clamp(72px, 11vh, 110px);
+    left: var(--gutter);
+    right: var(--gutter);
+  }
+
+  .banner[data-art] .lede,
+  .banner[data-art] .langRow {
+    --r-banner-ink: var(--r-ink);
+    --r-banner-soft: var(--r-ink-soft);
+    --r-banner-halo: none;
+    --r-banner-on-ink: var(--r-bg);
+    margin-left: var(--gutter);
+    margin-right: var(--gutter);
+  }
+
+  .banner[data-art] .lede {
+    margin-top: 1.5rem;
+  }
+}

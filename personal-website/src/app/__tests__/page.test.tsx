@@ -43,14 +43,24 @@ jest.mock("framer-motion", () => {
 describe("Home page", () => {
   beforeEach(() => render(<Home />));
 
-  it("opens with the hero, whose scroll cue targets the featured section", () => {
+  it("opens with the hero, whose scroll cue targets the regions", () => {
     const hero = screen.getByTestId("hero");
-    expect(hero).toHaveAttribute("data-next", "featured");
-    expect(document.getElementById("featured")).toBeInTheDocument();
+    expect(hero).toHaveAttribute("data-next", "regions");
+    expect(document.getElementById("regions")).toBeInTheDocument();
   });
 
-  it("keeps the explore links below the hero", () => {
-    expect(screen.getByRole("link", { name: /professional/i })).toHaveAttribute("href", "/professional");
-    expect(screen.getByRole("link", { name: /personal/i })).toHaveAttribute("href", "/nonprofessional");
+  it("links to all five regions, in order", () => {
+    const hrefs = screen
+      .getAllByRole("link")
+      .map((a) => a.getAttribute("href"))
+      .filter((h) => h?.startsWith("/regions/"));
+    expect(hrefs).toEqual([
+      "/regions/trading-floor",
+      "/regions/valorant-ridge",
+      "/regions/piano-hall",
+      "/regions/far-shore",
+      "/regions/the-lab",
+    ]);
+    expect(screen.getByText(/VALORANT Ridge is open to explore/)).toBeInTheDocument();
   });
 });

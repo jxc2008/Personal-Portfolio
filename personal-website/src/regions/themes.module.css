@@ -1,0 +1,249 @@
+/* Region palettes. Every region page and tile sets data-region on an element
+   with .theme; the template and scenery read only these tokens.
+   --r-*  page colours        --s-*  banner scenery colours
+   --r-banner-*  text over the banner
+   --r-art-*     text over key art, the same in both themes */
+
+/* ─── VALORANT Ridge: cold dawn at altitude / night on the ridge ─── */
+.theme[data-region="valorant-ridge"] {
+  --r-bg: #eef2f4;
+  --r-surface: #f7f9fa;
+  --r-ink: #22303c;
+  --r-ink-soft: #4e5d6a;
+  --r-muted: #75828e;
+  --r-line: rgba(34, 48, 60, 0.12);
+  --r-line-strong: rgba(34, 48, 60, 0.26);
+  --r-accent: #c2607a;
+  --r-accent-2: #cbd6dd;
+  --r-accent-ink: #9e3f5a;
+  --r-banner-ink: #1e2a36;
+  --r-banner-soft: rgba(30, 42, 54, 0.82);
+  --r-banner-halo: 0 0 20px rgba(241, 228, 228, 0.55);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #e8edf2;
+  --r-art-soft: rgba(232, 237, 242, 0.84);
+  --r-art-halo: 0 1px 2px rgba(5, 8, 16, 0.6), 0 0 22px rgba(5, 8, 16, 0.5);
+  --r-art-shade: #121a23;
+  --r-display-weight: 720;
+  --r-display-track: -0.012em;
+  --s-sky-top: #9db6cc;
+  --s-sky-mid: #d9c8d0;
+  --s-sky-low: #f2c9b8;
+  --s-glow: #f7b8a2;
+  --s-mist: #eef2f4;
+  --s-star: #ffffff;
+  --s-stars: 0;
+  --s-ridge-1: #aab7c9;
+  --s-ridge-2: #8697ae;
+  --s-ridge-3: #5f7290;
+  --s-ridge-4: #3c4d66;
+  --s-ridge-5: #22303c;
+  --s-contour: rgba(238, 242, 244, 0.16);
+}
+
+[data-theme="dark"] .theme[data-region="valorant-ridge"] {
+  --r-bg: #121a23;
+  --r-surface: #18222d;
+  --r-ink: #e3e9ee;
+  --r-ink-soft: #a9b5c0;
+  --r-muted: #7b8996;
+  --r-line: rgba(227, 233, 238, 0.1);
+  --r-line-strong: rgba(227, 233, 238, 0.22);
+  --r-accent: #e0839b;
+  --r-accent-2: #2c3a48;
+  --r-accent-ink: #f0a3b6;
+  --r-banner-ink: #e8edf2;
+  --r-banner-soft: rgba(232, 237, 242, 0.84);
+  --r-banner-halo: 0 1px 2px rgba(5, 8, 16, 0.6), 0 0 22px rgba(5, 8, 16, 0.5);
+  --s-sky-top: #0a111e;
+  --s-sky-mid: #18253d;
+  --s-sky-low: #3a3f5e;
+  --s-glow: #6d5a88;
+  --s-mist: #1a2740;
+  --s-stars: 1;
+  --s-ridge-1: #2f3d57;
+  --s-ridge-2: #25324a;
+  --s-ridge-3: #1c273b;
+  --s-ridge-4: #141d2d;
+  --s-ridge-5: #0d141f;
+  --s-contour: rgba(140, 170, 205, 0.13);
+}
+
+/* ─── Trading Floor: green felt, brass, ledger paper ─── */
+.theme[data-region="trading-floor"] {
+  --r-bg: #edf1ec;
+  --r-surface: #f6f8f5;
+  --r-ink: #1c2a24;
+  --r-ink-soft: #4a5a52;
+  --r-muted: #75837b;
+  --r-line: rgba(28, 42, 36, 0.12);
+  --r-line-strong: rgba(28, 42, 36, 0.26);
+  --r-accent: #a9853f;
+  --r-accent-2: #d3dbd2;
+  --r-accent-ink: #7a5d24;
+  --r-banner-ink: #f3ecdc;
+  --r-banner-soft: rgba(243, 236, 220, 0.82);
+  --r-banner-halo: 0 1px 2px rgba(6, 18, 12, 0.5);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #f3ecdc;
+  --r-art-soft: rgba(243, 236, 220, 0.82);
+  --r-art-halo: 0 1px 2px rgba(6, 18, 12, 0.5);
+  --r-art-shade: #0f1714;
+  --r-display-weight: 600;
+  --r-display-track: -0.01em;
+  --s-sky-top: #21463a;
+  --s-sky-low: #112820;
+  --s-glow: #e2c37e;
+  --s-ridge-2: #c9b27a;
+  --s-contour: rgba(226, 205, 150, 0.1);
+}
+
+[data-theme="dark"] .theme[data-region="trading-floor"] {
+  --r-bg: #0f1714;
+  --r-surface: #15201b;
+  --r-ink: #e4e9e4;
+  --r-ink-soft: #a7b3ab;
+  --r-muted: #7a877f;
+  --r-line: rgba(228, 233, 228, 0.1);
+  --r-line-strong: rgba(228, 233, 228, 0.22);
+  --r-accent: #d0aa5e;
+  --r-accent-2: #26332d;
+  --r-accent-ink: #dcb874;
+}
+
+/* ─── Piano Hall: a dark hall, stage light, ivory keys ─── */
+.theme[data-region="piano-hall"] {
+  --r-bg: #f2edef;
+  --r-surface: #f9f6f7;
+  --r-ink: #2a1e2a;
+  --r-ink-soft: #5c4b5b;
+  --r-muted: #857485;
+  --r-line: rgba(42, 30, 42, 0.12);
+  --r-line-strong: rgba(42, 30, 42, 0.26);
+  --r-accent: #b0813a;
+  --r-accent-2: #e2d8dc;
+  --r-accent-ink: #835e22;
+  --r-banner-ink: #f4ede2;
+  --r-banner-soft: rgba(244, 237, 226, 0.82);
+  --r-banner-halo: 0 1px 2px rgba(10, 4, 10, 0.5);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #f4ede2;
+  --r-art-soft: rgba(244, 237, 226, 0.82);
+  --r-art-halo: 0 1px 2px rgba(10, 4, 10, 0.5);
+  --r-art-shade: #140f15;
+  --r-display-weight: 400;
+  --r-display-track: 0;
+  --s-sky-top: #1d1323;
+  --s-sky-low: #3f2836;
+  --s-glow: #f0c987;
+  --s-ridge-1: #efe7dc;
+  --s-ridge-4: #140d12;
+  --s-ridge-5: #120b10;
+}
+
+[data-theme="dark"] .theme[data-region="piano-hall"] {
+  --r-bg: #140f15;
+  --r-surface: #1c151d;
+  --r-ink: #ece4ea;
+  --r-ink-soft: #b4a6b2;
+  --r-muted: #857785;
+  --r-line: rgba(236, 228, 234, 0.1);
+  --r-line-strong: rgba(236, 228, 234, 0.22);
+  --r-accent: #d6a75a;
+  --r-accent-2: #2e2430;
+  --r-accent-ink: #e2b976;
+}
+
+/* ─── Far Shore: indigo sea, a vermilion sun, wave rows ─── */
+.theme[data-region="far-shore"] {
+  --r-bg: #eef1f4;
+  --r-surface: #f7f8fa;
+  --r-ink: #1d2742;
+  --r-ink-soft: #4b5672;
+  --r-muted: #747e97;
+  --r-line: rgba(29, 39, 66, 0.12);
+  --r-line-strong: rgba(29, 39, 66, 0.26);
+  --r-accent: #c7432f;
+  --r-accent-2: #d8dee8;
+  --r-accent-ink: #a8331f;
+  --r-banner-ink: #1d2742;
+  --r-banner-soft: rgba(29, 39, 66, 0.82);
+  --r-banner-halo: 0 0 18px rgba(240, 232, 226, 0.6);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #e8ecf5;
+  --r-art-soft: rgba(232, 236, 245, 0.84);
+  --r-art-halo: 0 1px 2px rgba(4, 6, 16, 0.6), 0 0 20px rgba(4, 6, 16, 0.5);
+  --r-art-shade: #0f1424;
+  --r-display-weight: 700;
+  --r-display-track: 0.01em;
+  --s-sky-top: #a7bbd6;
+  --s-sky-low: #ecd9cb;
+  --s-glow: #d0472f;
+  --s-ridge-2: #6c7c9a;
+  --s-ridge-4: #24345c;
+  --s-contour: rgba(235, 240, 250, 0.22);
+}
+
+[data-theme="dark"] .theme[data-region="far-shore"] {
+  --r-bg: #0f1424;
+  --r-surface: #151b2e;
+  --r-ink: #e8ecf5;
+  --r-ink-soft: #a9b1c6;
+  --r-muted: #78819a;
+  --r-line: rgba(232, 236, 245, 0.1);
+  --r-line-strong: rgba(232, 236, 245, 0.22);
+  --r-accent: #e0614a;
+  --r-accent-2: #273047;
+  --r-accent-ink: #f08169;
+  --r-banner-ink: #e8ecf5;
+  --r-banner-soft: rgba(232, 236, 245, 0.84);
+  --r-banner-halo: 0 1px 2px rgba(4, 6, 16, 0.6), 0 0 20px rgba(4, 6, 16, 0.5);
+  --s-sky-top: #131b35;
+  --s-sky-low: #3d3551;
+  --s-glow: #c8533a;
+  --s-ridge-2: #2a3556;
+  --s-ridge-4: #10182e;
+  --s-contour: rgba(160, 180, 230, 0.16);
+}
+
+/* ─── The Lab: blueprint grid and orbit traces ─── */
+.theme[data-region="the-lab"] {
+  --r-bg: #eef3f8;
+  --r-surface: #f7fafc;
+  --r-ink: #14243a;
+  --r-ink-soft: #44556b;
+  --r-muted: #6f7f93;
+  --r-line: rgba(20, 36, 58, 0.12);
+  --r-line-strong: rgba(20, 36, 58, 0.26);
+  --r-accent: #2a7ab8;
+  --r-accent-2: #d3deea;
+  --r-accent-ink: #1e5f92;
+  --r-banner-ink: #eaf5fc;
+  --r-banner-soft: rgba(234, 245, 252, 0.82);
+  --r-banner-halo: 0 1px 2px rgba(4, 12, 28, 0.5);
+  /* Text over key art: the dark-mode treatment in both themes. */
+  --r-art-ink: #eaf5fc;
+  --r-art-soft: rgba(234, 245, 252, 0.82);
+  --r-art-halo: 0 1px 2px rgba(4, 12, 28, 0.5);
+  --r-art-shade: #0c1522;
+  --r-display-weight: 500;
+  --r-display-track: -0.02em;
+  --s-sky-top: #173156;
+  --s-glow: #ddf3ff;
+  --s-ridge-2: #8fd3f0;
+  --s-contour: rgba(143, 211, 240, 0.2);
+}
+
+[data-theme="dark"] .theme[data-region="the-lab"] {
+  --r-bg: #0c1522;
+  --r-surface: #121d2c;
+  --r-ink: #e4edf5;
+  --r-ink-soft: #a3b3c4;
+  --r-muted: #728396;
+  --r-line: rgba(228, 237, 245, 0.1);
+  --r-line-strong: rgba(228, 237, 245, 0.22);
+  --r-accent: #6bb8e8;
+  --r-accent-2: #1f2d40;
+  --r-accent-ink: #8fd3f0;
+  --s-sky-top: #10233f;
+}
