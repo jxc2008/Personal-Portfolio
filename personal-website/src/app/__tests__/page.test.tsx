@@ -1,102 +1,56 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import type { ReactNode } from "react";
 import Home from "../page";
+
+jest.mock("../components/hero/Hero", () => ({
+  __esModule: true,
+  default: ({ nextId }: { nextId: string }) => <section data-testid="hero" data-next={nextId} />,
+}));
 
 jest.mock("next/link", () => ({
   __esModule: true,
-  default: ({
-    href,
-    children,
-    ...rest
-  }: {
-    href: string;
-    children: React.ReactNode;
-    [key: string]: unknown;
-  }) => (
+  default: ({ href, children, ...rest }: { href: string; children: ReactNode }) => (
     <a href={href} {...rest}>
       {children}
     </a>
   ),
 }));
 
-jest.mock("../components/NavbarContext", () => ({
-  useTheme: () => ({ darkMode: false }),
+jest.mock("next/image", () => ({
+  __esModule: true,
+  // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+  default: ({ priority, ...props }: Record<string, unknown>) => <img {...(props as object)} />,
 }));
 
-jest.mock("framer-motion", () => ({
-  motion: {
-    div: ({
-      children,
-      whileHover,
-      whileTap,
-      animate,
-      initial,
-      variants,
-      transition,
-      ...rest
-    }: {
-      children?: React.ReactNode;
-      whileHover?: unknown;
-      whileTap?: unknown;
-      animate?: unknown;
-      initial?: unknown;
-      variants?: unknown;
-      transition?: unknown;
-      [key: string]: unknown;
-    }) => <div {...rest}>{children}</div>,
-  },
-}));
+jest.mock("framer-motion", () => {
+  const strip = ({ children, initial, animate, whileInView, viewport, variants, transition, style, ...rest }: Record<string, unknown>) => ({
+    children: children as ReactNode,
+    rest,
+  });
+  const make = (Tag: "div" | "section") =>
+    function Motion(props: Record<string, unknown>) {
+      const { children, rest } = strip(props);
+      return <Tag {...(rest as object)}>{children}</Tag>;
+    };
+  return {
+    motion: { div: make("div"), section: make("section") },
+    useScroll: () => ({ scrollYProgress: 0 }),
+    useTransform: () => 0,
+  };
+});
 
 describe("Home page", () => {
-  beforeEach(() => {
-    render(<Home />);
+  beforeEach(() => render(<Home />));
+
+  it("opens with the hero, whose scroll cue targets the featured section", () => {
+    const hero = screen.getByTestId("hero");
+    expect(hero).toHaveAttribute("data-next", "featured");
+    expect(document.getElementById("featured")).toBeInTheDocument();
   });
 
-  it("renders the hero heading with 'I'm' text", () => {
-    expect(screen.getByText("I'm")).toBeInTheDocument();
-  });
-
-  it("renders the name 'Joseph Cheng'", () => {
-    expect(screen.getByText("Joseph Cheng")).toBeInTheDocument();
-  });
-
-  it("renders the scroll arrow with aria-label", () => {
-    expect(screen.getByLabelText("Scroll Down")).toBeInTheDocument();
-  });
-
-  it("renders the scroll arrow as a motion.div (no CSS bounce animation)", () => {
-    const arrow = screen.getByLabelText("Scroll Down");
-    expect(arrow.tagName).toBe("DIV");
-  });
-
-  it("renders Projects panel link", () => {
-    const link = screen.getByRole("link", { name: /go to projects/i });
-    expect(link).toHaveAttribute("href", "/professional");
-  });
-
-  it("renders Passions panel link", () => {
-    const link = screen.getByRole("link", { name: /go to passions/i });
-    expect(link).toHaveAttribute("href", "/nonprofessional");
-  });
-
-  it("does not apply fade-in-name class to the name span", () => {
-    const name = screen.getByText("Joseph Cheng");
-    expect(name.className).not.toContain("fade-in-name");
-  });
-
-  it("wraps the text container in a motion.div for fadeInUp", () => {
-    const name = screen.getByText("Joseph Cheng");
-    const textContainer = name.closest("div");
-    expect(textContainer).toBeInTheDocument();
-  });
-
-  it("wraps each panel in a motion.div for hover animation", () => {
-    const projectsLink = screen.getByRole("link", { name: /go to projects/i });
-    const wrapper = projectsLink.parentElement;
-    expect(wrapper?.tagName).toBe("DIV");
-
-    const passionsLink = screen.getByRole("link", { name: /go to passions/i });
-    const wrapper2 = passionsLink.parentElement;
-    expect(wrapper2?.tagName).toBe("DIV");
+  it("keeps the explore links below the hero", () => {
+    expect(screen.getByRole("link", { name: /professional/i })).toHaveAttribute("href", "/professional");
+    expect(screen.getByRole("link", { name: /personal/i })).toHaveAttribute("href", "/nonprofessional");
   });
 });

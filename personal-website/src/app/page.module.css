@@ -4,112 +4,6 @@
   padding-bottom: 4rem; /* space for floating nav */
 }
 
-/* ═══════════════════════ HERO ═══════════════════════ */
-.hero {
-  height: 100vh;
-  min-height: 600px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding: 0 clamp(2rem, 6vw, 8rem);
-  overflow: hidden;
-}
-
-.heroNoise {
-  position: absolute;
-  inset: 0;
-  background: var(--noise);
-  background-size: 200px 200px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.heroGradient {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 70% 20%, var(--glow), transparent),
-    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(8, 145, 178, 0.12), transparent);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.heroContent {
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
-}
-
-.heroLabel {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 2rem;
-}
-
-.heroLabelLine {
-  display: block;
-  width: 2.5rem;
-  height: 1px;
-  background: var(--accent);
-}
-
-.heroName {
-  font-family: var(--font-heading);
-  font-size: clamp(4.5rem, 12vw, 11rem);
-  font-weight: 800;
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  color: var(--text);
-  margin-bottom: 2rem;
-}
-
-.heroSub {
-  font-family: var(--font-body);
-  font-size: clamp(1rem, 1.8vw, 1.25rem);
-  font-weight: 400;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 420px;
-}
-
-.brDesktop {
-  display: block;
-}
-
-/* Scroll cue — vertical line with dot */
-.scrollCue {
-  position: absolute;
-  bottom: 2.5rem;
-  right: clamp(2rem, 6vw, 8rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  z-index: 2;
-}
-
-.scrollDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-.scrollTrack {
-  display: block;
-  width: 1px;
-  height: 48px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
-  margin-top: 4px;
-}
-
 /* ═══════════════════════ FEATURED ═══════════════════════ */
 .featured {
   padding: clamp(4rem, 8vw, 8rem) clamp(2rem, 6vw, 8rem);
@@ -393,22 +287,6 @@
 
 /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
 @media (max-width: 768px) {
-  .hero {
-    padding: 0 1.5rem;
-  }
-
-  .heroName {
-    font-size: clamp(3.5rem, 16vw, 6rem);
-  }
-
-  .brDesktop {
-    display: none;
-  }
-
-  .scrollCue {
-    right: 1.5rem;
-  }
-
   .featuredInner {
     grid-template-columns: 1fr;
   }

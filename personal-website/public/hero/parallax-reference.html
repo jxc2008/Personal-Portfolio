@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Depth Parallax Test — Overworld Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; height: 100%; background: #120d26; color: #f6f1ff; font-family: Inter, system-ui, sans-serif; overflow: hidden; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero { position: fixed; left: 6vw; top: 14vh; pointer-events: none; text-shadow: 0 4px 24px rgba(20, 10, 60, .55); }
+  .hero small { font-size: 14px; letter-spacing: .18em; text-transform: uppercase; opacity: .9; }
+  .hero h1 { margin: 8px 0 0; font-family: Cinzel, Georgia, serif; font-size: clamp(44px, 8vw, 112px); line-height: .95; }
+  .panel { position: fixed; right: 16px; bottom: 16px; width: min(340px, calc(100vw - 32px)); box-sizing: border-box;
+    background: rgba(18, 13, 38, .86); border: 1px solid rgba(255, 255, 255, .18); border-radius: 12px; padding: 16px; display: grid; gap: 12px; font-size: 14px; }
+  .panel h2 { margin: 0; font-size: 15px; font-weight: 600; }
+  .panel p { margin: 0; color: #cfc6ea; line-height: 1.45; }
+  label { display: grid; gap: 6px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  input[type=file] { font-size: 13px; color: #cfc6ea; max-width: 100%; }
+  input[type=range] { width: 100%; }
+  button { font: inherit; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .3); background: rgba(255, 255, 255, .08); color: #f6f1ff; cursor: pointer; min-height: 40px; }
+  button:hover { background: rgba(255, 255, 255, .16); }
+  .msg { color: #ffd59a; min-height: 1em; }
+  .collapsed > :not(.row:first-child) { display: none; }
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="Painted landscape that shifts in depth as you move the pointer"></canvas>
+<div class="hero"><small>A world in six regions</small><h1>Joseph Cheng</h1></div>
+
+<div class="panel" id="panel">
+  <div class="row"><h2>Depth parallax test</h2><button id="toggle" aria-expanded="true">Hide</button></div>
+  <p>Shows a built-in demo scene. Load your own painting plus its grayscale depth map (white = near) to preview it.</p>
+  <label>Image <input type="file" id="img" accept="image/*"></label>
+  <label>Depth map <input type="file" id="depth" accept="image/*"></label>
+  <label><span class="row"><span>Strength</span><span id="sv"></span></span><input type="range" id="strength" min="0" max="0.08" step="0.002" value="0.03"></label>
+  <label><span class="row"><span>Focus depth</span><span id="fv"></span></span><input type="range" id="focus" min="0" max="1" step="0.01" value="0.35"></label>
+  <label><span class="row"><span>Depth gamma (lower = more mid-depth motion)</span><span id="gv"></span></span><input type="range" id="gamma" min="0.2" max="2" step="0.05" value="1"></label>
+  <label class="row"><span>Idle drift</span><input type="checkbox" id="drift" checked></label>
+  <div class="row"><button id="demo">Reset to demo</button><button id="hideText">Toggle title</button></div>
+  <div class="msg" id="msg" role="status"></div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const gl = canvas.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+  const msg = document.getElementById('msg');
+  if (!gl) { msg.textContent = 'WebGL is not available in this browser.'; return; }
+
+  const vs = `attribute vec2 p; varying vec2 vUv; void main(){ vUv = p*0.5+0.5; gl_Position = vec4(p,0.,1.); }`;
+  const fs = `precision mediump float;
+    varying vec2 vUv; uniform sampler2D uImg, uDepth;
+    uniform vec2 uMouse, uScale; uniform float uStrength, uFocus, uGamma;
+    void main(){
+      vec2 uv = (vUv - 0.5) * uScale + 0.5;
+      float d = pow(texture2D(uDepth, uv).r, uGamma);
+      vec2 off = uMouse * (d - uFocus) * uStrength;
+      float d2 = pow(texture2D(uDepth, uv + off).r, uGamma);           // one refinement step reduces edge tearing
+      off = uMouse * (mix(d, d2, 0.5) - uFocus) * uStrength;
+      gl_FragColor = texture2D(uImg, uv + off);
+    }`;
+  function sh(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog); gl.useProgram(prog);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = n => gl.getUniformLocation(prog, n);
+  const uMouse = U('uMouse'), uScale = U('uScale'), uStrength = U('uStrength'), uFocus = U('uFocus'), uGamma = U('uGamma');
+  gl.uniform1i(U('uImg'), 0); gl.uniform1i(U('uDepth'), 1);
+
+  function makeTex(unit) { const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); return t; }
+  const texImg = makeTex(0), texDepth = makeTex(1);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  let imgAspect = 16 / 9;
+  function upload(unit, tex, src) { gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); }
+
+  // ---- Built-in demo: painted layers drawn twice, once in colour and once as depth ----
+  function demo() {
+    const W = 1920, H = 1080;
+    const col = document.createElement('canvas'), dep = document.createElement('canvas');
+    col.width = dep.width = W; col.height = dep.height = H;
+    const c = col.getContext('2d'), d = dep.getContext('2d');
+    const sky = c.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#34449c'); sky.addColorStop(.32, '#7b6bc8'); sky.addColorStop(.6, '#e89ab6'); sky.addColorStop(.78, '#ffd3a0'); sky.addColorStop(1, '#ffe9c6');
+    c.fillStyle = sky; c.fillRect(0, 0, W, H); d.fillStyle = '#000'; d.fillRect(0, 0, W, H);
+    const sun = c.createRadialGradient(W * .55, H * .62, 0, W * .55, H * .62, 420);
+    sun.addColorStop(0, 'rgba(255,248,220,.95)'); sun.addColorStop(.35, 'rgba(255,220,170,.5)'); sun.addColorStop(1, 'rgba(255,200,160,0)');
+    c.fillStyle = sun; c.fillRect(0, 0, W, H);
+    function blob(ctx, x, y, rx, ry, fill) { ctx.fillStyle = fill; ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); ctx.fill(); }
+    [[300, 260, 230, 44], [400, 236, 150, 52], [1480, 190, 260, 40], [1600, 168, 160, 50], [980, 380, 190, 30]].forEach(([x, y, rx, ry]) => {
+      c.filter = 'blur(6px)'; blob(c, x, y, rx, ry, 'rgba(255,255,255,.6)'); c.filter = 'none'; blob(d, x, y, rx, ry, '#1a1a1a'); });
+    function ridge(base, amp, seed, fillC, gray) {
+      const pts = []; for (let x = 0; x <= W; x += 40) pts.push([x, base - amp * (0.5 + 0.5 * Math.sin(x * 0.004 + seed) * Math.cos(x * 0.0017 + seed * 2))]);
+      [c, d].forEach((ctx, i) => { ctx.fillStyle = i ? gray : fillC; ctx.beginPath(); ctx.moveTo(0, H); pts.forEach(p => ctx.lineTo(p[0], p[1])); ctx.lineTo(W, H); ctx.fill(); });
+    }
+    ridge(760, 260, 1.3, '#9d80c3', '#404040');
+    ridge(840, 200, 4.1, '#6e5aa8', '#707070');
+    // floating island (mid-depth)
+    [c, d].forEach((ctx, i) => {
+      ctx.save(); ctx.translate(1300, 470);
+      ctx.fillStyle = i ? '#8a8a8a' : '#6b4f8e'; ctx.beginPath(); ctx.moveTo(-200, 0); ctx.quadraticCurveTo(-80, 170, 0, 210); ctx.quadraticCurveTo(80, 170, 200, 0); ctx.fill();
+      ctx.fillStyle = i ? '#909090' : '#7fc59a'; ctx.beginPath(); ctx.ellipse(0, 0, 200, 34, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = i ? '#959595' : '#fff4e0'; ctx.fillRect(-18, -96, 36, 96);
+      ctx.fillStyle = i ? '#959595' : '#e2637e'; ctx.beginPath(); ctx.moveTo(-32, -96); ctx.lineTo(0, -142); ctx.lineTo(32, -96); ctx.fill();
+      ctx.restore();
+    });
+    ridge(950, 120, 7.7, '#43407f', '#b0b0b0');
+    ridge(1060, 80, 2.2, '#2a2459', '#f0f0f0');
+    // soften depth edges a little to reduce tearing
+    const soft = document.createElement('canvas'); soft.width = W; soft.height = H; const s = soft.getContext('2d');
+    s.filter = 'blur(3px)'; s.drawImage(dep, 0, 0);
+    imgAspect = W / H; upload(0, texImg, col); upload(1, texDepth, soft); msg.textContent = '';
+  }
+
+  // ---- User files ----
+  let pending = { img: null, depth: null };
+  function loadFile(file, key) {
+    const url = URL.createObjectURL(file); const im = new Image();
+    im.onload = () => { pending[key] = im; tryApply(); };
+    im.onerror = () => { msg.textContent = 'Could not read that file as an image.'; };
+    im.src = url;
+  }
+  function tryApply() {
+    if (!pending.img) { msg.textContent = 'Now choose the image.'; return; }
+    if (!pending.depth) { msg.textContent = 'Now choose its depth map.'; return; }
+    const a = pending.img.naturalWidth / pending.img.naturalHeight, b = pending.depth.naturalWidth / pending.depth.naturalHeight;
+    msg.textContent = Math.abs(a - b) > 0.02 ? 'Warning: image and depth map have different aspect ratios.' : 'Loaded.';
+    imgAspect = a; upload(0, texImg, pending.img); upload(1, texDepth, pending.depth);
+  }
+  document.getElementById('img').addEventListener('change', e => e.target.files[0] && loadFile(e.target.files[0], 'img'));
+  document.getElementById('depth').addEventListener('change', e => e.target.files[0] && loadFile(e.target.files[0], 'depth'));
+  document.getElementById('demo').addEventListener('click', () => { pending = { img: null, depth: null }; demo(); });
+  document.getElementById('hideText').addEventListener('click', () => { const h = document.querySelector('.hero'); h.style.display = h.style.display === 'none' ? '' : 'none'; });
+  const panel = document.getElementById('panel'), tog = document.getElementById('toggle');
+  tog.addEventListener('click', () => { const c = panel.classList.toggle('collapsed'); tog.textContent = c ? 'Show' : 'Hide'; tog.setAttribute('aria-expanded', String(!c)); });
+
+  // ---- Controls & motion ----
+  const strength = document.getElementById('strength'), focus = document.getElementById('focus'), drift = document.getElementById('drift');
+  const sv = document.getElementById('sv'), fv = document.getElementById('fv');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; if (reduce) drift.checked = false;
+  let target = [0, 0], cur = [0, 0], lastMove = -1e9;
+  window.addEventListener('pointermove', e => { target = [(e.clientX / innerWidth) * 2 - 1, -((e.clientY / innerHeight) * 2 - 1)]; lastMove = performance.now(); });
+
+  function resize() { const dpr = Math.min(devicePixelRatio || 1, 2); canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr; gl.viewport(0, 0, canvas.width, canvas.height); }
+  addEventListener('resize', resize); resize();
+
+  function frame(t) {
+    const s = +strength.value, f = +focus.value; sv.textContent = s.toFixed(3); fv.textContent = f.toFixed(2);
+    let tx = target[0], ty = target[1];
+    if (drift.checked && t - lastMove > 2500) { tx = Math.sin(t * 0.0003) * 0.6; ty = Math.cos(t * 0.00021) * 0.3; }
+    cur[0] += (tx - cur[0]) * 0.06; cur[1] += (ty - cur[1]) * 0.06;
+    const ca = canvas.width / canvas.height, m = 1 - s * 2.2;  // zoom in slightly so offsets never sample past the edge
+    const scale = ca > imgAspect ? [1, imgAspect / ca] : [ca / imgAspect, 1];
+    gl.uniform2f(uScale, scale[0] * m, scale[1] * m); gl.uniform2f(uMouse, cur[0], cur[1]);
+    gl.uniform1f(uStrength, s); gl.uniform1f(uFocus, f);
+    const gm = +document.getElementById('gamma').value; document.getElementById('gv').textContent = gm.toFixed(2); gl.uniform1f(uGamma, gm);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); requestAnimationFrame(frame);
+  }
+  demo(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

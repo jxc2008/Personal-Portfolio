@@ -29,7 +29,8 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
       <motion.main
         id="main-content"
         key={pathname}
-        initial={{ opacity: 0, y: 8 }}
+        // No entrance fade on the home page: it would hold back the hero image (LCP).
+        initial={pathname === "/" ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
       >

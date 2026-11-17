@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import SocialMediaLinks from "./components/SocialMediaLinks";
+import Hero from "./components/hero/Hero";
 import { heroReveal, staggerContainerDramatic, scaleReveal } from "./utils/animations";
 
 export default function Home() {
@@ -19,49 +20,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      {/* ─── HERO ─── */}
-      <section className={styles.hero}>
-        <div className={styles.heroNoise} />
-        <div className={styles.heroGradient} />
-
-        <motion.div
-          className={styles.heroContent}
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainerDramatic}
-        >
-          <motion.div className={styles.heroLabel} variants={heroReveal}>
-            <span className={styles.heroLabelLine} />
-            <span>CS &amp; Mathematics @ NYU</span>
-          </motion.div>
-
-          <motion.h1 className={styles.heroName} variants={heroReveal}>
-            Joseph
-            <br />
-            Cheng
-          </motion.h1>
-
-          <motion.p className={styles.heroSub} variants={heroReveal}>
-            Building at the intersection of code,
-            <br className={styles.brDesktop} />
-            mathematics, and creativity.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          className={styles.scrollCue}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6, duration: 0.8 }}
-        >
-          <motion.div
-            className={styles.scrollDot}
-            animate={{ y: [0, 12, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-          />
-          <span className={styles.scrollTrack} />
-        </motion.div>
-      </section>
+      <Hero nextId="featured" />
 
       {/* ─── FEATURED PROJECT ─── */}
       <section id="featured" className={styles.featured} ref={featuredRef}>
@@ -83,7 +42,6 @@ export default function Home() {
                 height={600}
                 className={styles.featuredImage}
                 sizes="(max-width: 768px) 100vw, 50vw"
-                priority
               />
               <div className={styles.featuredImageOverlay} />
             </Link>
