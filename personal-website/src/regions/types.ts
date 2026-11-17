@@ -52,6 +52,14 @@ export interface Section {
 
 export type SceneryKey = "ledger" | "ridge" | "hall" | "shore" | "orbits";
 
+/** A key art image that replaces the drawn scenery on the banner and tiles. */
+export interface KeyArt {
+  /** Path under public/, e.g. "/regions/ridge.webp". */
+  src: string;
+  /** CSS object-position: the point that stays in frame when the image is cropped. */
+  focus: string;
+}
+
 export interface Region {
   slug: RegionSlug;
   name: Text;
@@ -59,7 +67,9 @@ export interface Region {
   short: Text;
   /** The opening paragraph under the region name. */
   lede: Text;
+  /** Drawn banner art. Also the fallback while `art` loads or if it fails. */
   scenery: SceneryKey;
+  art?: KeyArt;
   /** "open": the region has real content. "charting": a stub listing what's planned. */
   state: "open" | "charting";
   /** Languages the page can switch between; the first is the default. */

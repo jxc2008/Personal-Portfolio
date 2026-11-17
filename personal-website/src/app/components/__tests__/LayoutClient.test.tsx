@@ -41,12 +41,6 @@ jest.mock("../FloatingPillNav", () => {
   };
 });
 
-jest.mock("../GlowCursor", () => {
-  return function MockGlowCursor() {
-    return <div data-testid="glow-cursor" />;
-  };
-});
-
 jest.mock("../Footer", () => {
   return function MockFooter() {
     return <footer data-testid="footer">Footer</footer>;
@@ -101,14 +95,5 @@ describe("LayoutClient", () => {
     const child = screen.getByTestId("child");
     expect(child.closest("main")).not.toBeNull();
     expect(screen.getByTestId("motion-main")).toBeInTheDocument();
-  });
-
-  it("renders GlowCursor component", () => {
-    render(
-      <LayoutClient>
-        <div>child</div>
-      </LayoutClient>
-    );
-    expect(screen.getByTestId("glow-cursor")).toBeInTheDocument();
   });
 });

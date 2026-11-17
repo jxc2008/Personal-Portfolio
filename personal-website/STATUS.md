@@ -21,7 +21,7 @@ A full-viewport hero at the top of `/` that replaces the old text-only hero. The
 | `effects/petals.ts` | Red petals in front of the scene (day, golden) |
 | `effects/starTwinkle.ts` | Star twinkle as a GLSL chunk inside the parallax shader (night) |
 
-`GlowCursor.tsx` (site-wide) gained a generic opt-out: any element marked `data-glow-cursor="off"` hides the glow while the pointer is over it, and the hero uses it.
+`GlowCursor.tsx` (site-wide) gained a generic opt-out for the hero. (GlowCursor has since been removed from the site entirely, on `feat/regions`.)
 
 No new dependencies. The title font is Shippori Mincho 600 via `next/font` (self-hosted at build time), chosen from the comparison in `docs/title-fonts/`; it replaced the Cormorant Garamond placeholder.
 

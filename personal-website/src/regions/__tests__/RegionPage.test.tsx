@@ -51,6 +51,34 @@ describe("RegionPage", () => {
     expect(screen.getByText(/With best play from here/)).toBeInTheDocument();
   });
 
+  it("shows the Ridge key art on the banner and its tile, over the drawn scenery", () => {
+    const { container } = render(<RegionPage slug="valorant-ridge" />);
+    const banner = container.querySelector("header");
+    const art = within(banner as HTMLElement).getByTestId("region-key-art");
+    expect(art).toHaveAttribute("src", "/regions/ridge.webp");
+    expect(art).toHaveStyle({ objectPosition: "58% 52%" });
+    expect(art).toHaveAttribute("fetchpriority", "high");
+    expect(banner?.querySelector("svg")).toBeInTheDocument();
+    document.body.innerHTML = "";
+    render(<RegionPage slug="piano-hall" />);
+    const tiles = within(screen.getByRole("navigation", { name: "Other regions" })).getAllByTestId("region-key-art");
+    expect(tiles).toHaveLength(1);
+    expect(tiles[0]).toHaveAttribute("loading", "lazy");
+  });
+
+  it("falls back to the drawn scenery if the key art fails to load", () => {
+    const { container } = render(<RegionPage slug="valorant-ridge" />);
+    const banner = container.querySelector("header") as HTMLElement;
+    fireEvent.error(within(banner).getByTestId("region-key-art"));
+    expect(within(banner).queryByTestId("region-key-art")).not.toBeInTheDocument();
+    expect(banner.querySelector("svg")).toBeInTheDocument();
+  });
+
+  it("keeps the drawn scenery for regions without key art", () => {
+    const { container } = render(<RegionPage slug="the-lab" />);
+    expect(within(container.querySelector("header") as HTMLElement).queryByTestId("region-key-art")).not.toBeInTheDocument();
+  });
+
   it("marks stubs as still being charted", () => {
     render(<RegionPage slug="piano-hall" />);
     expect(screen.getByText(/still being charted/)).toBeInTheDocument();

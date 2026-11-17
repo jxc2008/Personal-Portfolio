@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { t } from "./index";
 import { REGION_FONT } from "./fonts";
-import Scenery from "./scenery/Scenery";
+import RegionArt from "./scenery/RegionArt";
 import type { Region } from "./types";
 import themes from "./themes.module.css";
 import styles from "./RegionTile.module.css";
@@ -15,7 +15,7 @@ export default function RegionTile({ region, size = "tall" }: { region: Region; 
       data-region={region.slug}
     >
       <span className={styles.art}>
-        <Scenery kind={region.scenery} />
+        <RegionArt region={region} />
         <span className={styles.name}>{t(region.name)}</span>
       </span>
       <span className={styles.short}>{t(region.short)}</span>

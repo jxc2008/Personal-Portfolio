@@ -13,6 +13,7 @@ Branch `feat/regions`. The site is now "A world in five regions": Trading Floor,
 | Per-region palettes (light + dark) | `src/regions/themes.module.css` |
 | Per-region display faces | `src/regions/fonts.ts` |
 | Banner art (SVG, seeded) | `src/regions/scenery/` |
+| Key art images (optional, per region) | `public/regions/<name>.webp`, set as `art` in `regions.ts` |
 | Interactive pieces | `src/regions/widgets/` (veto calculator) |
 | Values that go stale (VALORANT map pool + "as of" date) | `src/regions/config.ts` |
 | Route | `src/app/regions/[slug]/page.tsx` → `/regions/<slug>` |
@@ -42,7 +43,23 @@ Every region uses the same structure with its own palette, display face and bann
 | Far Shore | vermilion sun, wave rows, an island | Zen Kaku Gothic New (Shippori Mincho went to the site title) |
 | The Lab | the figure-eight three-body orbit (integrated, not drawn) and a nudged copy that drifts apart, on blueprint grid | IBM Plex Mono |
 
-Each palette has light and dark variants that follow the site's theme toggle. On Ridge the banner itself changes: dawn in light mode, night with stars in dark mode.
+Each palette has light and dark variants that follow the site's theme toggle. On Ridge the drawn banner itself changes: dawn in light mode, night with stars in dark mode.
+
+### Key art
+
+A region can set `art: { src, focus }` in `regions.ts`. The image then covers the drawn scenery on its banner and on its tiles (home and the travel strip) with `object-fit: cover`, and `focus` is the `object-position` that stays in frame. The drawn scenery stays underneath: it shows while the image loads and remains if the image fails (`RegionArt.tsx`).
+
+VALORANT Ridge uses `/regions/ridge.webp` with focus `58% 52%` (the outpost). For a 16:9 image, this is the part that stays visible:
+
+| Frame | Visible width | Visible height |
+|---|---|---|
+| Banner at 1440×900 | all | 8–92% |
+| Banner at 1024×768 | 1–99% | all |
+| Banner at 390×844 | 38–72% | all |
+| Home tile (3:4) | 34–76% | all |
+| Tile at phone width / travel strip (16:9) | all | all |
+
+The phone banner is the tight one: the outpost and mast need to sit between about 38% and 72% across. The image is the same in light and dark mode. The banner text keeps its theme colours (dark in light mode, light in dark mode), so check that both read over the image.
 
 ## VALORANT Ridge content
 

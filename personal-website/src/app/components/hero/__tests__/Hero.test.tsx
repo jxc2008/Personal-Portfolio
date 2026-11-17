@@ -62,12 +62,6 @@ describe("Hero", () => {
     expect(mockEngine).not.toHaveBeenCalled();
   });
 
-  it("opts out of the site's glow cursor", () => {
-    mockMatchMedia(false);
-    const { container } = render(<Hero nextId="featured" />);
-    expect(container.querySelector("section")).toHaveAttribute("data-glow-cursor", "off");
-  });
-
   it("hides the decorative canvases from assistive tech", () => {
     mockMatchMedia(false);
     const { container } = render(<Hero nextId="featured" />);

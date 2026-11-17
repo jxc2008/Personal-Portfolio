@@ -4,7 +4,7 @@ import { useRef, useState, type PointerEvent } from "react";
 import { getRegion, postsFor, REGIONS, STATUS_LABEL, t } from "./index";
 import { REGION_FONT } from "./fonts";
 import RegionTile from "./RegionTile";
-import Scenery from "./scenery/Scenery";
+import RegionArt from "./scenery/RegionArt";
 import type { Entry, Lang, Region, Section } from "./types";
 import Widget from "./widgets";
 import themes from "./themes.module.css";
@@ -104,7 +104,7 @@ export default function RegionPage({ slug }: { slug: Region["slug"] }) {
       lang={HTML_LANG[lang]}
     >
       <header ref={bannerRef} className={styles.banner} onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
-        <Scenery kind={region.scenery} />
+        <RegionArt region={region} priority />
         <div className={styles.bannerCopy}>
           <h1 className={styles.name}>{t(region.name, lang)}</h1>
           <p className={styles.lede}>{t(region.lede, lang)}</p>

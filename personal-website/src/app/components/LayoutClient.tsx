@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { NavbarProvider, useTheme } from "./NavbarContext";
 import FloatingPillNav from "./FloatingPillNav";
-import GlowCursor from "./GlowCursor";
 import Footer from "./Footer";
 
 function ThemeSync() {
@@ -24,7 +23,6 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
   return (
     <NavbarProvider>
       <ThemeSync />
-      <GlowCursor />
       <FloatingPillNav />
       <motion.main
         id="main-content"

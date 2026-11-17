@@ -3,7 +3,7 @@ import { REGIONS } from "./regions";
 import type { Lang, Post, Region, Status, Text } from "./types";
 
 export { REGIONS, POSTS };
-export type { Entry, Lang, Link, Post, Region, RegionSlug, SceneryKey, Section, Status, Text, VetoWidgetProps, WidgetRef } from "./types";
+export type { Entry, Lang, Link, Post, Region, RegionSlug, KeyArt, SceneryKey, Section, Status, Text, VetoWidgetProps, WidgetRef } from "./types";
 
 export function getRegion(slug: string): Region | undefined {
   return REGIONS.find((r) => r.slug === slug);

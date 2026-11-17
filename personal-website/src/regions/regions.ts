@@ -73,6 +73,8 @@ const valorantRidge: Region = {
   short: "Pricing, research, and post-mortems for pro VALORANT.",
   lede: "Where I model professional VALORANT: a pricing engine for match markets, the questions I'm testing with it, and a look back at each Champions.",
   scenery: "ridge",
+  // Focal point is the outpost; keep it and the mast in frame at every width.
+  art: { src: "/regions/ridge.webp", focus: "58% 52%" },
   state: "open",
   facts: [
     "Covers tier-1 VCT from 2023 onward, plus the Esports World Cup.",

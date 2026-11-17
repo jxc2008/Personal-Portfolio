@@ -103,7 +103,6 @@ export default function Hero({ nextId }: HeroProps) {
       className={styles.hero}
       style={ZOOM_STYLE}
       aria-labelledby="hero-title"
-      data-glow-cursor="off"
       suppressHydrationWarning
     >
       {/* Plain <img>: its src depends on the visitor's local time, picked by the
