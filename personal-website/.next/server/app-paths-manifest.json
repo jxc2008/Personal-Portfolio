@@ -1,7 +1,0 @@
-{
-  "/professional/page": "app/professional/page.js",
-  "/page": "app/page.js",
-  "/three-body-simulation/page": "app/three-body-simulation/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/nonprofessional/page": "app/nonprofessional/page.js"
-}
