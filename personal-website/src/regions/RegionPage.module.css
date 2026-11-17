@@ -353,3 +353,11 @@
     top: clamp(72px, 11vh, 110px);
   }
 }
+
+/* Over key art, keep the text in the left half so the art's subject (kept right of
+   centre by its focus point) stays clear. Phones stack the text above it instead. */
+@media (min-width: 641px) {
+  .banner[data-art] .bannerCopy {
+    max-width: min(44rem, 50%);
+  }
+}

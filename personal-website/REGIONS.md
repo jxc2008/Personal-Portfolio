@@ -59,7 +59,11 @@ VALORANT Ridge uses `/regions/ridge.webp` with focus `58% 52%` (the outpost). Fo
 | Home tile (3:4) | 34–76% | all |
 | Tile at phone width / travel strip (16:9) | all | all |
 
-The phone banner is the tight one: the outpost and mast need to sit between about 38% and 72% across. The image is the same in light and dark mode. The banner text keeps its theme colours (dark in light mode, light in dark mode), so check that both read over the image.
+The phone banner is the tight one: the subject needs to sit between about 38% and 72% across.
+
+**Text over key art.** When a region's art is showing, a shade in the page background colour sits behind the text. It's light behind dark text in light mode and dark behind light text in dark mode. On the banner it covers the upper left on wide screens, and on phones it covers a band across the top. On tiles it covers the top edge behind the name. On wide screens the banner text is also held to the left half. The shade isn't drawn if the image fails, since the drawn scenery is already painted to sit behind text.
+
+**Checked on the real image** (2400×1350; mast measured at 60.1% across, 38–51.5% down). The mast and outpost are fully in frame at 1440, 1024 and 390 wide in both themes, and on the home tile at desktop and phone width. No line of text covers the mast. On phones the clearance is small: the mast tip is 3 px above the bottom of the description's last line, which only clears because "Champions." is short. A longer description would cover the mast tip on phones. Screenshots are in `docs/region-screenshots/keyart/`.
 
 ## VALORANT Ridge content
 

@@ -59,6 +59,8 @@ describe("RegionPage", () => {
     expect(art).toHaveStyle({ objectPosition: "58% 52%" });
     expect(art).toHaveAttribute("fetchpriority", "high");
     expect(banner?.querySelector("svg")).toBeInTheDocument();
+    expect(banner).toHaveAttribute("data-art");
+    expect(within(banner as HTMLElement).getByTestId("region-art-scrim")).toHaveAttribute("data-variant", "banner");
     document.body.innerHTML = "";
     render(<RegionPage slug="piano-hall" />);
     const tiles = within(screen.getByRole("navigation", { name: "Other regions" })).getAllByTestId("region-key-art");
@@ -71,12 +73,16 @@ describe("RegionPage", () => {
     const banner = container.querySelector("header") as HTMLElement;
     fireEvent.error(within(banner).getByTestId("region-key-art"));
     expect(within(banner).queryByTestId("region-key-art")).not.toBeInTheDocument();
+    expect(within(banner).queryByTestId("region-art-scrim")).not.toBeInTheDocument();
     expect(banner.querySelector("svg")).toBeInTheDocument();
   });
 
   it("keeps the drawn scenery for regions without key art", () => {
     const { container } = render(<RegionPage slug="the-lab" />);
-    expect(within(container.querySelector("header") as HTMLElement).queryByTestId("region-key-art")).not.toBeInTheDocument();
+    const banner = container.querySelector("header") as HTMLElement;
+    expect(within(banner).queryByTestId("region-key-art")).not.toBeInTheDocument();
+    expect(within(banner).queryByTestId("region-art-scrim")).not.toBeInTheDocument();
+    expect(banner).not.toHaveAttribute("data-art");
   });
 
   it("marks stubs as still being charted", () => {

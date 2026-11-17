@@ -15,7 +15,7 @@ export default function RegionTile({ region, size = "tall" }: { region: Region; 
       data-region={region.slug}
     >
       <span className={styles.art}>
-        <RegionArt region={region} />
+        <RegionArt region={region} variant="tile" />
         <span className={styles.name}>{t(region.name)}</span>
       </span>
       <span className={styles.short}>{t(region.short)}</span>

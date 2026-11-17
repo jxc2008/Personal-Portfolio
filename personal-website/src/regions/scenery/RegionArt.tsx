@@ -9,9 +9,13 @@ import type { Region } from "../types";
 import Scenery from "./Scenery";
 import styles from "./Scenery.module.css";
 
-export default function RegionArt({ region, priority = false }: { region: Region; priority?: boolean }) {
+/** "banner" loads first and shades behind the region's title and lede; "tile" lazy-loads and shades behind the name. */
+export type ArtVariant = "banner" | "tile";
+
+export default function RegionArt({ region, variant }: { region: Region; variant: ArtVariant }) {
   const [failed, setFailed] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+  const banner = variant === "banner";
 
   useEffect(() => {
     // An image that failed before hydration never reaches onError; ask the element instead.
@@ -19,26 +23,31 @@ export default function RegionArt({ region, priority = false }: { region: Region
     if (img?.complete && img.naturalWidth === 0) setFailed(true);
   }, []);
 
+  const showArt = Boolean(region.art) && !failed;
   return (
     <>
       <Scenery kind={region.scenery} />
-      {region.art && !failed && (
-        // Plain <img>: object-fit/object-position does the framing, and the file is already a sized WebP.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          ref={imgRef}
-          className={styles.photo}
-          src={region.art.src}
-          alt=""
-          aria-hidden="true"
-          style={{ objectPosition: region.art.focus }}
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          // @ts-expect-error -- React 18.2 types lack fetchPriority; the attribute is valid HTML.
-          fetchpriority={priority ? "high" : undefined}
-          onError={() => setFailed(true)}
-          data-testid="region-key-art"
-        />
+      {showArt && region.art && (
+        <>
+          {/* Plain <img>: object-fit/object-position does the framing, and the file is already a sized WebP. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            ref={imgRef}
+            className={styles.photo}
+            src={region.art.src}
+            alt=""
+            aria-hidden="true"
+            style={{ objectPosition: region.art.focus }}
+            loading={banner ? "eager" : "lazy"}
+            decoding="async"
+            // @ts-expect-error -- React 18.2 types lack fetchPriority; the attribute is valid HTML.
+            fetchpriority={banner ? "high" : undefined}
+            onError={() => setFailed(true)}
+            data-testid="region-key-art"
+          />
+          {/* Only over key art: the drawn scenery is painted to sit behind text already. */}
+          <span className={styles.scrim} data-variant={variant} aria-hidden="true" data-testid="region-art-scrim" />
+        </>
       )}
     </>
   );

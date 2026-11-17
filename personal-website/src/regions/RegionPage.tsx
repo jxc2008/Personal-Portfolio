@@ -103,8 +103,14 @@ export default function RegionPage({ slug }: { slug: Region["slug"] }) {
       data-region={region.slug}
       lang={HTML_LANG[lang]}
     >
-      <header ref={bannerRef} className={styles.banner} onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
-        <RegionArt region={region} priority />
+      <header
+        ref={bannerRef}
+        className={styles.banner}
+        data-art={region.art ? "" : undefined}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
+      >
+        <RegionArt region={region} variant="banner" />
         <div className={styles.bannerCopy}>
           <h1 className={styles.name}>{t(region.name, lang)}</h1>
           <p className={styles.lede}>{t(region.lede, lang)}</p>
