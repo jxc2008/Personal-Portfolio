@@ -1,9 +1,16 @@
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { paletteVars, type Region } from "@/regions";
+import themes from "@/regions/themes.module.css";
 import styles from "./Footer.module.css";
 
-export default function Footer() {
+/** On a region page, the footer takes that region's page colours (paper and ink) in both themes. */
+export default function Footer({ region }: { region?: Region }) {
   return (
-    <footer className={styles.footer}>
+    <footer
+      className={region ? `${styles.footer} ${themes.theme} ${styles.regional}` : styles.footer}
+      data-region={region?.slug}
+      style={region ? paletteVars(region) : undefined}
+    >
       <div className={styles.socials}>
         <a href="https://github.com/jxc2008" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
           <FaGithub />

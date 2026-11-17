@@ -61,7 +61,8 @@
 .state {
   align-self: end;
   font-size: 0.78rem;
-  color: var(--text-muted);
+  /* Not --text-muted: at this size it falls under WCAG AA on the region pages' colours. */
+  color: var(--text-secondary);
 }
 
 .tile[data-region] .art::after {
@@ -102,5 +103,16 @@
 
   .wide .art [data-variant="tile"] {
     background: linear-gradient(0deg, var(--scrim) 0, var(--scrim) 1.9rem, var(--scrim-soft), transparent 2.9rem);
+  }
+}
+
+/* Desktop: descriptions at 16px, small labels at least 13px. */
+@media (min-width: 1024px) {
+  .short {
+    font-size: 1rem;
+  }
+
+  .state {
+    font-size: 0.85rem;
   }
 }

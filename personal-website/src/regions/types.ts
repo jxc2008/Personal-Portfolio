@@ -65,6 +65,25 @@ export interface KeyArt {
   keepClear?: { label: string; x: [number, number]; y: [number, number] }[];
 }
 
+/**
+ * A region's page colours for one theme. The page body derives everything else
+ * (secondary text, dividers, tints) from these, the same way for every region.
+ */
+export interface Palette {
+  /** Page background. */
+  paper: string;
+  /** Body text. */
+  ink: string;
+  /** Marks: rules, status dots, slider fill, focus. Not used for text. */
+  accent: string;
+  /** The accent dark (or light) enough to use for links and small text. */
+  link: string;
+  /** Alternate section bands: the region's second colour, from its scenery. */
+  band: string;
+  /** Raised surfaces: cards, the calculator, inputs. */
+  card: string;
+}
+
 export interface Region {
   slug: RegionSlug;
   name: Text;
@@ -75,6 +94,8 @@ export interface Region {
   /** Drawn banner art. Also the fallback while `art` loads or if it fails. */
   scenery: SceneryKey;
   art?: KeyArt;
+  /** Page colours for light and dark mode. */
+  palette: { light: Palette; dark: Palette };
   /** "open": the region has real content. "charting": a stub listing what's planned. */
   state: "open" | "charting";
   /** Languages the page can switch between; the first is the default. */

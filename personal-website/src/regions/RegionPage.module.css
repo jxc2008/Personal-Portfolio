@@ -116,7 +116,8 @@
 .charting {
   margin-top: clamp(2rem, 4vw, 3rem);
   padding: 0.9rem 1.1rem;
-  border-left: 3px solid var(--r-accent);
+  border: 1px solid var(--r-rule);
+  border-radius: 10px;
   background: var(--r-surface);
   color: var(--r-ink-soft);
   max-width: 40rem;
@@ -124,11 +125,23 @@
 
 /* Two columns: heading and intro on the left, the work on the right. */
 .section {
+  --section-gap: clamp(3.5rem, 7vw, 6rem);
   display: grid;
   grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
   gap: 1.5rem clamp(2rem, 5vw, 5rem);
-  padding-top: clamp(3.5rem, 7vw, 6rem);
+  padding-top: var(--section-gap);
   scroll-margin-top: 1.5rem;
+}
+
+/* Every other section sits on a full-width band of the region's second colour,
+   so each section reads as its own place. The band is the section's own
+   background, stretched to the viewport edges with a spread shadow. */
+.body > section:nth-of-type(even) {
+  margin-top: calc(var(--section-gap) * 0.75);
+  padding-bottom: var(--section-gap);
+  background: var(--r-band);
+  box-shadow: 0 0 0 100vmax var(--r-band);
+  clip-path: inset(0 -100vmax);
 }
 
 .sectionHead {
@@ -148,11 +161,23 @@
 }
 
 .sectionTitle {
+  color: var(--r-heading);
   font-family: var(--r-display);
   font-weight: var(--r-display-weight);
   letter-spacing: var(--r-display-track);
   font-size: clamp(1.9rem, 3.4vw, 2.75rem);
   line-height: 1.02;
+}
+
+/* A short accent bar marks the start of each section. */
+.sectionHead::before {
+  content: "";
+  display: block;
+  width: 2.25rem;
+  height: 3px;
+  margin-bottom: 1.1rem;
+  border-radius: 2px;
+  background: var(--r-accent);
 }
 
 .intro {
@@ -172,11 +197,24 @@
 
 .entry {
   padding: 1.4rem 0 1.6rem;
-  border-top: 1px solid var(--r-line-strong);
+  border-top: 1px solid var(--r-rule);
 }
 
 .entry:last-child {
-  border-bottom: 1px solid var(--r-line-strong);
+  border-bottom: 1px solid var(--r-rule);
+}
+
+/* The featured entry is a card. */
+.entry.featured {
+  margin-bottom: 1rem;
+  padding: 1.5rem clamp(1.1rem, 2.5vw, 1.75rem) 1.7rem;
+  border: 1px solid var(--r-rule);
+  border-radius: 12px;
+  background: var(--r-surface);
+}
+
+.entry.featured + .entry {
+  border-top: 0;
 }
 
 .entryHead {
@@ -188,6 +226,7 @@
 }
 
 .entryTitle {
+  color: var(--r-heading);
   font-family: var(--r-display);
   font-weight: var(--r-display-weight);
   letter-spacing: var(--r-display-track);
@@ -298,7 +337,8 @@
 .postLink {
   color: var(--r-accent-ink);
   text-decoration: underline;
-  text-decoration-color: var(--r-line-strong);
+  text-decoration-color: color-mix(in srgb, var(--r-accent) 55%, transparent);
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   transition: text-decoration-color 0.15s ease;
 }
@@ -323,8 +363,9 @@
 }
 
 .empty {
-  padding: 1.4rem 0;
-  border-top: 1px solid var(--r-line-strong);
+  padding: 1.25rem 1.4rem;
+  border: 1px dashed var(--r-rule);
+  border-radius: 12px;
   color: var(--r-ink-soft);
 }
 
@@ -333,7 +374,7 @@
   max-width: 1240px;
   margin: clamp(4rem, 8vw, 7rem) auto 0;
   padding: clamp(2rem, 4vw, 3rem) var(--gutter) 0;
-  border-top: 1px solid var(--r-line);
+  border-top: 1px solid var(--r-rule);
 }
 
 .travelTitle {
@@ -439,5 +480,20 @@
 
   .banner[data-art] .lede {
     margin-top: 1.5rem;
+  }
+}
+
+/* Desktop: descriptions at 16px, small labels at least 13px. */
+@media (min-width: 1024px) {
+  .facts,
+  .points dd,
+  .links {
+    font-size: 1rem;
+  }
+
+  .status,
+  .points dt,
+  .postDate {
+    font-size: 0.85rem;
   }
 }

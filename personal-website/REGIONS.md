@@ -10,7 +10,8 @@ Branch `feat/regions`. The site is now "A world in five regions": Trading Floor,
 | Writing, tagged by region | `src/regions/posts.ts` (empty for now) |
 | Content types | `src/regions/types.ts` |
 | Shared page template | `src/regions/RegionPage.tsx` + `.module.css` |
-| Per-region palettes (light + dark) | `src/regions/themes.module.css` |
+| Page colours per region (light + dark) | `palette` in `src/regions/regions.ts` |
+| Derived page tokens; banner and scenery colours | `src/regions/themes.module.css` |
 | Per-region display faces | `src/regions/fonts.ts` |
 | Banner art (SVG, seeded) | `src/regions/scenery/` |
 | Key art images (optional, per region) | `public/regions/<name>.webp`, set as `art` in `regions.ts` |
@@ -44,6 +45,24 @@ Every region uses the same structure with its own palette, display face and bann
 | The Lab | the figure-eight three-body orbit (integrated, not drawn) and a nudged copy that drifts apart, on blueprint grid | IBM Plex Mono |
 
 Each palette has light and dark variants that follow the site's theme toggle. On Ridge the drawn banner itself changes: dawn in light mode, night with stars in dark mode.
+
+### Page colours
+
+Each region's `palette` in `regions.ts` sets six colours for light mode and six for dark: `paper` (page), `ink` (text), `accent` (marks, never text), `link` (accent that's safe for text), `band` (the region's second colour, from its scenery) and `card` (raised surfaces). `paletteVars()` passes them to the page, its tiles and its footer as `--pl-*` / `--pd-*`. `themes.module.css` picks the set for the current theme and derives the rest (secondary and muted text, dividers, heading tint, button wash) the same way for every region.
+
+Below the banner, every region page gets the same treatment:
+
+- Alternate sections on a full-width band.
+- Headings tinted slightly toward the accent, with a short accent bar above each section title.
+- Accent-tinted dividers.
+- Accent links.
+- The featured entry, notes and empty states as cards.
+- The calculator's actions as buttons.
+- The footer in the region's paper and ink.
+
+From 1024 px up, descriptions are 16 px and small labels at least 13.6 px.
+
+`e2e/palette.spec.ts` checks every piece of text in the body and footer for WCAG AA against its real background, for all five regions, in both themes, at 390, 1024 and 1440 px.
 
 ### Key art
 

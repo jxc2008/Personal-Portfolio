@@ -42,8 +42,8 @@ jest.mock("../FloatingPillNav", () => {
 });
 
 jest.mock("../Footer", () => {
-  return function MockFooter() {
-    return <footer data-testid="footer">Footer</footer>;
+  return function MockFooter({ region }: { region?: { slug: string } }) {
+    return <footer data-testid="footer" data-region={region?.slug}>Footer</footer>;
   };
 });
 
@@ -95,5 +95,23 @@ describe("LayoutClient", () => {
     const child = screen.getByTestId("child");
     expect(child.closest("main")).not.toBeNull();
     expect(screen.getByTestId("motion-main")).toBeInTheDocument();
+  });
+
+  it("gives the footer the region on a region page, and nothing elsewhere", () => {
+    mockPathname = "/regions/trading-floor";
+    const { unmount } = render(
+      <LayoutClient>
+        <div>child</div>
+      </LayoutClient>
+    );
+    expect(screen.getByTestId("footer")).toHaveAttribute("data-region", "trading-floor");
+    unmount();
+    mockPathname = "/";
+    render(
+      <LayoutClient>
+        <div>child</div>
+      </LayoutClient>
+    );
+    expect(screen.getByTestId("footer")).not.toHaveAttribute("data-region");
   });
 });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState, type PointerEvent } from "react";
-import { getRegion, postsFor, REGIONS, STATUS_LABEL, t } from "./index";
+import { getRegion, paletteVars, postsFor, REGIONS, STATUS_LABEL, t } from "./index";
 import { REGION_FONT } from "./fonts";
 import RegionTile from "./RegionTile";
 import RegionArt from "./scenery/RegionArt";
@@ -104,6 +104,7 @@ export default function RegionPage({ slug }: { slug: Region["slug"] }) {
     <article
       className={`${themes.theme} ${REGION_FONT[region.slug]} ${styles.page}`}
       data-region={region.slug}
+      style={paletteVars(region)}
       lang={HTML_LANG[lang]}
     >
       <header

@@ -4,8 +4,8 @@
   grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
   gap: clamp(1.5rem, 4vw, 3.5rem);
   padding: clamp(1.25rem, 3vw, 2.25rem);
-  border: 1px solid var(--r-line);
-  border-radius: 6px;
+  border: 1px solid var(--r-rule);
+  border-radius: 12px;
   background: var(--r-surface);
   font-variant-numeric: tabular-nums;
 }
@@ -149,21 +149,41 @@
   margin-top: 0.9rem;
 }
 
-.presets button,
-.actions button {
+.presets button {
   padding: 0;
   border: 0;
   background: none;
   font-size: 0.85rem;
   color: var(--r-accent-ink);
   text-decoration: underline;
-  text-decoration-color: var(--r-line-strong);
+  text-decoration-color: color-mix(in srgb, var(--r-accent) 55%, transparent);
   text-underline-offset: 3px;
 }
 
-.presets button:hover,
-.actions button:hover:not(:disabled) {
+.presets button:hover {
   text-decoration-color: currentColor;
+}
+
+/* Action buttons: outlined pills; the main action is tinted with the accent. */
+.actions button {
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--r-rule);
+  border-radius: 999px;
+  background: none;
+  font-size: 0.85rem;
+  color: var(--r-ink);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.actions button:hover:not(:disabled) {
+  border-color: var(--r-accent);
+}
+
+.actions .primary {
+  border-color: color-mix(in srgb, var(--r-accent) 60%, transparent);
+  background: var(--r-accent-wash);
+  color: var(--r-accent-ink);
+  font-weight: 600;
 }
 
 /* ─── Veto board ─── */
@@ -292,9 +312,9 @@
 }
 
 .actions button:disabled {
+  border-color: var(--r-line);
   color: var(--r-muted);
   cursor: default;
-  text-decoration: none;
 }
 
 .note {
@@ -307,5 +327,25 @@
 @media (max-width: 860px) {
   .veto {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Desktop: descriptions at 16px, small labels at least 13px. */
+@media (min-width: 1024px) {
+  .compare {
+    font-size: 1rem;
+  }
+
+  .teamField,
+  .starts legend,
+  .maps caption,
+  .step::before,
+  .choiceValue,
+  .bestTag {
+    font-size: 0.85rem;
+  }
+
+  .note {
+    font-size: 0.875rem;
   }
 }

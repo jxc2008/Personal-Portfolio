@@ -9,6 +9,11 @@ const tradingFloor: Region = {
   short: "Markets, probability, and the games that taught me both.",
   lede: "Markets and probability: what I took from Optiver, the bots I've built for prediction markets, and the card games where I first learned to price risk.",
   scenery: "ledger",
+  // Page colours: green felt and brass.
+  palette: {
+    light: { paper: "#edf1ec", ink: "#1c2a24", accent: "#a9853f", link: "#6e5420", band: "#dfe7de", card: "#f6f8f5" },
+    dark: { paper: "#0f1714", ink: "#e4e9e4", accent: "#d0aa5e", link: "#dcb874", band: "#18271f", card: "#1d2c24" },
+  },
   state: "charting",
   sections: [
     {
@@ -73,6 +78,11 @@ const valorantRidge: Region = {
   short: "Pricing, research, and post-mortems for pro VALORANT.",
   lede: "Where I model professional VALORANT: a pricing engine for match markets, the questions I'm testing with it, and a look back at each Champions.",
   scenery: "ridge",
+  // Page colours: cold dawn: slate, with lavender from the sky.
+  palette: {
+    light: { paper: "#eef2f4", ink: "#22303c", accent: "#c2607a", link: "#943853", band: "#e5e6ee", card: "#f7f9fa" },
+    dark: { paper: "#121a23", ink: "#e3e9ee", accent: "#e0839b", link: "#f0a3b6", band: "#1b273a", card: "#202c3d" },
+  },
   // Focal point is the outpost; keep it and the mast in frame at every width.
   art: {
     src: "/regions/ridge.webp",
@@ -192,6 +202,11 @@ const pianoHall: Region = {
   short: "Piano and vocal recordings, and a keyboard to play.",
   lede: "Piano and vocal recordings, a keyboard you can play in the browser, and the pieces I'm learning now.",
   scenery: "hall",
+  // Page colours: plum stage, brass light.
+  palette: {
+    light: { paper: "#f2edef", ink: "#2a1e2a", accent: "#b0813a", link: "#7a561c", band: "#ebe2e6", card: "#f9f6f7" },
+    dark: { paper: "#140f15", ink: "#ece4ea", accent: "#d6a75a", link: "#e2b976", band: "#221825", card: "#271e2b" },
+  },
   state: "charting",
   sections: [
     {
@@ -227,6 +242,11 @@ const farShore: Region = {
     zh: "屏幕之外的生活：日本之行、值得专程去吃的美食、街头服饰，还有中文。",
   },
   scenery: "shore",
+  // Page colours: indigo sea, vermilion sun.
+  palette: {
+    light: { paper: "#eef1f4", ink: "#1d2742", accent: "#c7432f", link: "#a2311e", band: "#e2e7f0", card: "#f7f8fa" },
+    dark: { paper: "#0f1424", ink: "#e8ecf5", accent: "#e0614a", link: "#f08169", band: "#1a2240", card: "#1f2845" },
+  },
   state: "charting",
   languages: ["en", "zh"],
   // The Mandarin text is a first draft; the page labels it until this is removed.
@@ -265,6 +285,11 @@ const theLab: Region = {
   short: "Simulations, tools, and teaching.",
   lede: "Simulations and tools for thinking with math: a three-body simulation, a playground for option Greeks, the quant team's open course, and coursework projects.",
   scenery: "orbits",
+  // Page colours: blueprint.
+  palette: {
+    light: { paper: "#eef3f8", ink: "#14243a", accent: "#2a7ab8", link: "#1b5a8b", band: "#dfe8f2", card: "#f7fafc" },
+    dark: { paper: "#0c1522", ink: "#e4edf5", accent: "#6bb8e8", link: "#8fd3f0", band: "#13233a", card: "#18293f" },
+  },
   state: "charting",
   sections: [
     {
