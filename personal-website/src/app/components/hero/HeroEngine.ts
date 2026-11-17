@@ -3,6 +3,7 @@ import { createEffects, starTwinkleWeight, type Effect, type FxFrame } from "./e
 import {
   coverScale,
   DEFAULT_PARALLAX,
+  focalCenter,
   project,
   zoomFor,
   type ParallaxParams,
@@ -16,6 +17,8 @@ export interface HeroEngineOptions {
   fxCanvas: HTMLCanvasElement;
   todOverride: Tod | null;
   parallax?: Partial<ParallaxParams>;
+  /** Dev override for the portrait focal point (see parseFocalOverride). */
+  focalOverride?: number | null;
   /** First WebGL frame is on screen: fade the canvas in. */
   onGlReady(): void;
   /** WebGL failed or was lost: show the static image. */
@@ -280,14 +283,16 @@ export class HeroEngine {
     const weights = todWeights(this.tod);
 
     const scale = coverScale(this.w, this.h, zoomFor(this.parallax.strength));
+    const center = focalCenter(this.w, this.h, scale, this.parallax, this.o.focalOverride ?? null);
     // Without WebGL the static image doesn't move, so neither should the effects.
     const pointer: [number, number] = this.glReady ? [this.cur[0], this.cur[1]] : [0, 0];
-    const view: View = { w: this.w, h: this.h, scale, pointer, parallax: this.parallax };
+    const view: View = { w: this.w, h: this.h, scale, center, pointer, parallax: this.parallax };
 
     if (this.renderer && this.glReady) {
       this.renderer.render({
         pointer,
         scale,
+        center,
         parallax: this.parallax,
         a: this.tod.a,
         b: this.tod.b,

@@ -21,12 +21,26 @@ export default function GlowCursor() {
     let glowX = 0;
     let glowY = 0;
     let isHovering = false;
+    let isSuppressed = false;
+
+    // Regions can opt out with data-glow-cursor="off" (e.g. the homepage hero).
+    const updateSuppressed = (target: Element | null) => {
+      const off = !!target?.closest('[data-glow-cursor="off"]');
+      if (off === isSuppressed) return;
+      isSuppressed = off;
+      dot.classList.toggle(styles.suppressed, off);
+      glow.classList.toggle(styles.suppressed, off);
+    };
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
       dot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`;
+      updateSuppressed(e.target as Element);
     };
+
+    // Scrolling moves content under a still pointer without a mousemove.
+    const onScroll = () => updateSuppressed(document.elementFromPoint(mouseX, mouseY));
 
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -55,12 +69,14 @@ export default function GlowCursor() {
     };
 
     window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("mouseover", onMouseOver);
     document.addEventListener("mouseout", onMouseOut);
     raf = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("mouseover", onMouseOver);
       document.removeEventListener("mouseout", onMouseOut);
       cancelAnimationFrame(raf);

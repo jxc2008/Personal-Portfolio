@@ -1,3 +1,4 @@
+import { SUN_UV } from "../sceneMath";
 import { clamp01, type Effect, type FxFrame } from "./types";
 
 /**
@@ -5,9 +6,6 @@ import { clamp01, type Effect, type FxFrame } from "./types";
  * rays anchored on the sun at the right horizon, plus pale ghosts along the
  * sun→centre axis. All additive and low alpha, like a film composite.
  */
-
-/** Sun position in the golden image (u right, v down). */
-export const SUN_UV: [number, number] = [0.91, 0.405];
 
 const GHOSTS = [
   // k: position along sun→centre axis (1 = centre); r: radius vs min(w, h)

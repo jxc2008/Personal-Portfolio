@@ -20,8 +20,14 @@ function mockMatchMedia(reduced: boolean) {
   }));
 }
 
+class MockResizeObserver {
+  observe() {}
+  disconnect() {}
+}
+
 describe("Hero", () => {
   beforeEach(() => {
+    window.ResizeObserver = MockResizeObserver as unknown as typeof ResizeObserver;
     mockEngine.mockClear();
     window.history.replaceState(null, "", "/?tod=golden");
   });
@@ -53,6 +59,12 @@ describe("Hero", () => {
     mockMatchMedia(true);
     render(<Hero nextId="featured" />);
     expect(mockEngine).not.toHaveBeenCalled();
+  });
+
+  it("opts out of the site's glow cursor", () => {
+    mockMatchMedia(false);
+    const { container } = render(<Hero nextId="featured" />);
+    expect(container.querySelector("section")).toHaveAttribute("data-glow-cursor", "off");
   });
 
   it("hides the decorative canvases from assistive tech", () => {

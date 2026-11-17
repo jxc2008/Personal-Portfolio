@@ -3,7 +3,15 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Cormorant_Garamond } from "next/font/google";
 import { HeroEngine } from "./HeroEngine";
-import { DEFAULT_PARALLAX, parseParallaxOverride, zoomFor } from "./sceneMath";
+import {
+  DEFAULT_PARALLAX,
+  framingBootstrapSource,
+  HERO_MIN_H,
+  parseFocalOverride,
+  parseParallaxOverride,
+  staticObjectPositionX,
+  zoomFor,
+} from "./sceneMath";
 import { computeTod, parseTodOverride, TOD_ALT, TOD_IMAGE, todBootstrapSource, type Tod } from "./timeOfDay";
 import styles from "./Hero.module.css";
 
@@ -12,7 +20,7 @@ const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600"],
 
 const SECTION_ID = "hero";
 const IMG_ID = "hero-static";
-const BOOTSTRAP = todBootstrapSource(IMG_ID, SECTION_ID);
+const BOOTSTRAP = todBootstrapSource(IMG_ID, SECTION_ID) + framingBootstrapSource(IMG_ID);
 const ZOOM_STYLE = { "--hero-zoom": (1 / zoomFor(DEFAULT_PARALLAX.strength)).toFixed(4) } as CSSProperties;
 
 interface HeroProps {
@@ -36,7 +44,17 @@ export default function Hero({ nextId }: HeroProps) {
 
     const override = parseTodOverride(window.location.search);
     const parallax = { ...DEFAULT_PARALLAX, ...parseParallaxOverride(window.location.search) };
+    const focalOverride = parseFocalOverride(window.location.search);
     section.style.setProperty("--hero-zoom", (1 / zoomFor(parallax.strength)).toFixed(4));
+    // Keep the static image framed like the shader (portrait shifts the focal point right).
+    const frame = () => {
+      const r = section.getBoundingClientRect();
+      const x = staticObjectPositionX(r.width, Math.max(r.height, HERO_MIN_H), parallax, focalOverride);
+      img.style.objectPosition = `${(x * 100).toFixed(3)}% 50%`;
+    };
+    frame();
+    const ro = new ResizeObserver(frame);
+    ro.observe(section);
     const applyTod = (tod: Tod) => {
       section.setAttribute("data-tod", tod);
       img.alt = TOD_ALT[tod];
@@ -59,6 +77,7 @@ export default function Hero({ nextId }: HeroProps) {
         fxCanvas,
         todOverride: override,
         parallax,
+        focalOverride,
         onGlReady: () => setGlReady(true),
         onGlFail: (reason) => {
           setGlReady(false);
@@ -70,6 +89,7 @@ export default function Hero({ nextId }: HeroProps) {
     start();
     reduce.addEventListener("change", start);
     return () => {
+      ro.disconnect();
       reduce.removeEventListener("change", start);
       engine?.dispose();
     };
@@ -82,6 +102,7 @@ export default function Hero({ nextId }: HeroProps) {
       className={styles.hero}
       style={ZOOM_STYLE}
       aria-labelledby="hero-title"
+      data-glow-cursor="off"
       suppressHydrationWarning
     >
       {/* Plain <img>: its src depends on the visitor's local time, picked by the

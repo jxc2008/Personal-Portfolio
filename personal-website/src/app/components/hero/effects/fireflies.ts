@@ -97,7 +97,7 @@ export function createFireflies(): Effect {
     draw(f: FxFrame) {
       const w = f.weights.night;
       if (w < 0.01) return;
-      const key = `${f.compact}|${f.view.scale[0].toFixed(3)}`;
+      const key = `${f.compact}|${f.view.scale[0].toFixed(3)}|${f.view.center[0].toFixed(3)}`;
       if (key !== layoutKey) {
         layoutKey = key;
         layout(f);

@@ -7,9 +7,16 @@ varying vec2 vUv;
 void main() { vUv = p * 0.5 + 0.5; gl_Position = vec4(p, 0.0, 1.0); }
 `;
 
-// Ported from parallax-reference.html: depth displacement with one refinement
-// step, depth gamma, cover-fit via uScale. Adds a two-texture crossfade for time
-// of day and the night star twinkle.
+export const MARCH_STEPS = 12;
+
+// Based on parallax-reference.html (depth displacement, depth gamma, cover-fit
+// via uScale), with its one-step refinement replaced by a short ray-march:
+// a surface with depth D at texture point p appears where uv + dir * (D - focus) = p,
+// so we walk candidate depths h from near (1) to far (0) and stop at the first h
+// whose sample is at least that near. Nearest hit wins, so foreground silhouettes
+// move with their content instead of leaving ghosts; disocclusions stretch the
+// background. A secant step between the last miss and the hit refines h.
+// Also adds the time-of-day crossfade, a focal centre (portrait) and star twinkle.
 const FRAG = /* glsl */ `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
@@ -18,8 +25,10 @@ precision mediump float;
 #endif
 varying vec2 vUv;
 uniform sampler2D uDepth, uImgA, uImgB;
-uniform vec2 uMouse, uScale, uTexel;
+uniform vec2 uMouse, uScale, uCenter, uTexel;
 uniform float uStrength, uFocus, uGamma, uMix, uTime;
+
+const int STEPS = ${MARCH_STEPS};
 
 vec3 scene(vec2 uv) {
   return mix(texture2D(uImgA, uv).rgb, texture2D(uImgB, uv).rgb, uMix);
@@ -28,13 +37,31 @@ float depthAt(vec2 uv) { return pow(texture2D(uDepth, uv).r, uGamma); }
 
 ${STAR_TWINKLE_GLSL}
 
+// Returns the UV offset to sample at; writes the depth of the surface hit.
+vec2 march(vec2 uv, out float hitDepth) {
+  vec2 dir = uMouse * uStrength;
+  if (dot(dir, dir) < 1e-10) { hitDepth = depthAt(uv); return vec2(0.0); }
+  float prevH = 1.0;
+  float prevDiff = -1.0;
+  hitDepth = 0.0;
+  for (int i = 0; i < STEPS; i++) {
+    float h = 1.0 - float(i) / float(STEPS - 1);
+    float diff = depthAt(uv + dir * (h - uFocus)) - h;
+    if (diff >= 0.0) {                          // nearest hit wins: stop at the first one
+      float t = i == 0 ? 1.0 : prevDiff / (prevDiff - diff);
+      hitDepth = mix(prevH, h, t);
+      break;                                    // early exit
+    }
+    prevH = h;
+    prevDiff = diff;
+  }
+  return dir * (hitDepth - uFocus);             // the last step (h = 0) always hits
+}
+
 void main() {
-  vec2 uv = (vUv - 0.5) * uScale + 0.5;
-  float d = depthAt(uv);
-  vec2 off = uMouse * (d - uFocus) * uStrength;
-  float d2 = depthAt(uv + off);                 // one refinement step reduces edge tearing
-  off = uMouse * (mix(d, d2, 0.5) - uFocus) * uStrength;
-  vec2 suv = uv + off;
+  vec2 uv = (vUv - 0.5) * uScale + uCenter;
+  float d;
+  vec2 suv = uv + march(uv, d);
   vec3 col = scene(suv);
   if (uTwinkle > 0.001) col = applyTwinkle(col, suv, d);
   gl_FragColor = vec4(col, 1.0);
@@ -44,6 +71,8 @@ void main() {
 export interface RenderInput {
   pointer: [number, number];
   scale: [number, number];
+  /** Image UV shown at the centre of the viewport (cover-fit focal point). */
+  center: [number, number];
   parallax: ParallaxParams;
   /** Texture keys bound as A and B. */
   a: string;
@@ -54,7 +83,7 @@ export interface RenderInput {
 }
 
 type Uniforms = Record<
-  | "uDepth" | "uImgA" | "uImgB" | "uMouse" | "uScale" | "uTexel"
+  | "uDepth" | "uImgA" | "uImgB" | "uMouse" | "uScale" | "uCenter" | "uTexel"
   | "uStrength" | "uFocus" | "uGamma" | "uMix" | "uTime" | "uTwinkle",
   WebGLUniformLocation | null
 >;
@@ -108,7 +137,7 @@ export class DepthParallaxRenderer {
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     this.buf = buf;
 
-    const names = ["uDepth", "uImgA", "uImgB", "uMouse", "uScale", "uTexel", "uStrength", "uFocus", "uGamma", "uMix", "uTime", "uTwinkle"] as const;
+    const names = ["uDepth", "uImgA", "uImgB", "uMouse", "uScale", "uCenter", "uTexel", "uStrength", "uFocus", "uGamma", "uMix", "uTime", "uTwinkle"] as const;
     this.u = Object.fromEntries(names.map((n) => [n, gl.getUniformLocation(prog, n)])) as Uniforms;
     gl.uniform1i(this.u.uDepth, 0);
     gl.uniform1i(this.u.uImgA, 1);
@@ -180,6 +209,7 @@ export class DepthParallaxRenderer {
     gl.activeTexture(gl.TEXTURE2);
     gl.bindTexture(gl.TEXTURE_2D, tb);
     gl.uniform2f(this.u.uScale, r.scale[0], r.scale[1]);
+    gl.uniform2f(this.u.uCenter, r.center[0], 1 - r.center[1]); // texture space is y-up
     gl.uniform2f(this.u.uMouse, r.pointer[0], r.pointer[1]);
     gl.uniform1f(this.u.uStrength, r.parallax.strength);
     gl.uniform1f(this.u.uFocus, r.parallax.focus);
