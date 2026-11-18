@@ -2,7 +2,9 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import type { ReactNode } from "react";
 import { VALORANT_MAP_POOL } from "../config";
+import { getRegion, type Region } from "..";
 import RegionPage from "../RegionPage";
+import RegionArt from "../scenery/RegionArt";
 
 jest.mock("next/link", () => ({
   __esModule: true,
@@ -68,9 +70,31 @@ describe("RegionPage", () => {
     expect(within(banner as HTMLElement).getByTestId("region-art-scrim")).toHaveAttribute("data-variant", "banner");
     document.body.innerHTML = "";
     render(<RegionPage slug="piano-hall" />);
-    const tiles = within(screen.getByRole("navigation", { name: "Other regions" })).getAllByTestId("region-key-art");
-    expect(tiles).toHaveLength(1);
-    expect(tiles[0]).toHaveAttribute("loading", "lazy");
+    const strip = screen.getByRole("navigation", { name: "Other regions" });
+    const ridgeTile = within(strip).getByRole("link", { name: /VALORANT Ridge/ });
+    const tileArt = within(ridgeTile).getByTestId("region-key-art");
+    expect(tileArt).toHaveAttribute("src", "/regions/ridge.webp");
+    expect(tileArt).toHaveAttribute("loading", "lazy");
+  });
+
+  it("gives every region its own key art, on its banner and on its tiles", () => {
+    const art: Record<string, string> = {
+      "trading-floor": "/regions/trading.webp",
+      "valorant-ridge": "/regions/ridge.webp",
+      "piano-hall": "/regions/piano.webp",
+      "far-shore": "/regions/shore.webp",
+      "the-lab": "/regions/lab.webp",
+    };
+    for (const [slug, src] of Object.entries(art)) {
+      const { container, unmount } = render(<RegionPage slug={slug as Region["slug"]} />);
+      expect(within(container.querySelector("header") as HTMLElement).getByTestId("region-key-art")).toHaveAttribute("src", src);
+      // Each "Other regions" tile shows its own region's art.
+      for (const link of within(screen.getByRole("navigation", { name: "Other regions" })).getAllByRole("link")) {
+        const other = link.getAttribute("href")!.replace("/regions/", "");
+        expect(within(link).getByTestId("region-key-art")).toHaveAttribute("src", art[other]);
+      }
+      unmount();
+    }
   });
 
   it("falls back to the drawn scenery if the key art fails to load", () => {
@@ -83,12 +107,12 @@ describe("RegionPage", () => {
     expect(banner.querySelector("svg")).toBeInTheDocument();
   });
 
-  it("keeps the drawn scenery for regions without key art", () => {
-    const { container } = render(<RegionPage slug="the-lab" />);
-    const banner = container.querySelector("header") as HTMLElement;
-    expect(within(banner).queryByTestId("region-key-art")).not.toBeInTheDocument();
-    expect(within(banner).queryByTestId("region-art-scrim")).not.toBeInTheDocument();
-    expect(banner).not.toHaveAttribute("data-art");
+  it("draws the scenery alone for a region without key art", () => {
+    const lab = { ...(getRegion("the-lab") as Region), art: undefined };
+    const { container } = render(<RegionArt region={lab} variant="banner" />);
+    expect(container.querySelector("svg")).toBeInTheDocument();
+    expect(screen.queryByTestId("region-key-art")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("region-art-scrim")).not.toBeInTheDocument();
   });
 
   it("shows the research results as statuses", () => {

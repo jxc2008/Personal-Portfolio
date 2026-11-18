@@ -1,3 +1,5 @@
+import { existsSync } from "fs";
+import { join } from "path";
 import { getRegion, postsFor, regionAnchors, REGIONS, t, worldTagline } from "..";
 import { formatAsOf, mapPoolLabel, VALORANT_MAP_POOL } from "../config";
 import type { Post, Text } from "../types";
@@ -65,6 +67,20 @@ describe("region content", () => {
     expect(label("region-lag")).toBe("Tested — no effect at close");
     expect(label("round-variance")).toBe("Tested — no effect at close");
     expect(label("roster-churn")).toBe("Pre-registered for Kickoff 2027");
+  });
+
+  it("gives every region key art that exists, with keep-clear boxes inside the image", () => {
+    for (const r of REGIONS) {
+      expect([r.slug, r.art?.src]).toEqual([r.slug, `/regions/${r.art?.src.split("/").pop()}`]);
+      expect(existsSync(join(process.cwd(), "public", r.art!.src))).toBe(true);
+      expect(r.art!.focus).toMatch(/^\d+% \d+%$/);
+      expect(r.art!.keepClear?.length).toBeGreaterThan(0);
+      for (const box of r.art!.keepClear!) {
+        for (const [a, b] of [box.x, box.y]) {
+          expect(0 <= a && a < b && b <= 1).toBe(true);
+        }
+      }
+    }
   });
 
   it("labels the Far Shore's Mandarin as a draft", () => {

@@ -21,6 +21,8 @@
 .bannerArt {
   position: absolute;
   inset: 0;
+  /* Lets the darkening place holes over unshaded subjects (Scenery.module.css). */
+  container-type: size;
 }
 
 .bannerCopy {
@@ -416,14 +418,15 @@
 .banner[data-art] {
   --r-banner-ink: var(--r-art-ink);
   --r-banner-soft: var(--r-art-soft);
-  --r-banner-halo: var(--r-art-halo);
+  --r-banner-halo: var(--r-art-text-shadow);
   --r-banner-on-ink: var(--r-art-shade);
 }
 
-/* Over key art, keep the text in the upper left, well short of the art's subject
-   (kept right of centre by its focus point), so the shade behind the text
-   (Scenery.module.css) can fade out softly before reaching it. */
-@media (min-width: 641px) {
+/* Desktop, over key art: keep the text in the upper left, well short of the art's
+   subject (kept right of centre by its focus point), so the shade behind the text
+   (Scenery.module.css) can fade out softly before reaching it. The description
+   column ends by about 38% across, clear of a subject that starts at 40%. */
+@media (min-width: 1024px) {
   .banner[data-art] .bannerCopy {
     max-width: min(44rem, 50%);
   }
@@ -434,15 +437,17 @@
 
   /* Scales with the banner, so it holds the same proportion at 1440 as at 1024. */
   .banner[data-art] .lede {
-    max-width: min(36rem, 80%);
+    max-width: min(32rem, 32vw);
     font-size: clamp(1rem, 1.55vw, 1.4rem);
   }
 }
 
-/* Phones with key art: only the title stays over the image. The description and
-   language row move below it, onto the page colours, so no length of copy can
-   cover the art's subject. The art keeps the banner's height, so it crops the same. */
-@media (max-width: 640px) {
+/* Phones and tablets with key art: only the title stays over the image. The
+   description and language row move below it, onto the page colours, so no length
+   of copy can cover the art's subject. The art is a little shorter than a drawn
+   banner (70% of the screen height), which widens the phone crop to about 37% of the
+   image's width, enough for a subject 35% wide. */
+@media (max-width: 1023px) {
   .banner[data-art] {
     height: auto;
     overflow: visible;
@@ -451,7 +456,7 @@
 
   .banner[data-art] .bannerArt {
     position: relative;
-    height: clamp(460px, 76svh, 780px);
+    height: clamp(420px, 70svh, 720px);
     overflow: hidden;
     background: var(--s-sky-top);
   }
@@ -465,7 +470,7 @@
     z-index: 1;
     top: clamp(72px, 11vh, 110px);
     left: var(--gutter);
-    right: var(--gutter);
+    max-width: calc(100% - 2 * var(--gutter));
   }
 
   .banner[data-art] .lede,

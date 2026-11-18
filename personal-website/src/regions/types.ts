@@ -61,8 +61,12 @@ export interface KeyArt {
   /** CSS object-position: the point that stays in frame when the image is cropped. */
   focus: string;
   /** Parts of the image (fractions of its width and height) that must stay in frame
-      and never sit behind banner text. Checked in the browser by e2e/keyart.spec.ts. */
-  keepClear?: { label: string; x: [number, number]; y: [number, number] }[];
+      and never sit behind banner text. `unshaded` ones also keep their original colour:
+      the darkening behind text has a soft hole over them. Checked in the browser by
+      e2e/keyart.spec.ts. */
+  keepClear?: { label: string; x: [number, number]; y: [number, number]; unshaded?: boolean }[];
+  /** Width / height of the image file. Defaults to 16/9. Used to place unshaded holes. */
+  aspect?: number;
 }
 
 /**

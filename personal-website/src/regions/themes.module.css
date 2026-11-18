@@ -39,6 +39,21 @@
   --r-accent-2: color-mix(in srgb, var(--r-accent) 18%, var(--r-surface));
   /* Tinted fill for the primary button. */
   --r-accent-wash: color-mix(in srgb, var(--r-accent) 14%, var(--r-surface));
+  /* Text over key art: a layered shadow in the region's dark shade. A crisp,
+     translucent 1px rim (four offsets) gives every edge, even a tiny ear, the same
+     edge; blurred layers then widen it, so the words read on bright skies without a
+     visible box. */
+  --r-art-text-shadow:
+    1px 0 0 color-mix(in srgb, var(--r-art-shade) 70%, transparent),
+    -1px 0 0 color-mix(in srgb, var(--r-art-shade) 70%, transparent),
+    0 1px 0 color-mix(in srgb, var(--r-art-shade) 70%, transparent),
+    0 -1px 0 color-mix(in srgb, var(--r-art-shade) 70%, transparent),
+    0 0 1px color-mix(in srgb, var(--r-art-shade) 95%, transparent),
+    0 0 2px color-mix(in srgb, var(--r-art-shade) 90%, transparent),
+    0 1px 3px color-mix(in srgb, var(--r-art-shade) 85%, transparent),
+    0 0 6px color-mix(in srgb, var(--r-art-shade) 65%, transparent),
+    0 0 12px color-mix(in srgb, var(--r-art-shade) 45%, transparent),
+    0 0 22px color-mix(in srgb, var(--r-art-shade) 30%, transparent);
 }
 
 /* Per region, below:

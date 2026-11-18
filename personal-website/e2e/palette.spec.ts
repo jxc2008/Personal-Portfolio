@@ -59,8 +59,14 @@ for (const region of REGIONS) {
               const el = walker.currentNode.parentElement;
               if (!el || seen.has(el) || !walker.currentNode.textContent?.trim()) continue;
               seen.add(el);
-              // Over art: the banner, and tile art in the "Other regions" strip.
-              if (el.closest("header") || el.closest("a span:has(> svg)")) continue;
+              // Over art (covered by keyart.spec.ts): the banner, and tile names laid over tile art.
+              if (el.closest("header")) continue;
+              const tileName = el.closest('[data-part="name"]');
+              if (tileName) {
+                const art = tileName.parentElement!.querySelector("svg, img")!.getBoundingClientRect();
+                const r = tileName.getBoundingClientRect();
+                if (r.top < art.bottom && r.bottom > art.top) continue;
+              }
               // WCAG exempts disabled controls.
               if (el.closest("button:disabled")) continue;
               const cs = getComputedStyle(el);

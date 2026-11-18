@@ -17,7 +17,11 @@ export default function RegionTile({ region, size = "tall" }: { region: Region; 
     >
       <span className={styles.art}>
         <RegionArt region={region} variant="tile" />
-        <span className={styles.name}>{t(region.name)}</span>
+      </span>
+      {/* A grid sibling of the art rather than a child, so it can overlay the art or,
+          on small phone tiles, sit below it. */}
+      <span className={styles.name} data-part="name">
+        {t(region.name)}
       </span>
       <span className={styles.short}>{t(region.short)}</span>
       <span className={styles.state}>{region.state === "open" ? "Open" : "Being charted"}</span>
