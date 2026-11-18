@@ -134,29 +134,29 @@ async function expectClear(container: Locator, boxes: KeepClear) {
   }
 }
 
-/** The art of `slug`'s tile on the home page. */
+/** `slug`'s tile on the home page. */
 async function homeTile(page: Page, slug: string) {
   await page.goto("/?tod=day", { waitUntil: "networkidle" });
-  return loaded(page.locator(`#regions a[href="/regions/${slug}"] span:has(> img[data-testid="region-key-art"])`));
+  return loaded(page.locator(`#regions a[href="/regions/${slug}"]`));
 }
 
-/** The art of `slug`'s small tile in the "Other regions" strip of another region's page. */
+/** `slug`'s small tile in the "Other regions" strip of another region's page. */
 async function stripTile(page: Page, slug: string) {
   const elsewhere = REGIONS.find((r) => r.slug !== slug)!;
   await page.goto(`/regions/${elsewhere.slug}`, { waitUntil: "networkidle" });
-  return loaded(page.getByRole("navigation", { name: "Other regions" }).locator(`a[href="/regions/${slug}"] span:has(> img[data-testid="region-key-art"])`));
+  return loaded(page.getByRole("navigation", { name: "Other regions" }).locator(`a[href="/regions/${slug}"]`));
 }
 
-async function loaded(art: Locator) {
-  await art.scrollIntoViewIfNeeded();
-  await art.locator("img").evaluate((img: HTMLImageElement) => img.decode());
-  return art;
+async function loaded(tile: Locator) {
+  await tile.scrollIntoViewIfNeeded();
+  await tile.locator('img[data-testid="region-key-art"]').evaluate((img: HTMLImageElement) => img.decode());
+  return tile;
 }
 
 const overlaps = (a: Box, b: Box) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 const inside = (a: Box, f: Box) => a.left >= f.left && a.right <= f.right && a.top >= f.top && a.bottom <= f.bottom;
 
-const TILE_NAME = ":scope > span:last-child";
+const TILE_NAME = '[data-part="name"]';
 
 for (const region of withArt) {
   const boxes = region.art!.keepClear!;
@@ -190,8 +190,15 @@ for (const region of withArt) {
           await expectClear(await stripTile(page, region.slug), boxes);
         });
 
-        test('"Other regions" tile: name meets WCAG AA over the art', async ({ page }) => {
-          await expectAA(page, await stripTile(page, region.slug), TILE_NAME);
+        test('"Other regions" tile: name meets WCAG AA over the art, or sits below it on phones', async ({ page }) => {
+          const tile = await stripTile(page, region.slug);
+          if (size.width <= 640) {
+            // Small phone tiles put the name under the image (palette.spec checks it on the page colours).
+            const [name, art] = await Promise.all([tile.locator(TILE_NAME).boundingBox(), tile.locator("img").boundingBox()]);
+            expect(name!.y).toBeGreaterThanOrEqual(art!.y + art!.height);
+            return;
+          }
+          await expectAA(page, tile, TILE_NAME);
         });
       });
     }

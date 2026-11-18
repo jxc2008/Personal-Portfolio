@@ -14,6 +14,17 @@ const tradingFloor: Region = {
     light: { paper: "#edf1ec", ink: "#1c2a24", accent: "#a9853f", link: "#6e5420", band: "#dfe7de", card: "#f6f8f5" },
     dark: { paper: "#0f1714", ink: "#e4e9e4", accent: "#d0aa5e", link: "#dcb874", band: "#18271f", card: "#1d2c24" },
   },
+  // Focus keeps the whole hall in the phone crop (it's 35% of the image wide); the
+  // low vertical focus keeps its chimneys below the title at wide sizes.
+  art: {
+    src: "/regions/trading.webp",
+    focus: "62% 20%",
+    // Measured on the 2400x1350 file. Update these if the image changes.
+    keepClear: [
+      { label: "hall", x: [0.4, 0.754], y: [0.445, 0.645] },
+      { label: "hall roof and chimneys", x: [0.47, 0.73], y: [0.373, 0.445] },
+    ],
+  },
   state: "charting",
   sections: [
     {
@@ -207,6 +218,13 @@ const pianoHall: Region = {
     light: { paper: "#f2edef", ink: "#2a1e2a", accent: "#b0813a", link: "#7a561c", band: "#ebe2e6", card: "#f9f6f7" },
     dark: { paper: "#140f15", ink: "#ece4ea", accent: "#d6a75a", link: "#e2b976", band: "#221825", card: "#271e2b" },
   },
+  // Focus centres the glowing gable front in the phone crop.
+  art: {
+    src: "/regions/piano.webp",
+    focus: "60% 52%",
+    // Measured on the 2400x1350 file. Update these if the image changes.
+    keepClear: [{ label: "hall front", x: [0.487, 0.663], y: [0.345, 0.64] }],
+  },
   state: "charting",
   sections: [
     {
@@ -246,6 +264,17 @@ const farShore: Region = {
   palette: {
     light: { paper: "#eef1f4", ink: "#1d2742", accent: "#c7432f", link: "#a2311e", band: "#e2e7f0", card: "#f7f8fa" },
     dark: { paper: "#0f1424", ink: "#e8ecf5", accent: "#e0614a", link: "#f08169", band: "#1a2240", card: "#1f2845" },
+  },
+  // Focus keeps the front boat and the sun together in the phone crop, with the sun
+  // as far right of the title as the boat allows.
+  art: {
+    src: "/regions/shore.webp",
+    focus: "63% 52%",
+    // Measured on the 2400x1350 file. Update these if the image changes.
+    keepClear: [
+      { label: "front boat", x: [0.554, 0.762], y: [0.475, 0.778] },
+      { label: "sun", x: [0.681, 0.737], y: [0.217, 0.314] },
+    ],
   },
   state: "charting",
   languages: ["en", "zh"],
@@ -289,6 +318,13 @@ const theLab: Region = {
   palette: {
     light: { paper: "#eef3f8", ink: "#14243a", accent: "#2a7ab8", link: "#1b5a8b", band: "#dfe8f2", card: "#f7fafc" },
     dark: { paper: "#0c1522", ink: "#e4edf5", accent: "#6bb8e8", link: "#8fd3f0", band: "#13233a", card: "#18293f" },
+  },
+  // Focus is shifted right so the whole dome stays in the phone crop.
+  art: {
+    src: "/regions/lab.webp",
+    focus: "75% 60%",
+    // Measured on the 2400x1350 file. Update these if the image changes.
+    keepClear: [{ label: "observatory dome", x: [0.645, 0.731], y: [0.669, 0.84] }],
   },
   state: "charting",
   sections: [

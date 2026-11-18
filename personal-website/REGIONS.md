@@ -66,43 +66,32 @@ From 1024 px up, descriptions are 16 px and small labels at least 13.6 px.
 
 ### Key art
 
-A region can set `art: { src, focus }` in `regions.ts`. The image then covers the drawn scenery on its banner and on its tiles (home and the travel strip) with `object-fit: cover`, and `focus` is the `object-position` that stays in frame. The drawn scenery stays underneath: it shows while the image loads and remains if the image fails (`RegionArt.tsx`).
+Every region has key art: `art: { src, focus, keepClear }` in `regions.ts`. The image covers the drawn scenery on the region's banner and on its tiles (home and the "Other regions" strip) with `object-fit: cover`; `focus` is the `object-position` that stays in frame. The drawn scenery stays underneath: it shows while the image loads and remains if the image fails (`RegionArt.tsx`).
 
-VALORANT Ridge uses `/regions/ridge.webp` with focus `58% 52%` (the outpost). For a 16:9 image, this is the part that stays visible:
+| Region | Image | Focus | Keep clear (fractions of the image) |
+|---|---|---|---|
+| Trading Floor | `trading.webp` | 62% 20% | hall 40–75.4% × 44.5–64.5%; roof and chimneys 47–73% × 37.3–44.5% |
+| VALORANT Ridge | `ridge.webp` | 58% 52% | mast 59.6–60.6% × 38.1–51.5%; outpost 55.8–63% × 51.5–58.5% |
+| Piano Hall | `piano.webp` | 60% 52% | hall front 48.7–66.3% × 34.5–64% |
+| Far Shore | `shore.webp` | 63% 52% | front boat 55.4–76.2% × 47.5–77.8%; sun 68.1–73.7% × 21.7–31.4% |
+| The Lab | `lab.webp` | 75% 60% | observatory dome 64.5–73.1% × 66.9–84% |
 
-| Frame | Visible width | Visible height |
-|---|---|---|
-| Banner at 1440×900 | all | 8–92% |
-| Banner at 1024×768 | 1–99% | all |
-| Banner at 390×844 | 38–72% | all |
-| Home tile (3:4) | 34–76% | all |
-| Tile at phone width / travel strip (16:9) | all | all |
+All five files are 2400×1350 (16:9). For a 16:9 image, this is the part of its width that stays visible: all of it on wide banners (1440 crops height instead, to about 84%); about 98% at 1024; about 60% on a 768 tablet; about 37% on a 390 phone; about 42% on a 3:4 home tile; all of it on 16:9 tiles. The phone banner is the tight one: a subject must be no more than about 37% of the image wide, and the focus places that window (it starts at about 0.63 × the focus).
 
-The phone banner is the tight one: the subject needs to sit between about 38% and 72% across.
+**New art:** keep the subject right of centre and under about 35% of the width, leave the upper left calm for the title, measure the subject's boxes on the full-size file, and run the e2e suite.
 
-**Text over key art.** While a region's art is showing, its banner always takes the dark treatment, whatever the theme: light text over a shade in the region's dark background colour (the `--r-art-*` tokens in `themes.module.css`). The page below the banner stays themed. If the image fails, the drawn banner and its usual layout come back.
+**Text over key art.** While a region's art is showing, its banner always takes the dark treatment, whatever the theme: light text over the region's dark background colour (the `--r-art-*` tokens in `themes.module.css`). The page below the banner stays themed. If the image fails, the drawn banner and its usual layout come back.
 
-- **Wide screens:** the shade is a soft radial fade out of the top-left corner, with no hard edge. The text is held to the upper left: the title is about 15% smaller than on drawn banners, and the description is capped at 80% of the text column. The description scales with the banner (16 px up to about 1030 px wide, about 22 px at 1440), so it keeps the same proportion as the banner grows.
-- **Tablets (641–1023 px):** the same fade, reaching a little further, because the narrow text column runs further down.
-- **Phones (under 640 px):** only the title stays over the art, on a shaded band at the top. The description and language switch move below the image, on the themed page colours, so no length of copy can cover the subject.
-- **Tiles** (home page and the "Other regions" strip): the same dark treatment as the banner, in both themes, while the art is showing. The shade is solid behind the name and fades out by 34% of the tile's height, above Ridge's mast at 38%. On the small strip tiles at phone width (160×90) a top-left name would land on the mast tip, so there the name sits bottom-left, slightly smaller, with the shade rising from the bottom edge.
+- **Desktop (1024 px and up):** the shade is a soft radial fade out of the top-left corner, with no hard edge. The text is held to the upper left: the title is about 15% smaller than on drawn banners, and the description column is at most 32% of the banner's width, so it ends by about 38% across (Trading Floor's hall starts at 40%). The description scales with the banner (16 px at 1024, about 22 px at 1440).
+- **Phones and tablets (under 1024 px):** only the title stays over the art. The description and language switch move below the image, on the themed page colours. The art is 70% of the screen height (drawn banners use 76%), which widens the phone crop to about 37% of the image. The title carries its own shade, a soft dark cloud sized to the words, so the subject beside or below it (Far Shore's sun) isn't dimmed.
+- **Tiles:** the same dark treatment, with the same kind of cloud behind the name only. On the small "Other regions" tiles at phone width (about 160×90) every name laid over the art would sit on its subject, so there the name sits below the image.
 
-**The keep-clear boxes and the e2e test.** `art.keepClear` lists the parts of the image that must stay in frame and never sit behind text. For Ridge that's the mast and the outpost, measured on the 2400×1350 file; update the boxes if the image changes. `e2e/keyart.spec.ts` (Playwright, real browser) checks every region with key art at 390, 768, 1024 and 1440 px in both themes:
+**The e2e test.** `e2e/keyart.spec.ts` (Playwright, real browser) checks every region at 390, 768, 1024 and 1440 px in both themes:
 
-1. Each keep-clear box is fully in frame, and no text or control overlaps it, on the banner, the home tile and the small "Other regions" tile.
-2. The banner text, and the region's name on its home tile and its "Other regions" tile, meet WCAG AA against the actual pixels behind them. It's measured on every pixel of each line with the text hidden and no halo, so the worst spot counts.
+1. Each keep-clear box is fully in frame, and no text or control overlaps it, on the banner, the home tile and the "Other regions" tile.
+2. The banner text and the tile names meet WCAG AA against the actual pixels behind them, measured on every pixel of each line's box with the text hidden and no halo, so the worst spot counts. On phone-width strip tiles it checks the name sits below the image instead.
 
-Run it with `npm run build && npm run test:e2e`. It isn't part of `npm test`.
-
-**Results on the real image.** All 48 checks pass. Tile names measure 8.05–9.35:1. Light and dark mode now measure the same, since the banner is dark in both. The worst pixel behind each piece of text:
-
-| Width | Title (needs 3:1) | Description (needs 4.5:1) |
-|---|---|---|
-| 768 | 7.89 | 6.12 |
-| 1024 | 4.58 | 5.74 |
-| 1440 | 5.10 | 4.98 |
-
-The trade-off: on wide screens the text ends 60–140 px from the mast, so a fade with no visible edge can't reach zero before the mast. The tip gets about a quarter-strength shade, and the base almost none. On tablets it's nearer half-strength at the tip. Screenshots are in `docs/region-screenshots/keyart/`.
+Run it with `npm run build && npm run test:e2e`. It isn't part of `npm test`. Screenshots are in `docs/region-screenshots/keyart/`.
 
 ## VALORANT Ridge content
 

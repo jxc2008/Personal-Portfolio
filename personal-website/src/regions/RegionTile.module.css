@@ -5,7 +5,10 @@
   color: var(--text);
 }
 
+/* The name shares the art's grid cell, laid over its top-left corner. */
 .art {
+  grid-row: 1;
+  grid-column: 1;
   position: relative;
   display: block;
   overflow: hidden;
@@ -23,10 +26,13 @@
 }
 
 .name {
-  position: absolute;
-  left: 1rem;
-  right: 1rem;
-  top: 0.9rem;
+  grid-row: 1;
+  grid-column: 1;
+  align-self: start;
+  position: relative;
+  z-index: 1;
+  margin: 0.9rem 1rem 0;
+  pointer-events: none;
   font-family: var(--r-display);
   font-weight: var(--r-display-weight);
   letter-spacing: var(--r-display-track);
@@ -36,29 +42,45 @@
   text-shadow: var(--r-banner-halo);
 }
 
-/* Over key art, the name takes the dark treatment in both themes, like the banner.
-   Keyed to the shade, which only renders while the art is showing. */
-.art:has([data-variant="tile"]) {
+/* Over key art, the name takes the dark treatment in both themes, like the banner,
+   with a soft dark cloud behind the words only, so the art's subject stays clear.
+   Keyed to the scrim element, which only renders while the art is showing. */
+.tile:has([data-variant="tile"]) {
   --r-banner-ink: var(--r-art-ink);
   --r-banner-halo: var(--r-art-halo);
+}
+
+.tile:has([data-variant="tile"]) .name {
+  justify-self: start;
+  max-width: calc(100% - 2rem);
+  /* Keep the cloud inside the art: clip at the art's top and left edges (the name's margins). */
+  clip-path: inset(-0.9rem -10rem -10rem -1rem);
+}
+
+.tile:has([data-variant="tile"]) .name::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  /* In em, to cover the glyphs' full ascent and descent at every tile size. */
+  inset: -0.55em -0.7em;
+  border-radius: 0.6em;
+  background: color-mix(in srgb, var(--r-art-shade) 78%, transparent);
+  filter: blur(6px);
 }
 
 .wide .name {
   font-size: 1.35rem;
 }
 
-/* Where the name ends, for the shade behind it over key art (Scenery.module.css). */
-.wide .art {
-  --tile-shade-solid: 2.4rem;
-}
-
 .short {
+  grid-row: 2;
   font-size: 0.9rem;
   line-height: 1.45;
   color: var(--text-secondary);
 }
 
 .state {
+  grid-row: 3;
   align-self: end;
   font-size: 0.78rem;
   /* Not --text-muted: at this size it falls under WCAG AA on the region pages' colours. */
@@ -89,20 +111,33 @@
 @media (max-width: 640px) {
   .tall .art {
     aspect-ratio: 16 / 9;
-    --tile-shade-solid: 2.6rem;
   }
 
-  /* Small "Other regions" tiles over key art: these are only ~90px tall, so a name
-     at the top lands on the subject (Ridge's mast tip). Put it bottom-left, slightly
-     smaller, with the shade rising from the bottom edge instead. */
-  .wide .art:has([data-variant="tile"]) .name {
-    top: auto;
-    bottom: 0.65rem;
+  /* Small "Other regions" tiles (about 160x90): any name laid over the art lands on
+     its subject (Ridge's mast, Far Shore's sun or boat), so the name sits below the
+     image, on the page's colours, and the art needs no shade. */
+  .wide {
+    grid-template-rows: auto auto auto 1fr;
+  }
+
+  .wide .name {
+    grid-row: 2;
+    margin: 0;
     font-size: 1.1rem;
+    color: var(--text);
+    text-shadow: none;
   }
 
-  .wide .art [data-variant="tile"] {
-    background: linear-gradient(0deg, var(--scrim) 0, var(--scrim) 1.9rem, var(--scrim-soft), transparent 2.9rem);
+  .wide .short {
+    grid-row: 3;
+  }
+
+  .wide .state {
+    grid-row: 4;
+  }
+
+  .wide .name::before {
+    display: none;
   }
 }
 

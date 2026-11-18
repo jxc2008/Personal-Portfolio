@@ -420,10 +420,11 @@
   --r-banner-on-ink: var(--r-art-shade);
 }
 
-/* Over key art, keep the text in the upper left, well short of the art's subject
-   (kept right of centre by its focus point), so the shade behind the text
-   (Scenery.module.css) can fade out softly before reaching it. */
-@media (min-width: 641px) {
+/* Desktop, over key art: keep the text in the upper left, well short of the art's
+   subject (kept right of centre by its focus point), so the shade behind the text
+   (Scenery.module.css) can fade out softly before reaching it. The description
+   column ends by about 38% across, clear of a subject that starts at 40%. */
+@media (min-width: 1024px) {
   .banner[data-art] .bannerCopy {
     max-width: min(44rem, 50%);
   }
@@ -434,15 +435,17 @@
 
   /* Scales with the banner, so it holds the same proportion at 1440 as at 1024. */
   .banner[data-art] .lede {
-    max-width: min(36rem, 80%);
+    max-width: min(32rem, 32vw);
     font-size: clamp(1rem, 1.55vw, 1.4rem);
   }
 }
 
-/* Phones with key art: only the title stays over the image. The description and
-   language row move below it, onto the page colours, so no length of copy can
-   cover the art's subject. The art keeps the banner's height, so it crops the same. */
-@media (max-width: 640px) {
+/* Phones and tablets with key art: only the title stays over the image. The
+   description and language row move below it, onto the page colours, so no length
+   of copy can cover the art's subject. The art is a little shorter than a drawn
+   banner (70% of the screen height), which widens the phone crop to about 37% of the
+   image's width, enough for a subject 35% wide. */
+@media (max-width: 1023px) {
   .banner[data-art] {
     height: auto;
     overflow: visible;
@@ -451,7 +454,7 @@
 
   .banner[data-art] .bannerArt {
     position: relative;
-    height: clamp(460px, 76svh, 780px);
+    height: clamp(420px, 70svh, 720px);
     overflow: hidden;
     background: var(--s-sky-top);
   }
@@ -465,7 +468,21 @@
     z-index: 1;
     top: clamp(72px, 11vh, 110px);
     left: var(--gutter);
-    right: var(--gutter);
+    max-width: calc(100% - 2 * var(--gutter));
+  }
+
+  /* The shade is a soft dark cloud behind the title only, sized to the words, so the
+     title reads on any art without dimming the subject beside or below it. */
+  .banner[data-art] .name::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    /* In em so it scales with the type and covers the glyphs' full ascent and descent,
+       which overhang the tight line height. */
+    inset: -0.7em -0.5em;
+    border-radius: 0.6em;
+    background: color-mix(in srgb, var(--r-art-shade) 76%, transparent);
+    filter: blur(16px);
   }
 
   .banner[data-art] .lede,
