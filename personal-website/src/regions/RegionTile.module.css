@@ -42,30 +42,16 @@
   text-shadow: var(--r-banner-halo);
 }
 
-/* Over key art, the name takes the dark treatment in both themes, like the banner,
-   with a soft dark cloud behind the words only, so the art's subject stays clear.
+/* Over key art, the name takes the dark treatment in both themes, like the banner:
+   light text with a layered shadow, over a soft corner darkening (Scenery.module.css).
    Keyed to the scrim element, which only renders while the art is showing. */
-.tile:has([data-variant="tile"]) {
-  --r-banner-ink: var(--r-art-ink);
-  --r-banner-halo: var(--r-art-halo);
-}
-
+/* Set on the name itself, not as tokens on the tile: the tile is also the .theme
+   element, where a region's dark-mode banner tokens would otherwise win. */
 .tile:has([data-variant="tile"]) .name {
   justify-self: start;
   max-width: calc(100% - 2rem);
-  /* Keep the cloud inside the art: clip at the art's top and left edges (the name's margins). */
-  clip-path: inset(-0.9rem -10rem -10rem -1rem);
-}
-
-.tile:has([data-variant="tile"]) .name::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  /* In em, to cover the glyphs' full ascent and descent at every tile size. */
-  inset: -0.55em -0.7em;
-  border-radius: 0.6em;
-  background: color-mix(in srgb, var(--r-art-shade) 78%, transparent);
-  filter: blur(6px);
+  color: var(--r-art-ink);
+  text-shadow: var(--r-art-text-shadow);
 }
 
 .wide .name {
@@ -120,7 +106,7 @@
     grid-template-rows: auto auto auto 1fr;
   }
 
-  .wide .name {
+  .tile.wide .name {
     grid-row: 2;
     margin: 0;
     font-size: 1.1rem;
@@ -136,9 +122,11 @@
     grid-row: 4;
   }
 
-  .wide .name::before {
-    display: none;
+  /* No text over these, so no darkening. */
+  .wide [data-variant="tile"] {
+    background: none;
   }
+
 }
 
 /* Desktop: descriptions at 16px, small labels at least 13px. */

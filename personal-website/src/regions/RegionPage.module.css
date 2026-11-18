@@ -416,7 +416,7 @@
 .banner[data-art] {
   --r-banner-ink: var(--r-art-ink);
   --r-banner-soft: var(--r-art-soft);
-  --r-banner-halo: var(--r-art-halo);
+  --r-banner-halo: var(--r-art-text-shadow);
   --r-banner-on-ink: var(--r-art-shade);
 }
 
@@ -469,20 +469,6 @@
     top: clamp(72px, 11vh, 110px);
     left: var(--gutter);
     max-width: calc(100% - 2 * var(--gutter));
-  }
-
-  /* The shade is a soft dark cloud behind the title only, sized to the words, so the
-     title reads on any art without dimming the subject beside or below it. */
-  .banner[data-art] .name::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    /* In em so it scales with the type and covers the glyphs' full ascent and descent,
-       which overhang the tight line height. */
-    inset: -0.7em -0.5em;
-    border-radius: 0.6em;
-    background: color-mix(in srgb, var(--r-art-shade) 76%, transparent);
-    filter: blur(16px);
   }
 
   .banner[data-art] .lede,

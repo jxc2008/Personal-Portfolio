@@ -47,22 +47,64 @@
 
 /* Banner, wide screens: a soft radial fade out of the top-left corner, where the
    text sits (RegionPage holds it to the upper left). No hard edge anywhere. Tuned
-   so every pixel behind the text meets WCAG AA in both themes; the fade's tail
-   leaves a light shade (about a quarter strength) on Ridge's mast tip. */
+   so the text meets WCAG AA in both themes; the long tail leaves a light shade on
+   subjects just right of centre (Ridge's mast tip). */
 .scrim[data-variant="banner"] {
-  background: radial-gradient(ellipse 72% 115% at 0% 0%, var(--scrim) 0%, var(--scrim) 62%, var(--scrim-soft) 80%, transparent 100%);
+  /* An eased curve in many small steps: no stop boundary is sharp enough to read
+     as a strip where the fade ends. */
+  background: radial-gradient(
+    ellipse 90% 130% at 0% 0%,
+    color-mix(in srgb, var(--r-art-shade) 80%, transparent) 0%,
+    color-mix(in srgb, var(--r-art-shade) 79%, transparent) 28%,
+    color-mix(in srgb, var(--r-art-shade) 75%, transparent) 38%,
+    color-mix(in srgb, var(--r-art-shade) 68%, transparent) 47%,
+    color-mix(in srgb, var(--r-art-shade) 59%, transparent) 55%,
+    color-mix(in srgb, var(--r-art-shade) 49%, transparent) 63%,
+    color-mix(in srgb, var(--r-art-shade) 38%, transparent) 71%,
+    color-mix(in srgb, var(--r-art-shade) 28%, transparent) 78%,
+    color-mix(in srgb, var(--r-art-shade) 19%, transparent) 85%,
+    color-mix(in srgb, var(--r-art-shade) 11%, transparent) 91%,
+    color-mix(in srgb, var(--r-art-shade) 5%, transparent) 96%,
+    transparent 100%
+  );
 }
 
-/* Tiles: the name carries its own shade (RegionTile), so the art is left clear.
-   The element stays: RegionTile keys the dark treatment to its presence. */
+/* Tiles: the name carries a layered text shadow (RegionTile); behind it, the same
+   kind of soft corner darkening as the phone banner. RegionTile also keys the dark
+   treatment to this element's presence. */
 .scrim[data-variant="tile"] {
-  background: none;
+  background: radial-gradient(
+    ellipse 150% 95% at 0% 0%,
+    color-mix(in srgb, var(--r-art-shade) 62%, transparent) 0%,
+    color-mix(in srgb, var(--r-art-shade) 58%, transparent) 16%,
+    color-mix(in srgb, var(--r-art-shade) 51%, transparent) 30%,
+    color-mix(in srgb, var(--r-art-shade) 42%, transparent) 43%,
+    color-mix(in srgb, var(--r-art-shade) 32%, transparent) 55%,
+    color-mix(in srgb, var(--r-art-shade) 22%, transparent) 66%,
+    color-mix(in srgb, var(--r-art-shade) 13%, transparent) 77%,
+    color-mix(in srgb, var(--r-art-shade) 6%, transparent) 87%,
+    color-mix(in srgb, var(--r-art-shade) 2%, transparent) 94%,
+    transparent 100%
+  );
 }
 
 /* Banner, phones and tablets: only the title sits over the art (RegionPage moves the
-   rest below) and carries its own shade, so the art itself is left clear. */
+   rest below). The title carries a layered text shadow; behind it, a large, very soft
+   darkening anchored in the top-left corner, with no visible shape or edge. */
 @media (max-width: 1023px) {
   .scrim[data-variant="banner"] {
-    background: none;
+    background: radial-gradient(
+      ellipse 160% 90% at 0% 0%,
+      color-mix(in srgb, var(--r-art-shade) 62%, transparent) 0%,
+      color-mix(in srgb, var(--r-art-shade) 58%, transparent) 16%,
+      color-mix(in srgb, var(--r-art-shade) 51%, transparent) 30%,
+      color-mix(in srgb, var(--r-art-shade) 42%, transparent) 43%,
+      color-mix(in srgb, var(--r-art-shade) 32%, transparent) 55%,
+      color-mix(in srgb, var(--r-art-shade) 22%, transparent) 66%,
+      color-mix(in srgb, var(--r-art-shade) 13%, transparent) 77%,
+      color-mix(in srgb, var(--r-art-shade) 6%, transparent) 87%,
+      color-mix(in srgb, var(--r-art-shade) 2%, transparent) 94%,
+      transparent 100%
+    );
   }
 }
