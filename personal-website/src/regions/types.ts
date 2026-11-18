@@ -100,8 +100,9 @@ export interface Region {
   art?: KeyArt;
   /** Page colours for light and dark mode. */
   palette: { light: Palette; dark: Palette };
-  /** "open": the region has real content. "charting": a stub listing what's planned. */
-  state: "open" | "charting";
+  /** One line under the banner while nothing in the region has shipped, in its voice.
+      Under 15 words. */
+  teaser: Text;
   /** Languages the page can switch between; the first is the default. */
   languages?: Lang[];
   /** Languages whose text is still a draft; the page labels them as such. */

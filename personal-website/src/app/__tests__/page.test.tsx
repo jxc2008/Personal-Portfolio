@@ -61,6 +61,6 @@ describe("Home page", () => {
       "/regions/far-shore",
       "/regions/the-lab",
     ]);
-    expect(screen.getByText(/VALORANT Ridge is open to explore/)).toBeInTheDocument();
+    expect(screen.getByText(/Trading Floor, VALORANT Ridge and The Lab are open to explore\. The others are coming soon\./)).toBeInTheDocument();
   });
 });

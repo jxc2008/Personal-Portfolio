@@ -8,6 +8,7 @@ const tradingFloor: Region = {
   name: "Trading Floor",
   short: "Markets, probability, and the games that taught me both.",
   lede: "Markets and probability: what I took from Optiver, the bots I've built for prediction markets, and the card games where I first learned to price risk.",
+  teaser: "Markets, odds, and the games that taught me to price risk.",
   scenery: "ledger",
   // Page colours: green felt and brass.
   palette: {
@@ -25,7 +26,6 @@ const tradingFloor: Region = {
       { label: "hall roof and chimneys", x: [0.47, 0.73], y: [0.373, 0.445] },
     ],
   },
-  state: "charting",
   sections: [
     {
       id: "trading-game",
@@ -88,6 +88,7 @@ const valorantRidge: Region = {
   name: "VALORANT Ridge",
   short: "Pricing, research, and post-mortems for pro VALORANT.",
   lede: "Where I model professional VALORANT: a pricing engine for match markets, the questions I'm testing with it, and a look back at each Champions.",
+  teaser: "Pricing pro VALORANT, one round at a time.",
   scenery: "ridge",
   // Page colours: cold dawn: slate, with lavender from the sky.
   palette: {
@@ -104,7 +105,6 @@ const valorantRidge: Region = {
       { label: "outpost", x: [0.558, 0.63], y: [0.515, 0.585] },
     ],
   },
-  state: "open",
   facts: [
     "Covers tier-1 VCT from 2023 onward, plus the Esports World Cup.",
     "Prices whole series and single maps for Kalshi's VALORANT markets.",
@@ -212,6 +212,7 @@ const pianoHall: Region = {
   name: "Piano Hall",
   short: "Piano and vocal recordings, and a keyboard to play.",
   lede: "Piano and vocal recordings, a keyboard you can play in the browser, and the pieces I'm learning now.",
+  teaser: "Recordings, and a piano you can play right here, are on their way.",
   scenery: "hall",
   // Page colours: plum stage, brass light.
   palette: {
@@ -225,7 +226,6 @@ const pianoHall: Region = {
     // Measured on the 2400x1350 file. Update these if the image changes.
     keepClear: [{ label: "hall front", x: [0.487, 0.663], y: [0.345, 0.64] }],
   },
-  state: "charting",
   sections: [
     {
       id: "recordings",
@@ -259,6 +259,10 @@ const farShore: Region = {
     en: "Life away from the screen: trips to Japan, food worth crossing town for, streetwear, and Mandarin.",
     zh: "屏幕之外的生活：日本之行、值得专程去吃的美食、街头服饰，还有中文。",
   },
+  teaser: {
+    en: "Notes from Japan, good food, and streetwear are on their way.",
+    zh: "关于日本、美食和街头服饰的记录，即将到来。",
+  },
   scenery: "shore",
   // Page colours: indigo sea, vermilion sun.
   palette: {
@@ -276,7 +280,6 @@ const farShore: Region = {
       { label: "sun", x: [0.681, 0.737], y: [0.217, 0.314], unshaded: true },
     ],
   },
-  state: "charting",
   languages: ["en", "zh"],
   // The Mandarin text is a first draft; the page labels it until this is removed.
   draftLanguages: ["zh"],
@@ -313,6 +316,7 @@ const theLab: Region = {
   name: "The Lab",
   short: "Simulations, tools, and teaching.",
   lede: "Simulations and tools for thinking with math: a three-body simulation, a playground for option Greeks, the quant team's open course, and coursework projects.",
+  teaser: "Simulations and tools for thinking with math, built to be played with.",
   scenery: "orbits",
   // Page colours: blueprint.
   palette: {
@@ -326,7 +330,6 @@ const theLab: Region = {
     // Measured on the 2400x1350 file. Update these if the image changes.
     keepClear: [{ label: "observatory dome", x: [0.645, 0.731], y: [0.669, 0.84] }],
   },
-  state: "charting",
   sections: [
     {
       id: "simulations",

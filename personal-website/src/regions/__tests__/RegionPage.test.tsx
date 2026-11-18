@@ -19,12 +19,17 @@ describe("RegionPage", () => {
   it("renders VALORANT Ridge from its data", () => {
     render(<RegionPage slug="valorant-ridge" />);
     expect(screen.getByRole("heading", { level: 1, name: "VALORANT Ridge" })).toBeInTheDocument();
-    for (const name of ["Pricing system", "Research hypotheses", "Champions post-mortems", "Veto calculator", "Field notes"]) {
+    for (const name of ["Pricing system", "Research hypotheses", "Veto calculator", "Field notes"]) {
       expect(screen.getByRole("heading", { level: 2, name })).toBeInTheDocument();
     }
     expect(screen.getByText("Live pricing engine").closest("li")).toHaveTextContent("Building");
-    expect(screen.getByText(/No posts yet/)).toBeInTheDocument();
-    expect(screen.queryByText(/still being charted/)).not.toBeInTheDocument();
+    expect(screen.getByText("Notes coming soon.")).toBeInTheDocument();
+    // Planned and drafting work is hidden, and so is a section left with nothing.
+    expect(screen.queryByRole("heading", { name: "Champions post-mortems" })).not.toBeInTheDocument();
+    expect(screen.queryByText("A side advantage counted twice")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Planned|Drafting/)).not.toBeInTheDocument();
+    // Something has shipped here, so no teaser.
+    expect(screen.queryByText("Pricing pro VALORANT, one round at a time.")).not.toBeInTheDocument();
   });
 
   it("links to the four other regions", () => {
@@ -122,10 +127,31 @@ describe("RegionPage", () => {
     expect(screen.getByText("Roster churn makes prices less reliable").closest("li")).toHaveTextContent("Pre-registered for Kickoff 2027");
   });
 
-  it("marks stubs as still being charted", () => {
+  it("shows a region with nothing shipped as its banner, a teaser and field notes", () => {
     render(<RegionPage slug="piano-hall" />);
-    expect(screen.getByText(/still being charted/)).toBeInTheDocument();
+    expect(screen.getByText("Recordings, and a piano you can play right here, are on their way.")).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual(["Field notes", "Other regions"]);
+    expect(screen.queryByText("Playable keyboard")).not.toBeInTheDocument();
+    expect(screen.queryByText(/still being charted/)).not.toBeInTheDocument();
+  });
+
+  it("shows planned and drafting work when the dev flag is on", () => {
+    render(<RegionPage slug="piano-hall" showUnfinished />);
     expect(screen.getByText("Playable keyboard").closest("li")).toHaveTextContent("Planned");
+    document.body.innerHTML = "";
+    render(<RegionPage slug="valorant-ridge" showUnfinished />);
+    expect(screen.getByRole("heading", { level: 2, name: "Champions post-mortems" })).toBeInTheDocument();
+    expect(screen.getByText("A side advantage counted twice").closest("li")).toHaveTextContent("Drafting");
+  });
+
+  it("labels the other regions Open or Coming soon by whether anything has shipped", () => {
+    render(<RegionPage slug="valorant-ridge" />);
+    const strip = screen.getByRole("navigation", { name: "Other regions" });
+    const label = (name: RegExp) => within(strip).getByRole("link", { name }).lastElementChild?.textContent;
+    expect(label(/Trading Floor/)).toBe("Open");
+    expect(label(/Piano Hall/)).toBe("Coming soon");
+    expect(label(/Far Shore/)).toBe("Coming soon");
+    expect(label(/The Lab/)).toBe("Open");
   });
 
   it("switches the Far Shore to 中文", () => {

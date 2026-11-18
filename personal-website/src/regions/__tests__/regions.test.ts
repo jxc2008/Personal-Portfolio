@@ -1,6 +1,6 @@
 import { existsSync } from "fs";
 import { join } from "path";
-import { getRegion, postsFor, regionAnchors, REGIONS, t, worldTagline } from "..";
+import { getRegion, hasShipped, isPublic, postsFor, regionAnchors, REGIONS, SHOW_UNFINISHED, t, visibleSections, worldTagline } from "..";
 import { formatAsOf, mapPoolLabel, VALORANT_MAP_POOL } from "../config";
 import type { Post, Text } from "../types";
 
@@ -38,11 +38,26 @@ describe("region content", () => {
     }
   });
 
-  it("opens VALORANT Ridge with the veto calculator and keeps the rest as stubs", () => {
-    const ridge = getRegion("valorant-ridge");
-    expect(ridge?.state).toBe("open");
-    expect(ridge?.sections.some((s) => s.widget?.key === "veto-calculator")).toBe(true);
-    expect(REGIONS.filter((r) => r.state === "open")).toHaveLength(1);
+  it("counts a region as open once something in it has shipped", () => {
+    expect(Object.fromEntries(REGIONS.map((r) => [r.slug, hasShipped(r)]))).toEqual({
+      "trading-floor": true,
+      "valorant-ridge": true,
+      "piano-hall": false,
+      "far-shore": false,
+      "the-lab": true,
+    });
+  });
+
+  it("gives every region a teaser under 15 words", () => {
+    for (const r of REGIONS) {
+      for (const lang of r.languages ?? ["en"]) {
+        const line = t(r.teaser, lang);
+        expect(line.length).toBeGreaterThan(0);
+        // Chinese has no spaces between words; count characters loosely instead.
+        const words = lang === "zh" ? Math.ceil(line.length / 2) : line.split(/\s+/).length;
+        expect([r.slug, lang, words < 15]).toEqual([r.slug, lang, true]);
+      }
+    }
   });
 
   it("uses the Patch 13.08 map pool", () => {
@@ -120,13 +135,37 @@ describe("helpers", () => {
     expect(postsFor("piano-hall", posts)).toEqual([]);
   });
 
-  it("builds nav anchors from labelled sections", () => {
-    const ridge = getRegion("valorant-ridge");
-    expect(ridge && regionAnchors(ridge)).toEqual([
+  it("builds nav anchors from the visible, labelled sections", () => {
+    const ridge = getRegion("valorant-ridge")!;
+    expect(regionAnchors(ridge)).toEqual([
       { id: "pricing", label: "Pricing" },
       { id: "research", label: "Research" },
-      { id: "post-mortems", label: "Post-mortems" },
       { id: "veto", label: "Veto" },
     ]);
+    expect(regionAnchors(ridge, true).map((a) => a.id)).toEqual(["pricing", "research", "post-mortems", "veto"]);
+  });
+});
+
+describe("unfinished work", () => {
+  it("is off by default outside local dev", () => {
+    expect(SHOW_UNFINISHED).toBe(false);
+  });
+
+  it("hides planned and drafting entries, keeps the rest", () => {
+    const entries = REGIONS.flatMap((r) => r.sections.flatMap((s) => s.entries));
+    for (const e of entries) expect([e.id, isPublic(e)]).toEqual([e.id, e.status !== "planned" && e.status !== "drafting"]);
+    for (const e of entries) expect(isPublic(e, true)).toBe(true);
+  });
+
+  it("drops sections left empty, but keeps a section with a widget", () => {
+    const ids = (slug: string, show?: boolean) => visibleSections(getRegion(slug)!, show).map((s) => s.id);
+    expect(ids("valorant-ridge")).toEqual(["pricing", "research", "veto"]);
+    expect(ids("trading-floor")).toEqual(["trading-game"]);
+    expect(ids("the-lab")).toEqual(["simulations", "tools"]);
+    expect(ids("piano-hall")).toEqual([]);
+    expect(ids("far-shore")).toEqual([]);
+    expect(ids("piano-hall", true)).toEqual(["recordings", "keyboard", "learning"]);
+    const ridgePricing = visibleSections(getRegion("valorant-ridge")!).find((s) => s.id === "pricing")!;
+    expect(ridgePricing.entries.map((e) => e.id)).toEqual(["live-engine", "thunderedge"]);
   });
 });
