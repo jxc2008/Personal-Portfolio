@@ -1,4 +1,4 @@
-import { REGIONS, t } from "./index";
+import { hasShipped, REGIONS, t } from "./index";
 import RegionTile from "./RegionTile";
 import styles from "./RegionsIndex.module.css";
 
@@ -9,8 +9,8 @@ function listNames(names: string[]): string {
 
 /** The home page map: one tile per region, in data order. */
 export default function RegionsIndex() {
-  const open = REGIONS.filter((r) => r.state === "open").map((r) => t(r.name));
-  const charting = REGIONS.length - open.length;
+  const open = REGIONS.filter(hasShipped).map((r) => t(r.name));
+  const soon = REGIONS.length - open.length;
   return (
     <section id="regions" className={styles.regions} aria-labelledby="regions-title">
       <div className={styles.head}>
@@ -20,7 +20,7 @@ export default function RegionsIndex() {
         <p className={styles.intro}>
           Each region holds one part of my work.
           {open.length > 0 && ` ${listNames(open)} ${open.length === 1 ? "is" : "are"} open to explore.`}
-          {charting > 0 && open.length > 0 && " The others are still being charted."}
+          {soon > 0 && open.length > 0 && " The others are coming soon."}
         </p>
       </div>
       <ul className={styles.grid}>

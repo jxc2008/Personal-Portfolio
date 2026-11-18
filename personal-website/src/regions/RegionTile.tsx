@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { paletteVars, t } from "./index";
+import { hasShipped, paletteVars, t } from "./index";
 import { REGION_FONT } from "./fonts";
 import RegionArt from "./scenery/RegionArt";
 import type { Region } from "./types";
@@ -24,7 +24,7 @@ export default function RegionTile({ region, size = "tall" }: { region: Region; 
         {t(region.name)}
       </span>
       <span className={styles.short}>{t(region.short)}</span>
-      <span className={styles.state}>{region.state === "open" ? "Open" : "Being charted"}</span>
+      <span className={styles.state}>{hasShipped(region) ? "Open" : "Coming soon"}</span>
     </Link>
   );
 }

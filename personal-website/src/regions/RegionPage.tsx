@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState, type PointerEvent } from "react";
-import { getRegion, paletteVars, postsFor, REGIONS, STATUS_LABEL, t } from "./index";
+import { getRegion, hasShipped, paletteVars, postsFor, REGIONS, SHOW_UNFINISHED, STATUS_LABEL, t, visibleSections } from "./index";
 import { REGION_FONT } from "./fonts";
 import RegionTile from "./RegionTile";
 import RegionArt from "./scenery/RegionArt";
@@ -76,8 +76,11 @@ function SectionBlock({ section, lang }: { section: Section; lang: Lang }) {
   );
 }
 
-export default function RegionPage({ slug }: { slug: Region["slug"] }) {
+/** `showUnfinished` defaults to the dev-only flag (see SHOW_UNFINISHED in index.ts). */
+export default function RegionPage({ slug, showUnfinished = SHOW_UNFINISHED }: { slug: Region["slug"]; showUnfinished?: boolean }) {
   const region = getRegion(slug) as Region;
+  const sections = visibleSections(region, showUnfinished);
+  const shipped = hasShipped(region);
   const languages = region.languages ?? ["en"];
   const [lang, setLang] = useState<Lang>(languages[0]);
   // The banner lays out for key art only while the art is showing; if it fails, the drawn banner and its usual layout return.
@@ -143,13 +146,10 @@ export default function RegionPage({ slug }: { slug: Region["slug"] }) {
             ))}
           </ul>
         )}
-        {region.state === "charting" && (
-          <p className={styles.charting}>
-            {lang === "zh" ? "这片区域还在绘制中。以下是计划中的内容。" : "This region is still being charted. Here's what's planned."}
-          </p>
-        )}
+        {/* Until something ships, one line in the region's voice stands in for its sections. */}
+        {!shipped && <p className={styles.teaser}>{t(region.teaser, lang)}</p>}
 
-        {region.sections.map((s) => (
+        {sections.map((s) => (
           <SectionBlock key={s.id} section={s} lang={lang} />
         ))}
 
@@ -176,7 +176,7 @@ export default function RegionPage({ slug }: { slug: Region["slug"] }) {
               </ul>
             ) : (
               <p className={styles.empty}>
-                {lang === "zh" ? "还没有文章。" : "No posts yet."} {lang === "zh" ? "关于这片区域的文章会出现在这里。" : `Writing about ${t(region.name)} will collect here.`}
+                {lang === "zh" ? "随笔即将更新。" : "Notes coming soon."}
               </p>
             )}
           </div>

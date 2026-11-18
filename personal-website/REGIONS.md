@@ -1,6 +1,6 @@
 # Regions: status
 
-Branch `feat/regions`. The site is now "A world in five regions": Trading Floor, VALORANT Ridge, Piano Hall, Far Shore and The Lab. VALORANT Ridge is built out as the full example. The other four are stubs that list what's planned.
+The site is "A world in five regions": Trading Floor, VALORANT Ridge, Piano Hall, Far Shore and The Lab. Only finished or in-progress work is public; planned work stays in the data but off the site (see "What's public" below).
 
 ## Where things live
 
@@ -22,13 +22,14 @@ Branch `feat/regions`. The site is now "A world in five regions": Trading Floor,
 
 ## How the template is content-driven
 
-A region is one object: name, one-line `short`, `lede`, `scenery`, `state` (`open` or `charting`), optional `facts`, and `sections`. Each section has entries and can optionally embed a widget.
+A region is one object: name, one-line `short`, `lede`, a one-line `teaser`, `scenery`, optional `facts`, and `sections`. Each section has entries and can optionally embed a widget.
 
 - Each **entry** has a title, a status (Shipped, Building, Testing, Drafting, Planned) and a summary. It can also have `details` paragraphs, `points` (short label/value facts), `links`, and a `featured` flag.
 - **Sections with a `navLabel`** show up as anchors in the floating nav on that region's page.
 - **Sections with a `widget`** lay out full width. Add new widgets in `widgets/index.tsx` and to the `WidgetRef` type.
 - **Field notes** collect every post in `posts.ts` tagged with the region, newest first, or show an empty state.
-- **`state: "charting"`** adds a "still being charted" note. That's the only difference between a stub and a full region. Fill in entries and flip it to `open`.
+- **What's public.** Entries marked **Planned** or **Drafting** stay in `regions.ts` but aren't shown, and a section left with nothing to show is dropped (a section with a widget always shows; Field notes always shows, with "Notes coming soon." until there are posts). To see everything while working locally, run the dev server with `NEXT_PUBLIC_SHOW_UNFINISHED=1 npm run dev`; production builds ignore the flag.
+- **Open or coming soon.** A region with at least one **Shipped** entry is "Open" on the tiles. A region with nothing shipped shows its banner, its `teaser` (one line in its voice, under 15 words) and Field notes, and reads "Coming soon" on the tiles. Ship something and it opens on its own; there's no flag to flip.
 - **Bilingual text:** any text field can be `{ en, zh }`. A region whose `languages` includes `"zh"` gets the English/中文 switch, which also sets `lang` on the page. A test makes sure bilingual text only appears in regions that offer it.
 - **The tagline counts the regions:** "A world in five regions" is generated from the data (`worldTagline()`).
 
@@ -139,7 +140,7 @@ The candidates are Cormorant Garamond (current), Fraunces, Instrument Serif, Shi
 
 - `tsc`, `next lint` and `next build` are clean. All five region pages are statically generated.
 - Jest: the new suites (`src/regions/__tests__`: veto solver vs an independent minimax on random pools, content integrity, map-pool config, template rendering, veto interaction, 中文 switch and draft label; `src/__tests__/redirects.test.ts`), plus the updated home and hero tests, all pass. 15 failures remain in the animations and globals-css suites. They were there before this work; the other 8 old failures went away with the deleted pages.
-- Screenshots in `docs/region-screenshots/` (desktop light/dark, mobile, the stubs' banners, home tiles). There are no horizontal overflow and no console errors at 390 px.
+- Screenshots in `docs/region-screenshots/` (desktop light/dark, mobile, the other regions' banners, home tiles). There are no horizontal overflow and no console errors at 390 px.
 
 ## Open questions
 
