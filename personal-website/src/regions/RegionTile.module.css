@@ -11,6 +11,8 @@
   grid-column: 1;
   position: relative;
   display: block;
+  /* Lets the darkening place holes over unshaded subjects (Scenery.module.css). */
+  container-type: size;
   overflow: hidden;
   border-radius: 6px;
   background: var(--s-sky-top);

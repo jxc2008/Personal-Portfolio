@@ -273,7 +273,7 @@ const farShore: Region = {
     // Measured on the 2400x1350 file. Update these if the image changes.
     keepClear: [
       { label: "front boat", x: [0.554, 0.762], y: [0.475, 0.778] },
-      { label: "sun", x: [0.681, 0.737], y: [0.217, 0.314] },
+      { label: "sun", x: [0.681, 0.737], y: [0.217, 0.314], unshaded: true },
     ],
   },
   state: "charting",

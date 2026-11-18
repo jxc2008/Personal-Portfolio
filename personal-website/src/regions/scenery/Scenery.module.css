@@ -40,6 +40,10 @@
 .scrim {
   --scrim: color-mix(in srgb, var(--r-art-shade) 80%, transparent);
   --scrim-soft: color-mix(in srgb, var(--r-art-shade) 45%, transparent);
+  /* The image's rendered size under object-fit: cover, from the art container's size
+     (a size container: .bannerArt, the tile's .art). RegionArt places unshaded holes with it. */
+  --iw: max(100cqw, 100cqh * var(--art-ar, 1.7778));
+  --ih: calc(var(--iw) / var(--art-ar, 1.7778));
   position: absolute;
   inset: 0;
   pointer-events: none;

@@ -1,6 +1,7 @@
 // Key art checks in a real browser, for every region with key art:
 //  1. each keepClear box (e.g. Ridge's mast) stays in frame, and no text sits on it, on the
 //     banner, the home tile and the small "Other regions" tile;
+//     Boxes marked `unshaded` must also keep their original colour (no darkening);
 //  2. the text in those three places meets WCAG AA against what's directly around its
 //     letters (a 1px ring, including the text's own shadow), at every pixel, so the
 //     worst spot in the art counts.
@@ -22,9 +23,11 @@ const ART = 'header img[data-testid="region-key-art"]';
 type Box = { left: number; top: number; right: number; bottom: number };
 type KeepClear = NonNullable<KeyArt["keepClear"]>;
 
-/** The theme is applied after hydration; wait for it so renders don't straddle the switch. */
+/** The theme is applied after hydration; wait for it so renders don't straddle the switch.
+    Also turn off smooth scrolling, so scrolling a tile into view lands at once. */
 async function themeSettled(page: Page) {
   await page.waitForFunction(() => document.documentElement.getAttribute("data-theme") === (localStorage.getItem("theme") ?? "light"));
+  await page.evaluate(() => (document.documentElement.style.scrollBehavior = "auto"));
 }
 
 async function open(page: Page, slug: string) {
@@ -186,6 +189,78 @@ async function expectClear(container: Locator, boxes: KeepClear) {
   }
 }
 
+/**
+ * Fails if the darkening or the text changes the colour of an `unshaded` keep-clear box:
+ * the box's pixels are compared with the same render with the darkening hidden, and with
+ * the text (and its shadow) hidden.
+ */
+async function expectUnshaded(page: Page, container: Locator, boxes: KeepClear) {
+  const marked = boxes.filter((b) => b.unshaded);
+  const compare = async () => {
+    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+    const { boxes: onScreen } = await keepClearOnScreen(container.locator('img[data-testid="region-key-art"]'), marked);
+    const frame = (await container.boundingBox())!;
+    const shot = async () => (await container.screenshot({ animations: "disabled" })).toString("base64");
+    const seen = await shot();
+    // One source at a time (hiding several together changes how the renderer composites
+    // the image, which alone shifts bright edges by a few levels): the darkening, then the text.
+    const without = async (css: string) => {
+      const tag = await page.addStyleTag({ content: `${css} { visibility: hidden !important; }` });
+      const png = await shot();
+      await tag.evaluate((n) => (n as Element).remove());
+      return png;
+    };
+    const plains = [await without('[data-testid="region-art-scrim"]'), await without('header h1, header p, [data-part="name"]')];
+    return page.evaluate(
+      async ({ seen, plains, rects }) => {
+        const load = async (png: string) => {
+          const img = new Image();
+          img.src = `data:image/png;base64,${png}`;
+          await img.decode();
+          const c = document.createElement("canvas");
+          c.width = img.width;
+          c.height = img.height;
+          const g = c.getContext("2d")!;
+          g.drawImage(img, 0, 0);
+          return g;
+        };
+        const A = await load(seen);
+        const Bs = await Promise.all(plains.map(load));
+        return rects.map((r) => {
+          const x = Math.round(r.x), y = Math.round(r.y), w = Math.max(1, Math.round(r.w)), h = Math.max(1, Math.round(r.h));
+          const a = A.getImageData(x, y, w, h).data;
+          let mean = 0, max = 0;
+          for (const B of Bs) {
+            const b = B.getImageData(x, y, w, h).data;
+            let sum = 0;
+            for (let k = 0; k < a.length; k += 4) {
+              const d = (Math.abs(a[k] - b[k]) + Math.abs(a[k + 1] - b[k + 1]) + Math.abs(a[k + 2] - b[k + 2])) / 3;
+              sum += d;
+              max = Math.max(max, d);
+            }
+            mean = Math.max(mean, sum / (a.length / 4));
+          }
+          return { label: r.label, mean: Number(mean.toFixed(2)), max: Math.round(max) };
+        });
+      },
+      { seen, plains, rects: onScreen.map((o) => ({ label: o.label, x: o.left - frame.x, y: o.top - frame.y, w: o.right - o.left, h: o.bottom - o.top })) },
+    );
+  };
+  // Colour channels 0-255: the box must look the same as the bare art. A real darkening
+  // shows on every attempt; a render caught mid-paint under load doesn't repeat.
+  const ok = (r: { mean: number; max: number }[]) => r.every((x) => x.mean < 1.5 && x.max < 8);
+  let results = await compare();
+  for (let attempt = 1; attempt < 3 && !ok(results); attempt++) {
+    await page.waitForTimeout(500);
+    results = await compare();
+  }
+  console.log(JSON.stringify(results));
+  for (const r of results) {
+    expect(r.mean, `${r.label}: average change`).toBeLessThan(1.5);
+    expect(r.max, `${r.label}: largest change`).toBeLessThan(8);
+  }
+}
+
 /** `slug`'s tile on the home page. */
 async function homeTile(page: Page, slug: string) {
   await page.goto("/?tod=day", { waitUntil: "networkidle" });
@@ -236,6 +311,21 @@ for (const region of withArt) {
           await open(page, region.slug);
           await expectClear(page.locator("header").first(), boxes);
         });
+
+        if (boxes.some((b) => b.unshaded)) {
+          test("banner: unshaded subjects keep their original colour", async ({ page }) => {
+            await open(page, region.slug);
+            await expectUnshaded(page, page.locator("header").first(), boxes);
+          });
+
+          test("home tile: unshaded subjects keep their original colour", async ({ page }) => {
+            await expectUnshaded(page, await homeTile(page, region.slug), boxes);
+          });
+
+          test('"Other regions" tile: unshaded subjects keep their original colour', async ({ page }) => {
+            await expectUnshaded(page, await stripTile(page, region.slug), boxes);
+          });
+        }
 
         test("banner: text meets WCAG AA over the art", async ({ page }) => {
           await open(page, region.slug);
